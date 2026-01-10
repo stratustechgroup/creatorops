@@ -1,13 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
-interface FinalCTAProps {
-  onApplyClick: () => void;
-}
-
-export const FinalCTA = ({ onApplyClick }: FinalCTAProps) => {
+export const FinalCTA = () => {
   const { trackEvent } = useAnalytics();
 
   const handleApplyClick = () => {
@@ -15,7 +12,6 @@ export const FinalCTA = ({ onApplyClick }: FinalCTAProps) => {
       location: "final_cta",
       button_text: "Apply for Creator Access",
     });
-    onApplyClick();
   };
 
   return (
@@ -39,9 +35,11 @@ export const FinalCTA = ({ onApplyClick }: FinalCTAProps) => {
             If you're serious about Minecraft creation, your infrastructure should be too.
           </p>
           
-          <Button variant="hero" size="xl" className="group" onClick={handleApplyClick}>
-            Apply for Creator Access
-            <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+          <Button variant="hero" size="xl" className="group" asChild>
+            <Link to="/apply" onClick={handleApplyClick}>
+              Apply for Creator Access
+              <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+            </Link>
           </Button>
         </motion.div>
       </div>

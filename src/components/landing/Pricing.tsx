@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
-
-interface PricingProps {
-  onApplyClick: () => void;
-}
 
 const plans = [
   {
@@ -52,7 +49,7 @@ const plans = [
   },
 ];
 
-export const Pricing = ({ onApplyClick }: PricingProps) => {
+export const Pricing = () => {
   const { trackEvent } = useAnalytics();
 
   const handlePlanClick = (planName: string) => {
@@ -61,7 +58,6 @@ export const Pricing = ({ onApplyClick }: PricingProps) => {
       plan_name: planName,
       button_text: "Get Started",
     });
-    onApplyClick();
   };
 
   return (
@@ -128,9 +124,11 @@ export const Pricing = ({ onApplyClick }: PricingProps) => {
               <Button
                 variant={plan.highlighted ? "hero" : "outline"}
                 className="w-full"
-                onClick={() => handlePlanClick(plan.name)}
+                asChild
               >
-                Get Started
+                <Link to="/apply" onClick={() => handlePlanClick(plan.name)}>
+                  Get Started
+                </Link>
               </Button>
             </motion.div>
           ))}

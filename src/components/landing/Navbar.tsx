@@ -2,12 +2,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useAnalytics } from "@/hooks/useAnalytics";
-
-interface NavbarProps {
-  onApplyClick: () => void;
-}
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -15,7 +12,7 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ];
 
-export const Navbar = ({ onApplyClick }: NavbarProps) => {
+export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { trackEvent } = useAnalytics();
 
@@ -38,7 +35,6 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
       location: "navbar",
       button_text: "Apply Now",
     });
-    onApplyClick();
   };
 
   return (
@@ -53,10 +49,10 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
           {/* Logo and nav links together on the left */}
           <div className="flex items-center gap-8">
             {/* Logo */}
-            <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <Logo className="w-9 h-9" />
               <span className="font-semibold text-foreground">CreatorCloud</span>
-            </div>
+            </Link>
 
             {/* Desktop nav links - now next to logo */}
             <div className="hidden md:flex items-center gap-6">
@@ -75,8 +71,10 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
           
           {/* Desktop CTA */}
           <div className="hidden md:block">
-            <Button variant="hero" size="sm" onClick={handleApplyClick}>
-              Apply Now
+            <Button variant="hero" size="sm" asChild>
+              <Link to="/apply" onClick={handleApplyClick}>
+                Apply Now
+              </Link>
             </Button>
           </div>
 
@@ -124,12 +122,17 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
                   variant="hero" 
                   size="lg" 
                   className="w-full mt-2"
-                  onClick={() => {
-                    handleApplyClick();
-                    setIsMobileMenuOpen(false);
-                  }}
+                  asChild
                 >
-                  Apply Now
+                  <Link 
+                    to="/apply" 
+                    onClick={() => {
+                      handleApplyClick();
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    Apply Now
+                  </Link>
                 </Button>
               </motion.div>
             </div>

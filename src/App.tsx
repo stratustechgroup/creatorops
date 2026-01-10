@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { PageSkeleton } from "@/components/PageSkeleton";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -17,48 +19,56 @@ const FairUsagePolicy = lazy(() => import("./pages/FairUsagePolicy"));
 
 const queryClient = new QueryClient();
 
+const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
+  useAnalytics();
+  return <>{children}</>;
+};
+
 const AnimatedRoutes = () => {
   const location = useLocation();
   
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Index />} />
-        <Route
-          path="/privacy"
-          element={
-            <Suspense fallback={<PageSkeleton />}>
-              <PrivacyPolicy />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/terms"
-          element={
-            <Suspense fallback={<PageSkeleton />}>
-              <TermsOfService />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/sla"
-          element={
-            <Suspense fallback={<PageSkeleton />}>
-              <SLAAgreement />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/fair-usage"
-          element={
-            <Suspense fallback={<PageSkeleton />}>
-              <FairUsagePolicy />
-            </Suspense>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
+    <AnalyticsProvider>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Index />} />
+          <Route
+            path="/privacy"
+            element={
+              <Suspense fallback={<PageSkeleton />}>
+                <PrivacyPolicy />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <Suspense fallback={<PageSkeleton />}>
+                <TermsOfService />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/sla"
+            element={
+              <Suspense fallback={<PageSkeleton />}>
+                <SLAAgreement />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/fair-usage"
+            element={
+              <Suspense fallback={<PageSkeleton />}>
+                <FairUsagePolicy />
+              </Suspense>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+      <CookieConsentBanner />
+    </AnalyticsProvider>
   );
 };
 

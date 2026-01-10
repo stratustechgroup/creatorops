@@ -13,6 +13,7 @@ import { FoundingProgram } from "@/components/landing/FoundingProgram";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ApplicationModal } from "@/components/landing/ApplicationModal";
+import { ScrollProgress } from "@/components/landing/ScrollProgress";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
       <Navbar onApplyClick={handleApplyClick} />
       <main>
         <Hero onApplyClick={handleApplyClick} />

@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { PageSkeleton } from "@/components/PageSkeleton";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
-import { useAnalytics } from "@/hooks/useAnalytics";
+import { AnalyticsPageTracker } from "@/components/AnalyticsPageTracker";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -19,16 +19,12 @@ const FairUsagePolicy = lazy(() => import("./pages/FairUsagePolicy"));
 
 const queryClient = new QueryClient();
 
-const AnalyticsProvider = ({ children }: { children: React.ReactNode }) => {
-  useAnalytics();
-  return <>{children}</>;
-};
-
 const AnimatedRoutes = () => {
   const location = useLocation();
   
   return (
-    <AnalyticsProvider>
+    <>
+      <AnalyticsPageTracker />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
@@ -68,7 +64,7 @@ const AnimatedRoutes = () => {
         </Routes>
       </AnimatePresence>
       <CookieConsentBanner />
-    </AnalyticsProvider>
+    </>
   );
 };
 

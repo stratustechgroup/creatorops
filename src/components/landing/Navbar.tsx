@@ -35,24 +35,27 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
     >
       <div className="container px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Logo className="w-8 h-8" />
-            <span className="font-semibold text-foreground">CreatorCloud</span>
-          </div>
+          {/* Logo and nav links together on the left */}
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <Logo className="w-8 h-8" />
+              <span className="font-semibold text-foreground">CreatorCloud</span>
+            </div>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleSmoothScroll(e, link.href)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {/* Desktop nav links - now next to logo */}
+            <div className="hidden md:flex items-center gap-6">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
           </div>
           
           {/* Desktop CTA */}

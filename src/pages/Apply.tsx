@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import {
 import { Logo } from "@/components/landing/Logo";
 import { PageTransition } from "@/components/PageTransition";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useFormAutosave } from "@/hooks/useFormAutosave";
 
 const applicationSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
@@ -41,32 +42,48 @@ const trustPoints = [
   { icon: Users, text: "Join our founding creator community" },
 ];
 
+const STORAGE_KEY = "creatorcloud_application_draft";
+
+const defaultFormValues: ApplicationFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  channelUrl: "",
+  subscriberCount: "",
+  creatorType: "",
+  currentSetup: "",
+  useCase: "",
+  timeline: "",
+  referral: "",
+};
+
 const Apply = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
 
+  // Memoize default values to prevent infinite loop in useFormAutosave
+  const memoizedDefaults = useMemo(() => defaultFormValues, []);
+
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      channelUrl: "",
-      subscriberCount: "",
-      creatorType: "",
-      currentSetup: "",
-      useCase: "",
-      timeline: "",
-      referral: "",
-    },
+    defaultValues: defaultFormValues,
+  });
+
+  // Enable autosave to localStorage
+  const { clearSavedData } = useFormAutosave({
+    watch,
+    reset,
+    storageKey: STORAGE_KEY,
+    defaultValues: memoizedDefaults,
   });
 
   const creatorType = watch("creatorType");
@@ -86,6 +103,9 @@ const Apply = () => {
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Clear saved draft on successful submission
+    clearSavedData();
 
     setIsSubmitting(false);
     setIsSubmitted(true);

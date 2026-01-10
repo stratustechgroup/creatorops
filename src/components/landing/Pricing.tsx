@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight } from "lucide-react";
+import { Check } from "lucide-react";
+
+interface PricingProps {
+  onApplyClick: () => void;
+}
 
 const plans = [
   {
@@ -47,9 +51,9 @@ const plans = [
   },
 ];
 
-export const Pricing = () => {
+export const Pricing = ({ onApplyClick }: PricingProps) => {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section id="pricing" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
       
@@ -112,6 +116,7 @@ export const Pricing = () => {
               <Button
                 variant={plan.highlighted ? "hero" : "outline"}
                 className="w-full"
+                onClick={onApplyClick}
               >
                 Get Started
               </Button>

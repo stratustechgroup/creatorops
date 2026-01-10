@@ -2,7 +2,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export const FinalCTA = () => {
+interface FinalCTAProps {
+  onApplyClick: () => void;
+}
+
+export const FinalCTA = ({ onApplyClick }: FinalCTAProps) => {
   return (
     <section className="relative py-32 md:py-40 overflow-hidden">
       {/* Background effects */}
@@ -24,7 +28,7 @@ export const FinalCTA = () => {
             If you're serious about Minecraft creation, your infrastructure should be too.
           </p>
           
-          <Button variant="hero" size="xl" className="group">
+          <Button variant="hero" size="xl" className="group" onClick={onApplyClick}>
             Apply for Creator Access
             <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
           </Button>

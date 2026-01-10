@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface NavbarProps {
   onApplyClick: () => void;
@@ -16,14 +17,28 @@ const navLinks = [
 
 export const Navbar = ({ onApplyClick }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { trackEvent } = useAnalytics();
 
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
     e.preventDefault();
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     setIsMobileMenuOpen(false);
+    
+    trackEvent("nav_click", {
+      link_label: label,
+      link_href: href,
+    });
+  };
+
+  const handleApplyClick = () => {
+    trackEvent("cta_click", {
+      location: "navbar",
+      button_text: "Apply Now",
+    });
+    onApplyClick();
   };
 
   return (
@@ -39,7 +54,7 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
           <div className="flex items-center gap-8">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <Logo className="w-8 h-8" />
+              <Logo className="w-9 h-9" />
               <span className="font-semibold text-foreground">CreatorCloud</span>
             </div>
 
@@ -49,7 +64,7 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
@@ -60,7 +75,7 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
           
           {/* Desktop CTA */}
           <div className="hidden md:block">
-            <Button variant="hero" size="sm" onClick={onApplyClick}>
+            <Button variant="hero" size="sm" onClick={handleApplyClick}>
               Apply Now
             </Button>
           </div>
@@ -91,7 +106,7 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
                 <motion.a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -110,7 +125,7 @@ export const Navbar = ({ onApplyClick }: NavbarProps) => {
                   size="lg" 
                   className="w-full mt-2"
                   onClick={() => {
-                    onApplyClick();
+                    handleApplyClick();
                     setIsMobileMenuOpen(false);
                   }}
                 >

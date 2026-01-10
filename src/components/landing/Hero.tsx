@@ -2,12 +2,23 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface HeroProps {
   onApplyClick: () => void;
 }
 
 export const Hero = ({ onApplyClick }: HeroProps) => {
+  const { trackEvent } = useAnalytics();
+
+  const handleApplyClick = () => {
+    trackEvent("cta_click", {
+      location: "hero",
+      button_text: "Apply for Creator Access",
+    });
+    onApplyClick();
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
@@ -77,7 +88,7 @@ export const Hero = ({ onApplyClick }: HeroProps) => {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button variant="hero" size="xl" className="group" onClick={onApplyClick}>
+            <Button variant="hero" size="xl" className="group" onClick={handleApplyClick}>
               Apply for Creator Access
               <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
             </Button>

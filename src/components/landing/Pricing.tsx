@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface PricingProps {
   onApplyClick: () => void;
@@ -52,6 +53,17 @@ const plans = [
 ];
 
 export const Pricing = ({ onApplyClick }: PricingProps) => {
+  const { trackEvent } = useAnalytics();
+
+  const handlePlanClick = (planName: string) => {
+    trackEvent("cta_click", {
+      location: "pricing",
+      plan_name: planName,
+      button_text: "Get Started",
+    });
+    onApplyClick();
+  };
+
   return (
     <section id="pricing" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background glow */}
@@ -116,7 +128,7 @@ export const Pricing = ({ onApplyClick }: PricingProps) => {
               <Button
                 variant={plan.highlighted ? "hero" : "outline"}
                 className="w-full"
-                onClick={onApplyClick}
+                onClick={() => handlePlanClick(plan.name)}
               >
                 Get Started
               </Button>

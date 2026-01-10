@@ -60,14 +60,46 @@ const PrivacyPolicy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">5. Third-Party Services</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-4">5. Cookies and Tracking</h2>
+              <div className="text-muted-foreground leading-relaxed space-y-4">
+                <p>We use cookies and similar technologies to:</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li><strong className="text-foreground">Necessary:</strong> Enable core website functionality and security</li>
+                  <li><strong className="text-foreground">Analytics:</strong> Understand how visitors use our site (with consent)</li>
+                  <li><strong className="text-foreground">Marketing:</strong> Deliver relevant advertisements (with consent)</li>
+                </ul>
+                <p>
+                  You can manage your cookie preferences at any time through our cookie banner. Your preferences are stored for 12 months before we ask again.
+                </p>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-semibold text-foreground mb-4">6. Third-Party Services</h2>
               <p className="text-muted-foreground leading-relaxed">
                 We may use third-party services for payment processing, analytics, and infrastructure. These services are bound by their own privacy policies and we select partners who maintain high standards of data protection.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">6. Contact Us</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-4">7. Your Rights (GDPR)</h2>
+              <div className="text-muted-foreground leading-relaxed space-y-4">
+                <p>Under GDPR, you have the right to:</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>Access your personal data</li>
+                  <li>Rectify inaccurate personal data</li>
+                  <li>Request erasure of your personal data</li>
+                  <li>Restrict processing of your personal data</li>
+                  <li>Data portability</li>
+                  <li>Object to processing</li>
+                  <li>Withdraw consent at any time</li>
+                </ul>
+                <p>To exercise any of these rights, contact us at privacy@stratustechgroup.com.</p>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-semibold text-foreground mb-4">8. Contact Us</h2>
               <p className="text-muted-foreground leading-relaxed">
                 If you have questions about this Privacy Policy, please contact us at privacy@stratustechgroup.com.
               </p>

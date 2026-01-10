@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ApplicationModalProps {
   isOpen: boolean;
@@ -28,19 +29,38 @@ export const ApplicationModal = ({ isOpen, onClose }: ApplicationModalProps) => 
     creatorType: "",
     useCase: "",
   });
+  const { trackEvent } = useAnalytics();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    // Track form submission
+    trackEvent("form_submit", {
+      form_name: "application",
+      creator_type: formData.creatorType,
+      has_channel: !!formData.channel,
+    });
     
     // Simulate submission
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setIsSubmitting(false);
     setIsSubmitted(true);
+
+    // Track successful submission
+    trackEvent("form_success", {
+      form_name: "application",
+    });
   };
 
   const handleClose = () => {
+    if (!isSubmitted) {
+      trackEvent("form_abandon", {
+        form_name: "application",
+        fields_filled: Object.values(formData).filter(Boolean).length,
+      });
+    }
     onClose();
     // Reset form after animation completes
     setTimeout(() => {

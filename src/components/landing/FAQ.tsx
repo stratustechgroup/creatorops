@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const faqs = [
   {
@@ -42,6 +43,14 @@ const faqs = [
 ];
 
 export const FAQ = () => {
+  const { trackEvent } = useAnalytics();
+
+  const handleFAQOpen = (question: string) => {
+    trackEvent("faq_expand", {
+      question: question,
+    });
+  };
+
   return (
     <section id="faq" className="relative py-24 md:py-32">
       <div className="container px-4">
@@ -67,7 +76,17 @@ export const FAQ = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="max-w-3xl mx-auto"
         >
-          <Accordion type="single" collapsible className="space-y-4">
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="space-y-4"
+            onValueChange={(value) => {
+              if (value) {
+                const index = parseInt(value.replace("item-", ""));
+                handleFAQOpen(faqs[index]?.question || "");
+              }
+            }}
+          >
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}

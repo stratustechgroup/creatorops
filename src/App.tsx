@@ -11,7 +11,8 @@ import { AnalyticsPageTracker } from "@/components/AnalyticsPageTracker";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
-// Lazy load legal pages
+// Lazy load pages
+const Apply = lazy(() => import("./pages/Apply"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const SLAAgreement = lazy(() => import("./pages/SLAAgreement"));
@@ -28,6 +29,14 @@ const AnimatedRoutes = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
+          <Route
+            path="/apply"
+            element={
+              <Suspense fallback={<PageSkeleton />}>
+                <Apply />
+              </Suspense>
+            }
+          />
           <Route
             path="/privacy"
             element={

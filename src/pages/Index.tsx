@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { SocialProof } from "@/components/landing/SocialProof";
@@ -12,35 +11,27 @@ import { FAQ } from "@/components/landing/FAQ";
 import { FoundingProgram } from "@/components/landing/FoundingProgram";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
-import { ApplicationModal } from "@/components/landing/ApplicationModal";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 
 const Index = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleApplyClick = () => {
-    setIsModalOpen(true);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <ScrollProgress />
-      <Navbar onApplyClick={handleApplyClick} />
+      <Navbar />
       <main>
-        <Hero onApplyClick={handleApplyClick} />
+        <Hero />
         <SocialProof />
         <PainPoints />
         <Solution />
         <HowItWorks />
         <Audience />
-        <Pricing onApplyClick={handleApplyClick} />
+        <Pricing />
         <Trust />
         <FAQ />
         <FoundingProgram />
-        <FinalCTA onApplyClick={handleApplyClick} />
+        <FinalCTA />
       </main>
       <Footer />
-      <ApplicationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

@@ -1,14 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
-interface HeroProps {
-  onApplyClick: () => void;
-}
-
-export const Hero = ({ onApplyClick }: HeroProps) => {
+export const Hero = () => {
   const { trackEvent } = useAnalytics();
 
   const handleApplyClick = () => {
@@ -16,7 +13,6 @@ export const Hero = ({ onApplyClick }: HeroProps) => {
       location: "hero",
       button_text: "Apply for Creator Access",
     });
-    onApplyClick();
   };
 
   return (
@@ -88,9 +84,11 @@ export const Hero = ({ onApplyClick }: HeroProps) => {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button variant="hero" size="xl" className="group" onClick={handleApplyClick}>
-              Apply for Creator Access
-              <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+            <Button variant="hero" size="xl" className="group" asChild>
+              <Link to="/apply" onClick={handleApplyClick}>
+                Apply for Creator Access
+                <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
           </motion.div>
         </motion.div>

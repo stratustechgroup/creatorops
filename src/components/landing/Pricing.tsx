@@ -8,8 +8,8 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 const plans = [
   {
     name: "Creator Solo",
-    monthlyPrice: "$49–79",
-    annualPrice: "$39–63",
+    monthlyPrice: "$49",
+    annualPrice: "$39",
     period: "/ month",
     description: "Perfect for individual creators with one production world.",
     features: [
@@ -23,8 +23,8 @@ const plans = [
   },
   {
     name: "Creator Pro",
-    monthlyPrice: "$149–249",
-    annualPrice: "$119–199",
+    monthlyPrice: "$149",
+    annualPrice: "$119",
     period: "/ month",
     description: "For creators running multiple worlds or collaborations.",
     features: [

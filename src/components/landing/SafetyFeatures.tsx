@@ -97,7 +97,7 @@ export const SafetyFeatures = () => {
             <motion.div
               key={feature.title}
               variants={cardVariants}
-              className="group relative p-6 rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-300"
+              className="group relative p-6 rounded-2xl border border-border bg-card shadow-card hover:border-primary/30 transition-all duration-300"
             >
               {/* Highlight badge */}
               <div className="absolute -top-3 left-6">
@@ -112,10 +112,10 @@ export const SafetyFeatures = () => {
               </div>
               
               {/* Content */}
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+              <h3 className="text-lg font-semibold text-foreground mb-2">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

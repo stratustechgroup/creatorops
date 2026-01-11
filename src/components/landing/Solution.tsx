@@ -88,7 +88,7 @@ export const Solution = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              className="group relative p-6 rounded-2xl bg-card-gradient border border-border shadow-card hover:border-primary/50 transition-all duration-300"
+              className="group relative p-6 rounded-2xl bg-card border border-border shadow-card hover:border-primary/30 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <feature.icon className="w-6 h-6 text-primary" />

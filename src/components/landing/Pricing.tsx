@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ShieldCheck, RefreshCcw, Lock } from "lucide-react";
+import { Check, ShieldCheck, RefreshCcw, Lock, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -13,11 +13,11 @@ const plans = [
     period: "/ month",
     description: "Perfect for individual creators with one production world.",
     features: [
-      "One production world",
-      "Automated backups & rollback",
-      "Version pinning",
-      "Managed updates",
-      "Standard support",
+      { text: "One production world", highlight: false },
+      { text: "Automated backups & rollback", highlight: false },
+      { text: "Version pinning", highlight: false },
+      { text: "Managed updates", highlight: false },
+      { text: "Standard support", highlight: false },
     ],
     highlighted: false,
   },
@@ -28,11 +28,11 @@ const plans = [
     period: "/ month",
     description: "For creators running multiple worlds or collaborations.",
     features: [
-      "Multiple worlds (prod + staging/collab)",
-      "Priority restores",
-      "Assisted upgrades",
-      "Higher performance envelope",
-      "Priority support",
+      { text: "Multiple worlds", highlight: true, detail: "prod + staging/collab" },
+      { text: "Priority restores", highlight: true, detail: "4-hour SLA" },
+      { text: "Assisted upgrades", highlight: false },
+      { text: "Higher performance envelope", highlight: false },
+      { text: "Priority support", highlight: true },
     ],
     highlighted: true,
   },
@@ -43,11 +43,11 @@ const plans = [
     period: "",
     description: "Temporary scaling for special events and collaborations.",
     features: [
-      "Temporary scaling",
-      "Event-ready infrastructure",
-      "Time-boxed pricing",
-      "Dedicated support",
-      "Custom configuration",
+      { text: "Temporary scaling", highlight: true },
+      { text: "Event-ready infrastructure", highlight: false },
+      { text: "Time-boxed pricing", highlight: false },
+      { text: "Dedicated support", highlight: true },
+      { text: "Custom configuration", highlight: false },
     ],
     highlighted: false,
   },
@@ -175,14 +175,15 @@ export const Pricing = () => {
                 y: -8, 
                 transition: { duration: 0.2, ease: "easeOut" } 
               }}
-              className={`relative p-8 rounded-2xl border transition-shadow duration-300 cursor-pointer ${
+              className={`relative p-8 rounded-2xl border transition-all duration-300 ${
                 plan.highlighted
-                  ? "bg-card-gradient border-primary/50 shadow-glow hover:shadow-[0_0_40px_rgba(74,222,128,0.3)]"
-                  : "bg-card-gradient border-border shadow-card hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
+                  ? "bg-gradient-to-b from-card to-card/80 border-primary/50 shadow-glow"
+                  : "bg-card border-border shadow-card hover:border-primary/30"
               }`}
             >
               {plan.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3" />
                   Most Popular
                 </div>
               )}
@@ -199,7 +200,7 @@ export const Pricing = () => {
                     key={isAnnual ? "annual" : "monthly"}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-bold text-foreground whitespace-nowrap"
+                    className="text-4xl font-bold text-foreground whitespace-nowrap"
                   >
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                   </motion.span>
@@ -211,15 +212,27 @@ export const Pricing = () => {
                   <span className="text-xs text-primary mt-1 block">billed annually</span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground mb-6">
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                 {plan.description}
               </p>
               
-              <ul className="space-y-3 mb-8">
+              {/* Feature divider */}
+              <div className="border-t border-border/50 mb-6" />
+              
+              <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                    {feature}
+                  <li key={featureIndex} className="flex items-start gap-3">
+                    <div className={`mt-0.5 p-0.5 rounded-full ${feature.highlight ? 'bg-primary/20' : 'bg-secondary'}`}>
+                      <Check className={`w-3.5 h-3.5 ${feature.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </div>
+                    <div className="flex-1">
+                      <span className={`text-sm ${feature.highlight ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                        {feature.text}
+                      </span>
+                      {feature.detail && (
+                        <span className="text-xs text-primary ml-1">({feature.detail})</span>
+                      )}
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -243,20 +256,20 @@ export const Pricing = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-12 pt-8 border-t border-border/50"
+          className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mt-16 pt-8 border-t border-border/50"
         >
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <ShieldCheck className="w-5 h-5 text-primary" />
-            <span>30-day money-back guarantee</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <RefreshCcw className="w-5 h-5 text-primary" />
-            <span>Cancel anytime</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Lock className="w-5 h-5 text-primary" />
-            <span>You always own your world</span>
-          </div>
+          {[
+            { icon: ShieldCheck, text: "30-day money-back guarantee" },
+            { icon: RefreshCcw, text: "Cancel anytime" },
+            { icon: Lock, text: "You always own your world" },
+          ].map((item, index) => (
+            <div key={index} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+              <div className="p-1.5 rounded-lg bg-secondary/50">
+                <item.icon className="w-4 h-4 text-primary" />
+              </div>
+              <span>{item.text}</span>
+            </div>
+          ))}
         </motion.div>
 
         {/* Annual discount note */}

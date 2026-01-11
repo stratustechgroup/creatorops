@@ -154,4 +154,17 @@
     background-size: 32px 32px;
     opacity: 0.6 !important;
   }
+
+  /* Unified card styles */
+  .feature-card {
+    @apply relative p-6 rounded-2xl border border-border bg-card shadow-card transition-all duration-300;
+  }
+
+  .feature-card:hover {
+    @apply border-primary/30;
+  }
+
+  .feature-card-highlighted {
+    @apply relative p-6 rounded-2xl border border-primary/50 bg-card shadow-glow transition-all duration-300;
+  }
 }

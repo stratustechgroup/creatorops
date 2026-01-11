@@ -106,7 +106,7 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
           <div className={`${hideNavLinks ? 'flex' : 'hidden md:flex'} items-center gap-2`}>
             <ThemeToggle />
             <Button variant="hero" size="sm" asChild>
-              <Link to="/apply" onClick={handleApplyClick}>
+              <Link to="/founding-apply" onClick={handleApplyClick}>
                 Apply Now
               </Link>
             </Button>
@@ -177,14 +177,14 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                <Button 
-                  variant="hero" 
-                  size="lg" 
+                <Button
+                  variant="hero"
+                  size="lg"
                   className="w-full mt-2"
                   asChild
                 >
-                  <Link 
-                    to="/apply" 
+                  <Link
+                    to="/founding-apply"
                     onClick={() => {
                       handleApplyClick();
                       setIsMobileMenuOpen(false);

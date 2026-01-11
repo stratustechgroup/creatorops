@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save, Check } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -68,6 +70,7 @@ const Apply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
+  const { toast } = useToast();
 
   // Memoize default values to prevent infinite loop in useFormAutosave
   const memoizedDefaults = useMemo(() => defaultFormValues, []);
@@ -145,18 +148,35 @@ const Apply = () => {
       timeline: data.timeline,
     });
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const { data: response, error } = await supabase.functions.invoke("send-application-email", {
+        body: {
+          formType: "standard",
+          formData: data,
+        },
+      });
 
-    // Clear saved draft on successful submission
-    clearSavedData();
+      if (error) {
+        throw error;
+      }
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      // Clear saved draft on successful submission
+      clearSavedData();
+      setIsSubmitted(true);
 
-    trackEvent("form_success", {
-      form_name: "application",
-    });
+      trackEvent("form_success", {
+        form_name: "application",
+      });
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast({
+        title: "Submission Error",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

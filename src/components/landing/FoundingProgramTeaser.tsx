@@ -39,17 +39,13 @@ export const FoundingProgramTeaser = () => {
           {/* Highlight badges */}
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             {highlights.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border"
               >
                 <item.icon className="w-4 h-4 text-primary" />
                 <span className="text-sm text-foreground">{item.text}</span>
-              </motion.div>
+              </div>
             ))}
           </div>
           

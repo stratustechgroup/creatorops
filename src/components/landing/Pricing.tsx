@@ -98,7 +98,7 @@ export const Pricing = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.1, duration: 0.5 }}
           className="flex items-center justify-center gap-4 mb-12"
         >
@@ -146,7 +146,7 @@ export const Pricing = () => {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ 
                 y: -8, 
@@ -218,7 +218,7 @@ export const Pricing = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.3, duration: 0.5 }}
           className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-12 pt-8 border-t border-border/50"
         >
@@ -240,7 +240,7 @@ export const Pricing = () => {
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-center text-sm text-muted-foreground mt-8"
         >

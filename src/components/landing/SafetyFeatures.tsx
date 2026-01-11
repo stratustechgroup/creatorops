@@ -40,6 +40,26 @@ const safetyFeatures = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.15
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  }
+};
+
 export const SafetyFeatures = () => {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
@@ -66,14 +86,17 @@ export const SafetyFeatures = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {safetyFeatures.map((feature, index) => (
+        <motion.div 
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {safetyFeatures.map((feature) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              variants={cardVariants}
               className="group relative p-6 rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-300"
             >
               {/* Highlight badge */}
@@ -97,7 +120,7 @@ export const SafetyFeatures = () => {
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom CTA */}
         <motion.div

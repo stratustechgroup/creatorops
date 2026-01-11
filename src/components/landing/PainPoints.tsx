@@ -16,6 +16,26 @@ const costs = [
   "Algorithm momentum",
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  }
+};
+
 export const PainPoints = () => {
   return (
     <section className="relative py-24 md:py-32">
@@ -36,21 +56,24 @@ export const PainPoints = () => {
 
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             {/* Risk list */}
-            <div className="space-y-4">
+            <motion.div 
+              className="space-y-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+            >
               {risks.map((risk, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: index * 0.1, duration: 0.4 }}
+                  variants={itemVariants}
                   className="flex items-center gap-4 p-4 rounded-lg bg-secondary/50 border border-border"
                 >
                   <risk.icon className="w-5 h-5 text-destructive shrink-0" />
                   <span className="text-foreground">{risk.text}</span>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Cost box */}
             <motion.div

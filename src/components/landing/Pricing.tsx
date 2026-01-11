@@ -53,6 +53,26 @@ const plans = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  }
+};
+
 export const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const { trackEvent } = useAnalytics();
@@ -140,14 +160,17 @@ export const Pricing = () => {
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <motion.div 
+          className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              variants={cardVariants}
               whileHover={{ 
                 y: -8, 
                 transition: { duration: 0.2, ease: "easeOut" } 
@@ -212,7 +235,7 @@ export const Pricing = () => {
               </Button>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Trust badges */}
         <motion.div

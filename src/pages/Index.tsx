@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
-import { SocialProof } from "@/components/landing/SocialProof";
+// import { SocialProof } from "@/components/landing/SocialProof";
 // import { CreatorLogos } from "@/components/landing/CreatorLogos";
 import { PainPoints } from "@/components/landing/PainPoints";
 import { Solution } from "@/components/landing/Solution";
@@ -17,6 +17,11 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
 
 /**
  * HOW TO RE-ENABLE HIDDEN SECTIONS:
+ * 
+ * SOCIAL PROOF:
+ * 1. Uncomment: import { SocialProof } from "@/components/landing/SocialProof";
+ * 2. Uncomment: <SocialProof /> in the JSX below (after <Hero />)
+ * Component file: src/components/landing/SocialProof.tsx
  * 
  * CREATOR LOGOS:
  * 1. Uncomment: import { CreatorLogos } from "@/components/landing/CreatorLogos";
@@ -36,7 +41,7 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
-        <SocialProof />
+        {/* <SocialProof /> - Uncomment to show social proof */}
         {/* <CreatorLogos /> - Uncomment to show creator logos */}
         <PainPoints />
         <Solution />

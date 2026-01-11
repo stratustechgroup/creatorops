@@ -1,8 +1,20 @@
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Sparkles, MessageSquare, DollarSign, Heart, Users, Zap, Clock, Star, ArrowRight, HelpCircle, AlertCircle, ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
+import { 
+  Sparkles, 
+  DollarSign, 
+  Heart, 
+  MessageSquare, 
+  Zap, 
+  Users, 
+  Star, 
+  ArrowRight, 
+  Check,
+  Shield,
+  Clock,
+  Rocket
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -14,110 +26,61 @@ import { Footer } from "@/components/landing/Footer";
 import { PageTransition } from "@/components/PageTransition";
 
 // ============================================
-// SPOTS CONFIGURATION - Update this value as spots fill up
-// This can later be connected to a database/API
+// SPOTS CONFIGURATION
 // ============================================
 const TOTAL_SPOTS = 10;
-const SPOTS_TAKEN = 3; // Update this number as creators join
+const SPOTS_TAKEN = 5;
 const SPOTS_REMAINING = TOTAL_SPOTS - SPOTS_TAKEN;
 
-const benefits = [
-  { 
-    icon: DollarSign, 
-    title: "Locked-In Pricing",
-    description: "Early adopters keep their founding rate forever—even as prices increase"
+const keyBenefits = [
+  {
+    icon: DollarSign,
+    title: "Forever Pricing",
+    description: "Lock in your rate permanently. Never pay more, even as prices increase.",
   },
-  { 
-    icon: Heart, 
-    title: "White-Glove Support",
-    description: "Priority access to our team with faster response times and dedicated assistance"
+  {
+    icon: Heart,
+    title: "Priority Support",
+    description: "Direct line to our team. 24-hour response, always.",
   },
-  { 
-    icon: MessageSquare, 
-    title: "Shape the Product",
-    description: "Direct input on features and roadmap—we build what creators actually need"
-  },
-  { 
-    icon: Zap, 
-    title: "Early Feature Access",
-    description: "Be the first to try new capabilities before they roll out to everyone"
-  },
-  { 
-    icon: Users, 
-    title: "Founder Community",
-    description: "Connect with other serious creators in an exclusive feedback group"
-  },
-  { 
-    icon: Star, 
-    title: "Founding Badge",
-    description: "Permanent recognition as an original Creator Ops founding member"
+  {
+    icon: MessageSquare,
+    title: "Shape the Roadmap",
+    description: "Your feedback drives what we build next.",
   },
 ];
 
-const asks = [
-  {
-    title: "Share Your Feedback",
-    description: "Help us improve with honest thoughts on what works and what doesn't"
-  },
-  {
-    title: "Actually Use It",
-    description: "Run real recording sessions so we can learn from genuine workflows"
-  },
-  {
-    title: "Tell Your Story",
-    description: "Optional: share a testimonial or case study to help other creators"
-  },
+const allBenefits = [
+  { icon: DollarSign, text: "Locked-in founding rate forever" },
+  { icon: Heart, text: "White-glove priority support" },
+  { icon: MessageSquare, text: "Direct input on product roadmap" },
+  { icon: Zap, text: "Early access to new features" },
+  { icon: Users, text: "Exclusive founder community" },
+  { icon: Star, text: "Permanent founding badge" },
+  { icon: Shield, text: "Free migration assistance" },
+  { icon: Clock, text: "Flexible pause options" },
 ];
-
-// Animated counter component
-const AnimatedCounter = ({ value, duration = 1.5 }: { value: number; duration?: number }) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const motionValue = useMotionValue(0);
-  const rounded = useTransform(motionValue, (latest) => Math.round(latest));
-
-  useEffect(() => {
-    const unsubscribe = rounded.on("change", (latest) => {
-      setDisplayValue(latest);
-    });
-
-    const controls = animate(motionValue, value, {
-      duration,
-      ease: "easeOut",
-    });
-
-    return () => {
-      controls.stop();
-      unsubscribe();
-    };
-  }, [value, duration, motionValue, rounded]);
-
-  return <span>{displayValue}</span>;
-};
 
 const foundingFaqs = [
   {
-    question: "How much does the Founding Creator Program cost?",
-    answer: "Founding creators receive significant discounts off our standard pricing—typically 30-50% off. The exact rate depends on your world size and requirements, but once locked in, your rate never increases, even as we raise prices for new customers."
+    question: "What's the pricing for founding creators?",
+    answer: "Founding creators receive 30-50% off standard pricing, locked in forever. Your exact rate depends on world size, but once set, it never increases—even as we raise prices.",
   },
   {
     question: "What commitment is required?",
-    answer: "We ask for a minimum 3-month commitment to give us enough time to learn from your real-world usage. After that, you can continue month-to-month at your locked-in rate. There are no long-term contracts required."
+    answer: "A minimum 3-month commitment to give us time to learn from real usage. After that, continue month-to-month at your locked rate. No long-term contracts.",
   },
   {
-    question: "How long will the Founding Program be open?",
-    answer: "We are limiting the program to just 10 creators to maintain quality and personalized support. Once all spots are filled, the program closes permanently. We review applications on a rolling basis and typically respond within 48 hours."
+    question: "How much feedback is expected?",
+    answer: "Not much. A quick monthly check-in and honest input when we ask. You're here to create content, not beta test. We respect your time.",
   },
   {
-    question: "What if I need to pause or cancel?",
-    answer: "Life happens. Founding creators can pause their service for up to 2 months per year without losing their locked-in rate. If you need to cancel, you can always return later—though at whatever the current pricing is at that time."
+    question: "Can I migrate an existing world?",
+    answer: "Absolutely. We handle the full migration at no extra cost for founding creators, regardless of world size or complexity.",
   },
   {
-    question: "How much feedback is actually expected?",
-    answer: "We are not looking for daily reports. A quick monthly check-in, honest responses when we ask for input, and flagging any issues you encounter is plenty. We respect your time—you are here to create content, not beta test software."
-  },
-  {
-    question: "Can I join if I have an existing world?",
-    answer: "Absolutely. We will help migrate your existing world to our infrastructure as part of onboarding. We have handled worlds of all sizes and complexity levels. Migration is included at no extra cost for founding creators."
+    question: "What if I need to pause?",
+    answer: "Founding creators can pause up to 2 months per year without losing their rate. Life happens—we get it.",
   },
 ];
 
@@ -128,266 +91,314 @@ const FoundingCreators = () => {
         <Navbar />
         
         <main className="pt-20">
-          {/* Hero Section */}
-          <section className="relative py-16 md:py-24 overflow-hidden">
-            {/* Background effects */}
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]" />
-            <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px]" />
+          {/* Hero Section - Benefits Focused */}
+          <section className="relative py-20 md:py-32 overflow-hidden">
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+            <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[150px]" />
             
             <div className="container relative z-10 px-4">
-              {/* Back link */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
-                className="mb-8"
-              >
-                <Link 
-                  to="/" 
-                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                {/* Left - Content */}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
                 >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Home
-                </Link>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-center max-w-3xl mx-auto"
-              >
-                <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary font-medium">
-                  <Sparkles className="w-4 h-4" />
-                  Limited Availability
-                </div>
-                
-                <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                  Founding Creator Program
-                </h1>
-                <p className="text-xl text-muted-foreground mb-10">
-                  Join a small group of serious creators helping shape the future of Minecraft infrastructure. 
-                  Get exclusive benefits, locked-in pricing, and direct influence on what we build.
-                </p>
-              </motion.div>
-
-              {/* Spots Remaining Counter */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="max-w-md mx-auto"
-              >
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/15 via-primary/10 to-primary/5 border border-primary/30 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Only {SPOTS_REMAINING} spots left
+                  </div>
                   
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <AlertCircle className="w-5 h-5 text-primary" />
-                      <span className="text-sm font-medium text-primary">Spots Filling Fast</span>
-                    </div>
-                    
-                    <div className="flex items-baseline justify-center gap-2 mb-4">
-                      <span className="text-6xl md:text-7xl font-bold text-primary">
-                        <AnimatedCounter value={SPOTS_REMAINING} />
-                      </span>
-                      <span className="text-2xl text-muted-foreground">/ {TOTAL_SPOTS}</span>
-                    </div>
-                    
-                    <p className="text-sm text-muted-foreground mb-4">spots remaining</p>
-                    
-                    <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                    <span className="text-foreground">Become a</span>
+                    <br />
+                    <span className="text-gradient">Founding Creator</span>
+                  </h1>
+                  
+                  <p className="text-lg text-muted-foreground mb-8 max-w-lg">
+                    Join an exclusive group shaping the future of Minecraft infrastructure. 
+                    Get permanent perks, priority treatment, and a direct line to our team.
+                  </p>
+
+                  {/* Key Benefits */}
+                  <div className="space-y-4 mb-8">
+                    {keyBenefits.map((benefit, index) => (
                       <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(SPOTS_TAKEN / TOTAL_SPOTS) * 100}%` }}
-                        transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
-                        className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
-                      />
-                    </div>
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
+                        className="flex items-start gap-4"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <benefit.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground">{benefit.title}</h3>
+                          <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.4 }}
+                    className="flex flex-col sm:flex-row gap-4"
+                  >
+                    <Button variant="hero" size="xl" className="group" asChild>
+                      <Link to="/founding-apply">
+                        Apply Now
+                        <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="xl" asChild>
+                      <a href="#benefits">See All Benefits</a>
+                    </Button>
+                  </motion.div>
+                </motion.div>
+
+                {/* Right - Visual Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="relative"
+                >
+                  <div className="relative p-8 rounded-3xl bg-gradient-to-br from-card via-card to-secondary/50 border border-border shadow-2xl">
+                    {/* Decorative elements */}
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
+                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
                     
-                    <div className="flex justify-center gap-1.5 mt-4">
-                      {Array.from({ length: TOTAL_SPOTS }).map((_, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 0.3 + i * 0.05, duration: 0.3 }}
-                          className={`w-3 h-3 rounded-full ${
-                            i < SPOTS_TAKEN 
-                              ? "bg-primary" 
-                              : "bg-muted border border-border"
-                          }`}
-                        />
-                      ))}
+                    <div className="relative">
+                      {/* Badge */}
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-2">
+                          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                            <Rocket className="w-5 h-5 text-primary-foreground" />
+                          </div>
+                          <div>
+                            <div className="text-xs text-muted-foreground">Founding</div>
+                            <div className="font-semibold text-foreground">Creator</div>
+                          </div>
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                          <span className="text-xs font-medium text-primary">#{SPOTS_TAKEN + 1}</span>
+                        </div>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-3 gap-4 mb-8">
+                        <div className="text-center p-4 rounded-xl bg-background/50">
+                          <div className="text-2xl font-bold text-foreground">{SPOTS_REMAINING}</div>
+                          <div className="text-xs text-muted-foreground">Spots Left</div>
+                        </div>
+                        <div className="text-center p-4 rounded-xl bg-background/50">
+                          <div className="text-2xl font-bold text-foreground">50%</div>
+                          <div className="text-xs text-muted-foreground">Max Discount</div>
+                        </div>
+                        <div className="text-center p-4 rounded-xl bg-background/50">
+                          <div className="text-2xl font-bold text-foreground">24h</div>
+                          <div className="text-xs text-muted-foreground">Response</div>
+                        </div>
+                      </div>
+
+                      {/* Progress */}
+                      <div className="mb-6">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-muted-foreground">Spots filled</span>
+                          <span className="font-medium text-foreground">{SPOTS_TAKEN}/{TOTAL_SPOTS}</span>
+                        </div>
+                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(SPOTS_TAKEN / TOTAL_SPOTS) * 100}%` }}
+                            transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+                            className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Quick benefits */}
+                      <div className="space-y-2">
+                        {["Forever pricing lock", "Priority support", "Product influence"].map((item, i) => (
+                          <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Check className="w-4 h-4 text-primary" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div className="p-4 rounded-xl bg-secondary/30 border border-border text-center">
-                    <div className="text-2xl font-bold text-foreground">Forever</div>
-                    <div className="text-xs text-muted-foreground">Locked Pricing</div>
-                  </div>
-                  <div className="p-4 rounded-xl bg-secondary/30 border border-border text-center">
-                    <div className="text-2xl font-bold text-foreground">24hr</div>
-                    <div className="text-xs text-muted-foreground">Response Time</div>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </div>
           </section>
 
-          {/* Benefits & Asks Section */}
-          <section className="py-16 md:py-24">
+          {/* All Benefits Section */}
+          <section id="benefits" className="py-20 md:py-28 border-t border-border">
             <div className="container px-4">
-              <div className="max-w-5xl mx-auto">
-                <div className="grid lg:grid-cols-5 gap-8">
-                  {/* What you get - 3 columns */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                    className="lg:col-span-3 p-8 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20"
-                  >
-                    <div className="flex items-center gap-2 mb-6">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                        <Star className="w-4 h-4 text-primary" />
-                      </div>
-                      <h2 className="text-xl font-semibold text-foreground">
-                        What You Get
-                      </h2>
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      {benefits.map((benefit, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 15 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.3 + index * 0.08, duration: 0.4 }}
-                          className="p-4 rounded-xl bg-background/50 border border-border/50 hover:border-primary/30 transition-colors group"
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                              <benefit.icon className="w-4 h-4 text-primary" />
-                            </div>
-                            <div>
-                              <h3 className="font-medium text-foreground text-sm mb-1">{benefit.title}</h3>
-                              <p className="text-xs text-muted-foreground leading-relaxed">{benefit.description}</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Everything You Get
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Founding creators receive exclusive perks that no one else will ever have access to.
+                </p>
+              </motion.div>
 
-                  {/* What we ask - 2 columns */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                    className="lg:col-span-2 p-8 rounded-2xl bg-secondary/30 border border-border"
-                  >
-                    <div className="flex items-center gap-2 mb-6">
-                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                        <Clock className="w-4 h-4 text-muted-foreground" />
+              <div className="max-w-4xl mx-auto">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {allBenefits.map((benefit, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                      className="flex items-center gap-4 p-5 rounded-xl bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                        <benefit.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <h2 className="text-xl font-semibold text-foreground">
-                        What We Ask
-                      </h2>
-                    </div>
-                    <div className="space-y-4 mb-8">
-                      {asks.map((ask, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: 15 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
-                          className="p-4 rounded-xl bg-background/30 border border-border/50"
-                        >
-                          <h3 className="font-medium text-foreground text-sm mb-1">{ask.title}</h3>
-                          <p className="text-xs text-muted-foreground">{ask.description}</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    <div className="pt-6 border-t border-border">
-                      <p className="text-sm text-muted-foreground mb-4 italic">
-                        "We want partners, not just customers. Your input directly shapes what we build."
-                      </p>
-                      <Button variant="hero" size="lg" className="w-full group" asChild>
-                        <Link to="/founding-apply">
-                          Apply Now
-                          <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                      </Button>
-                    </div>
-                  </motion.div>
+                      <span className="font-medium text-foreground">{benefit.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* What We Ask */}
+          <section className="py-20 md:py-28 bg-secondary/30">
+            <div className="container px-4">
+              <div className="max-w-3xl mx-auto text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    What We Ask in Return
+                  </h2>
+                  <p className="text-muted-foreground mb-12">
+                    We want partners, not just customers. Here's what that looks like:
+                  </p>
+                </motion.div>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      title: "Use It",
+                      description: "Run real sessions so we can learn from genuine creator workflows",
+                    },
+                    {
+                      title: "Share Feedback",
+                      description: "Tell us what works and what doesn't—we're listening",
+                    },
+                    {
+                      title: "Spread the Word",
+                      description: "Optional: share your experience to help other creators discover us",
+                    },
+                  ].map((ask, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.4 }}
+                      className="p-6 rounded-2xl bg-card border border-border"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                        <span className="text-xl font-bold text-primary">{index + 1}</span>
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-2">{ask.title}</h3>
+                      <p className="text-sm text-muted-foreground">{ask.description}</p>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
 
           {/* FAQ Section */}
-          <section className="py-16 md:py-24 border-t border-border">
+          <section className="py-20 md:py-28">
+            <div className="container px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Common Questions
+                </h2>
+              </motion.div>
+              
+              <div className="max-w-2xl mx-auto">
+                <Accordion type="single" collapsible className="space-y-3">
+                  {foundingFaqs.map((faq, index) => (
+                    <AccordionItem 
+                      key={index} 
+                      value={`faq-${index}`}
+                      className="bg-card border border-border rounded-xl px-6 data-[state=open]:border-primary/30"
+                    >
+                      <AccordionTrigger className="text-left font-medium hover:no-underline py-5">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-5">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </div>
+          </section>
+
+          {/* Final CTA */}
+          <section className="py-20 md:py-28 bg-gradient-to-b from-background to-primary/5">
             <div className="container px-4">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="max-w-3xl mx-auto"
+                className="max-w-2xl mx-auto text-center"
               >
-                <div className="flex items-center justify-center gap-2 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <HelpCircle className="w-5 h-5 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-semibold text-foreground">
-                    Frequently Asked Questions
-                  </h2>
+                <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary">
+                  <Sparkles className="w-4 h-4" />
+                  {SPOTS_REMAINING} founding spots remaining
                 </div>
                 
-                <div className="p-6 rounded-2xl bg-card border border-border">
-                  <Accordion type="single" collapsible className="w-full">
-                    {foundingFaqs.map((faq, index) => (
-                      <AccordionItem 
-                        key={index} 
-                        value={`founding-faq-${index}`}
-                        className="border-border"
-                      >
-                        <AccordionTrigger className="text-left text-sm font-medium hover:text-primary transition-colors py-4">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-sm text-muted-foreground pb-4">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Ready to Join?
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Apply now to secure your spot. We review applications within 48 hours.
+                </p>
+                
+                <Button variant="hero" size="xl" className="group" asChild>
+                  <Link to="/founding-apply">
+                    Apply for Founding Access
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
 
-                {/* Final CTA */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="mt-12 text-center"
-                >
-                  <p className="text-muted-foreground mb-4">
-                    Still have questions? We are happy to chat.
-                  </p>
-                  <Button variant="hero" size="xl" className="group" asChild>
-                    <Link to="/founding-apply">
-                      Apply for Founding Access
-                      <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </motion.div>
+                <p className="text-sm text-muted-foreground mt-6">
+                  Questions? <a href="mailto:hello@creatorops.dev" className="text-primary hover:underline">Reach out directly</a>
+                </p>
               </motion.div>
             </div>
           </section>

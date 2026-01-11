@@ -149,6 +149,9 @@
   }
 
   .light .grid-pattern {
-    opacity: 0 !important;
+    background-image: 
+      radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.08) 1px, transparent 0);
+    background-size: 32px 32px;
+    opacity: 0.6 !important;
   }
 }

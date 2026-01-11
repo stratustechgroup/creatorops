@@ -134,54 +134,56 @@ export const ComparisonTable = () => {
           className="max-w-4xl mx-auto"
         >
           {/* Table container */}
-          <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-            {/* Table header */}
-            <div className="grid grid-cols-4 bg-secondary/50 border-b border-border">
-              <div className="p-4 text-left">
-                <span className="text-sm font-medium text-muted-foreground">Feature</span>
-              </div>
-              <div className="p-4 text-center relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
-                    Recommended
-                  </span>
+          <div className="rounded-2xl border border-border bg-card shadow-card overflow-x-auto">
+            <div className="min-w-[500px]">
+              {/* Table header */}
+              <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr] bg-secondary/50 border-b border-border">
+                <div className="p-3 md:p-4 text-left">
+                  <span className="text-xs md:text-sm font-medium text-muted-foreground">Feature</span>
                 </div>
-                <span className="text-sm font-semibold text-primary">Creator Ops</span>
+                <div className="p-3 md:p-4 text-center relative">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 hidden md:flex">
+                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap">
+                      <Sparkles className="w-3 h-3" />
+                      Recommended
+                    </span>
+                  </div>
+                  <span className="text-xs md:text-sm font-semibold text-primary">Creator Ops</span>
+                </div>
+                <div className="p-3 md:p-4 text-center">
+                  <span className="text-xs md:text-sm font-medium text-foreground">Self-Hosting</span>
+                </div>
+                <div className="p-3 md:p-4 text-center">
+                  <span className="text-xs md:text-sm font-medium text-foreground">Other Hosts</span>
+                </div>
               </div>
-              <div className="p-4 text-center">
-                <span className="text-sm font-medium text-foreground">Self-Hosting</span>
-              </div>
-              <div className="p-4 text-center">
-                <span className="text-sm font-medium text-foreground">Other Hosts</span>
-              </div>
-            </div>
 
-            {/* Table body */}
-            <div className="divide-y divide-border">
-              {comparisonData.map((row, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.03 }}
-                  className="grid grid-cols-4 hover:bg-secondary/30 transition-colors"
-                >
-                  <div className="p-4 text-left">
-                    <span className="text-sm text-foreground">{row.feature}</span>
-                  </div>
-                  <div className="p-4 text-center bg-primary/5">
-                    <ValueCell value={row.creatorOps} />
-                  </div>
-                  <div className="p-4 text-center">
-                    <ValueCell value={row.selfHosting} />
-                  </div>
-                  <div className="p-4 text-center">
-                    <ValueCell value={row.otherHosts} />
-                  </div>
-                </motion.div>
-              ))}
+              {/* Table body */}
+              <div className="divide-y divide-border">
+                {comparisonData.map((row, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.03 }}
+                    className="grid grid-cols-[1.5fr_1fr_1fr_1fr] hover:bg-secondary/30 transition-colors"
+                  >
+                    <div className="p-3 md:p-4 text-left">
+                      <span className="text-xs md:text-sm text-foreground">{row.feature}</span>
+                    </div>
+                    <div className="p-3 md:p-4 text-center bg-primary/5">
+                      <ValueCell value={row.creatorOps} />
+                    </div>
+                    <div className="p-3 md:p-4 text-center">
+                      <ValueCell value={row.selfHosting} />
+                    </div>
+                    <div className="p-3 md:p-4 text-center">
+                      <ValueCell value={row.otherHosts} />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
 

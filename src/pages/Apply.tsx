@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -79,7 +79,7 @@ const Apply = () => {
   });
 
   // Enable autosave to localStorage
-  const { clearSavedData, hasSavedData } = useFormAutosave({
+  const { clearSavedData, hasSavedData, lastSavedAt } = useFormAutosave({
     watch,
     reset,
     storageKey: STORAGE_KEY,
@@ -90,6 +90,18 @@ const Apply = () => {
     clearSavedData();
     reset(defaultFormValues);
     trackEvent("form_clear_draft", { form_name: "application" });
+  };
+
+  const formatSavedTime = (date: Date) => {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    
+    if (diffMins < 1) return "just now";
+    if (diffMins === 1) return "1 minute ago";
+    if (diffMins < 60) return `${diffMins} minutes ago`;
+    
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   const creatorType = watch("creatorType");
@@ -174,6 +186,17 @@ const Apply = () => {
                   className="lg:col-span-2"
                 >
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                    {/* Autosave indicator */}
+                    {lastSavedAt && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg w-fit"
+                      >
+                        <Save className="w-4 h-4 text-primary" />
+                        <span>Draft saved {formatSavedTime(lastSavedAt)}</span>
+                      </motion.div>
+                    )}
                     {/* Section 1: About You */}
                     <div className="space-y-6">
                       <div className="border-b border-border pb-4">

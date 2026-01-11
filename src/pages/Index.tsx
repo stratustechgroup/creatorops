@@ -16,6 +16,7 @@ import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
 import { SecurityBadges } from "@/components/landing/SecurityBadges";
+import { ComparisonTable } from "@/components/landing/ComparisonTable";
 
 /**
  * HOW TO RE-ENABLE HIDDEN SECTIONS:
@@ -52,6 +53,7 @@ const Index = () => {
         <SecurityBadges />
         <Audience />
         {/* <Testimonials /> - Uncomment to show testimonials carousel */}
+        <ComparisonTable />
         <Pricing />
         <Trust />
         <FAQ />

@@ -42,7 +42,6 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
-        <FoundingProgramTeaser />
         {/* <SocialProof /> - Uncomment to show social proof */}
         {/* <CreatorLogos /> - Uncomment to show creator logos */}
         <PainPoints />
@@ -54,6 +53,7 @@ const Index = () => {
         <Pricing />
         <Trust />
         <FAQ />
+        <FoundingProgramTeaser />
         <FinalCTA />
       </main>
       <Footer />

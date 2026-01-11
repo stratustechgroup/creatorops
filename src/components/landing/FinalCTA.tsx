@@ -17,8 +17,8 @@ export const FinalCTA = () => {
   return (
     <section className="relative py-32 md:py-40 overflow-hidden">
       {/* Background effects */}
-      <div className="absolute inset-0 bg-hero-gradient" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-background to-background" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-muted/30 rounded-full blur-[120px]" />
       
       <div className="container relative z-10 px-4">
         <motion.div

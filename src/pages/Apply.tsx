@@ -25,11 +25,14 @@ const applicationSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
   lastName: z.string().trim().min(1, "Last name is required").max(50, "Last name must be less than 50 characters"),
   email: z.string().trim().email("Please enter a valid email address").max(255, "Email must be less than 255 characters"),
+  discordUsername: z.string().trim().max(32, "Discord username must be less than 32 characters").optional().or(z.literal("")),
+  preferredContact: z.string().optional(),
   channelUrl: z.string().trim().max(500, "URL must be less than 500 characters").optional().or(z.literal("")),
   subscriberCount: z.string().optional(),
   creatorType: z.string().min(1, "Please select your creator type"),
   currentSetup: z.string().trim().min(10, "Please provide more detail about your current setup").max(1000, "Must be less than 1000 characters"),
   useCase: z.string().trim().min(20, "Please provide more detail about your content and needs").max(2000, "Must be less than 2000 characters"),
+  budgetRange: z.string().optional(),
   timeline: z.string().optional(),
   referral: z.string().trim().max(200, "Must be less than 200 characters").optional().or(z.literal("")),
 });
@@ -48,11 +51,14 @@ const defaultFormValues: ApplicationFormData = {
   firstName: "",
   lastName: "",
   email: "",
+  discordUsername: "",
+  preferredContact: "",
   channelUrl: "",
   subscriberCount: "",
   creatorType: "",
   currentSetup: "",
   useCase: "",
+  budgetRange: "",
   timeline: "",
   referral: "",
 };
@@ -109,6 +115,8 @@ const Apply = () => {
   const creatorType = watch("creatorType");
   const timeline = watch("timeline");
   const subscriberCount = watch("subscriberCount");
+  const budgetRange = watch("budgetRange");
+  const preferredContact = watch("preferredContact");
 
   // Helper to check if a field is valid (touched/dirty and no errors)
   const isFieldValid = (fieldName: keyof ApplicationFormData) => {
@@ -259,23 +267,58 @@ const Apply = () => {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email Address *</Label>
-                        <div className="relative">
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="you@example.com"
-                            {...register("email")}
-                            className={getInputClassName("email")}
-                          />
-                          {isFieldValid("email") && (
-                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email Address *</Label>
+                          <div className="relative">
+                            <Input
+                              id="email"
+                              type="email"
+                              placeholder="you@example.com"
+                              {...register("email")}
+                              className={getInputClassName("email")}
+                            />
+                            {isFieldValid("email") && (
+                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
+                          {errors.email && (
+                            <p className="text-sm text-destructive">{errors.email.message}</p>
                           )}
                         </div>
-                        {errors.email && (
-                          <p className="text-sm text-destructive">{errors.email.message}</p>
-                        )}
+
+                        <div className="space-y-2">
+                          <Label htmlFor="discordUsername">Discord Username</Label>
+                          <div className="relative">
+                            <Input
+                              id="discordUsername"
+                              placeholder="username"
+                              {...register("discordUsername")}
+                              className={getInputClassName("discordUsername")}
+                            />
+                            {isFieldValid("discordUsername") && (
+                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
+                          {errors.discordUsername && (
+                            <p className="text-sm text-destructive">{errors.discordUsername.message}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Preferred Contact Method</Label>
+                        <Select value={preferredContact} onValueChange={(value) => setValue("preferredContact", value)}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select preferred contact" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="email">Email</SelectItem>
+                            <SelectItem value="discord">Discord</SelectItem>
+                            <SelectItem value="either">Either works</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">How would you like us to reach you?</p>
                       </div>
                     </div>
 
@@ -396,6 +439,22 @@ const Apply = () => {
 
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
+                          <Label>Budget Range</Label>
+                          <Select value={budgetRange} onValueChange={(value) => setValue("budgetRange", value)}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select budget range" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="under-50">Under $50/month</SelectItem>
+                              <SelectItem value="50-100">$50 - $100/month</SelectItem>
+                              <SelectItem value="100-200">$100 - $200/month</SelectItem>
+                              <SelectItem value="200-plus">$200+/month</SelectItem>
+                              <SelectItem value="not-sure">Not sure yet</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
                           <Label>When do you need this?</Label>
                           <Select value={timeline} onValueChange={(value) => setValue("timeline", value)}>
                             <SelectTrigger>
@@ -409,24 +468,24 @@ const Apply = () => {
                             </SelectContent>
                           </Select>
                         </div>
+                      </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="referral">How did you hear about us?</Label>
-                          <div className="relative">
-                            <Input
-                              id="referral"
-                              placeholder="Friend, Twitter, YouTube, etc."
-                              {...register("referral")}
-                              className={getInputClassName("referral")}
-                            />
-                            {isFieldValid("referral") && (
-                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
-                            )}
-                          </div>
-                          {errors.referral && (
-                            <p className="text-sm text-destructive">{errors.referral.message}</p>
+                      <div className="space-y-2">
+                        <Label htmlFor="referral">How did you hear about us?</Label>
+                        <div className="relative">
+                          <Input
+                            id="referral"
+                            placeholder="Friend, Twitter, YouTube, etc."
+                            {...register("referral")}
+                            className={getInputClassName("referral")}
+                          />
+                          {isFieldValid("referral") && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
                           )}
                         </div>
+                        {errors.referral && (
+                          <p className="text-sm text-destructive">{errors.referral.message}</p>
+                        )}
                       </div>
                     </div>
 

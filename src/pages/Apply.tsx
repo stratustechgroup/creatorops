@@ -581,7 +581,7 @@ const Apply = () => {
                       Not sure if Creator Ops is right for you? Check our FAQ or reach out directly.
                     </p>
                     <Button variant="outline" size="sm" asChild>
-                      <Link to="/#faq">View FAQ</Link>
+                      <a href="/#faq">View FAQ</a>
                     </Button>
                   </div>
                 </motion.div>

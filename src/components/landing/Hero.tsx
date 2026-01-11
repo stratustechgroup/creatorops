@@ -1,12 +1,24 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 export const Hero = () => {
   const { trackEvent } = useAnalytics();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  
+  // Parallax effects
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const handleApplyClick = () => {
     trackEvent("cta_click", {
@@ -16,21 +28,27 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBg})` }}
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image with parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
+        style={{ 
+          backgroundImage: `url(${heroBg})`,
+          y: backgroundY
+        }}
       />
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background" />
       <div className="absolute inset-0 bg-hero-gradient" />
-      <div className="absolute inset-0 grid-pattern opacity-20" />
+      <motion.div className="absolute inset-0 grid-pattern opacity-20" style={{ y: backgroundY }} />
       
-      {/* Glow orb */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] animate-pulse-glow" />
+      {/* Glow orb with parallax */}
+      <motion.div 
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] animate-pulse-glow"
+        style={{ y: backgroundY }}
+      />
       
-      <div className="container relative z-10 px-4 py-20 md:py-32">
+      <motion.div className="container relative z-10 px-4 py-20 md:py-32" style={{ y: contentY, opacity }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -107,7 +125,7 @@ export const Hero = () => {
             Creator Ops: Managed infrastructure built specifically for content creators.
           </p>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

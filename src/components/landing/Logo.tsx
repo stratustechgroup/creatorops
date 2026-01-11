@@ -5,81 +5,209 @@ interface LogoProps {
 export const Logo = ({ className = "w-8 h-8" }: LogoProps) => {
   return (
     <svg
-      viewBox="0 0 40 40"
+      viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Cloud base shape */}
-      <path
-        d="M8 28C4.68629 28 2 25.3137 2 22C2 19.2 3.9 16.9 6.5 16.2C6.5 16.1 6.5 16.1 6.5 16C6.5 12.1 9.6 9 13.5 9C15.3 9 16.9 9.7 18.1 10.8C19.5 8.5 22.1 7 25 7C29.4 7 33 10.6 33 15C33 15.3 33 15.7 32.9 16C35.8 16.5 38 19 38 22C38 25.3 35.3 28 32 28H8Z"
-        fill="hsl(220, 15%, 12%)"
-        stroke="hsl(152, 60%, 45%)"
-        strokeWidth="1"
-        strokeOpacity="0.3"
-      />
-      
-      {/* Inner cloud highlight */}
-      <path
-        d="M10 26C7.79 26 6 24.21 6 22C6 20.1 7.35 18.5 9.15 18.1C9.05 17.75 9 17.38 9 17C9 14.24 11.24 12 14 12C15.05 12 16.03 12.32 16.84 12.87C18.03 11.12 20.06 10 22.35 10C26.08 10 29.1 13.02 29.1 16.75C29.1 17.02 29.08 17.28 29.04 17.54C31.32 17.88 33 19.82 33 22.15C33 24.65 31.02 26.68 28.54 26.77"
-        fill="hsl(220, 18%, 15%)"
-      />
-      
-      {/* Blocky cube 1 - main */}
-      <g>
-        <rect x="14" y="16" width="8" height="8" fill="hsl(152, 60%, 40%)" />
-        <rect x="14" y="16" width="8" height="8" fill="url(#cubeGradient1)" />
-        {/* Top face */}
-        <path d="M14 16L18 13L26 13L22 16H14Z" fill="hsl(152, 60%, 50%)" />
-        {/* Right face */}
-        <path d="M22 16L26 13V21L22 24V16Z" fill="hsl(152, 60%, 35%)" />
-        {/* Pixel details */}
-        <rect x="15" y="17" width="2" height="2" fill="hsl(152, 60%, 55%)" fillOpacity="0.6" />
-        <rect x="19" y="19" width="2" height="2" fill="hsl(152, 60%, 30%)" fillOpacity="0.5" />
-      </g>
-      
-      {/* Blocky cube 2 - small accent */}
-      <g>
-        <rect x="24" y="20" width="5" height="5" fill="hsl(152, 60%, 35%)" />
-        <path d="M24 20L26.5 18L31.5 18L29 20H24Z" fill="hsl(152, 60%, 45%)" />
-        <path d="M29 20L31.5 18V23L29 25V20Z" fill="hsl(152, 60%, 28%)" />
-      </g>
-      
-      {/* Play/record indicator - creator symbol */}
-      <circle cx="11" cy="21" r="3" fill="hsl(0, 70%, 50%)" />
-      <circle cx="11" cy="21" r="2" fill="hsl(0, 70%, 60%)" />
-      <circle cx="10.5" cy="20.5" r="0.8" fill="hsl(0, 70%, 75%)" />
-      
-      {/* Data stream / connection lines */}
-      <path
-        d="M18 24L18 28"
-        stroke="hsl(152, 60%, 45%)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="2 2"
-      />
-      <path
-        d="M26 25L26 28"
-        stroke="hsl(152, 60%, 40%)"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeDasharray="2 2"
-      />
-      
-      {/* Subtle glow effect */}
       <defs>
-        <linearGradient id="cubeGradient1" x1="14" y1="16" x2="22" y2="24" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="hsl(152, 70%, 60%)" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="hsl(152, 60%, 30%)" stopOpacity="0" />
+        {/* Main gradient for the cloud */}
+        <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(152, 60%, 50%)" />
+          <stop offset="50%" stopColor="hsl(152, 60%, 40%)" />
+          <stop offset="100%" stopColor="hsl(152, 70%, 35%)" />
         </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="1" result="coloredBlur" />
+        
+        {/* Metallic sheen */}
+        <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="white" stopOpacity="0" />
+          <stop offset="50%" stopColor="white" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        
+        {/* Cube face gradients */}
+        <linearGradient id="cubeTop" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="hsl(152, 60%, 55%)" />
+          <stop offset="100%" stopColor="hsl(152, 70%, 65%)" />
+        </linearGradient>
+        
+        <linearGradient id="cubeFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="hsl(152, 60%, 45%)" />
+          <stop offset="100%" stopColor="hsl(152, 60%, 35%)" />
+        </linearGradient>
+        
+        <linearGradient id="cubeRight" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(152, 55%, 38%)" />
+          <stop offset="100%" stopColor="hsl(152, 60%, 28%)" />
+        </linearGradient>
+        
+        {/* Inner glow */}
+        <radialGradient id="innerGlow" cx="50%" cy="30%" r="60%">
+          <stop offset="0%" stopColor="hsl(152, 70%, 60%)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="hsl(152, 60%, 40%)" stopOpacity="0" />
+        </radialGradient>
+        
+        {/* Drop shadow filter */}
+        <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="hsl(152, 60%, 30%)" floodOpacity="0.4" />
+        </filter>
+        
+        {/* Outer glow */}
+        <filter id="outerGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+          <feFlood floodColor="hsl(152, 60%, 50%)" floodOpacity="0.6" />
+          <feComposite in2="blur" operator="in" />
           <feMerge>
-            <feMergeNode in="coloredBlur" />
+            <feMergeNode />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
       </defs>
+      
+      {/* Background circle with subtle gradient */}
+      <circle 
+        cx="24" 
+        cy="24" 
+        r="22" 
+        fill="hsl(220, 18%, 8%)" 
+        stroke="hsl(152, 60%, 40%)"
+        strokeWidth="1.5"
+        strokeOpacity="0.3"
+      />
+      
+      {/* Subtle inner pattern - hex grid hint */}
+      <g opacity="0.1">
+        <path d="M12 20L16 18L20 20L20 24L16 26L12 24Z" stroke="hsl(152, 60%, 50%)" strokeWidth="0.5" fill="none" />
+        <path d="M28 20L32 18L36 20L36 24L32 26L28 24Z" stroke="hsl(152, 60%, 50%)" strokeWidth="0.5" fill="none" />
+        <path d="M20 28L24 26L28 28L28 32L24 34L20 32Z" stroke="hsl(152, 60%, 50%)" strokeWidth="0.5" fill="none" />
+      </g>
+      
+      {/* Main isometric cube cluster - representing Minecraft blocks in cloud */}
+      <g filter="url(#dropShadow)">
+        {/* Large main cube */}
+        {/* Front face */}
+        <path 
+          d="M16 22L24 26L24 36L16 32Z" 
+          fill="url(#cubeFront)"
+        />
+        {/* Top face */}
+        <path 
+          d="M16 22L24 18L32 22L24 26Z" 
+          fill="url(#cubeTop)"
+        />
+        {/* Right face */}
+        <path 
+          d="M24 26L32 22L32 32L24 36Z" 
+          fill="url(#cubeRight)"
+        />
+        
+        {/* Pixel detail on front - Minecraft grass block style */}
+        <rect x="17" y="23" width="3" height="2" fill="hsl(152, 70%, 55%)" opacity="0.5" />
+        <rect x="21" y="25" width="2" height="3" fill="hsl(152, 50%, 35%)" opacity="0.4" />
+        <rect x="18" y="28" width="2" height="2" fill="hsl(152, 60%, 50%)" opacity="0.3" />
+        
+        {/* Pixel detail on right face */}
+        <rect x="26" y="24" width="2" height="2" fill="hsl(152, 50%, 40%)" opacity="0.4" />
+        <rect x="28" y="27" width="2" height="3" fill="hsl(152, 60%, 32%)" opacity="0.3" />
+      </g>
+      
+      {/* Floating small cube - top left */}
+      <g transform="translate(8, 10)" filter="url(#outerGlow)">
+        <path d="M0 4L4 2L8 4L4 6Z" fill="hsl(152, 60%, 58%)" />
+        <path d="M0 4L4 6L4 10L0 8Z" fill="hsl(152, 60%, 45%)" />
+        <path d="M4 6L8 4L8 8L4 10Z" fill="hsl(152, 55%, 38%)" />
+      </g>
+      
+      {/* Floating small cube - top right */}
+      <g transform="translate(32, 8)">
+        <path d="M0 3L3 1.5L6 3L3 4.5Z" fill="hsl(152, 60%, 55%)" />
+        <path d="M0 3L3 4.5L3 7.5L0 6Z" fill="hsl(152, 60%, 42%)" />
+        <path d="M3 4.5L6 3L6 6L3 7.5Z" fill="hsl(152, 55%, 35%)" />
+      </g>
+      
+      {/* Cloud wisps - stylized */}
+      <g opacity="0.6">
+        <ellipse cx="10" cy="28" rx="4" ry="2" fill="hsl(220, 15%, 20%)" />
+        <ellipse cx="38" cy="26" rx="3" ry="1.5" fill="hsl(220, 15%, 18%)" />
+        <ellipse cx="14" cy="36" rx="5" ry="2" fill="hsl(220, 15%, 16%)" />
+        <ellipse cx="34" cy="35" rx="4" ry="1.5" fill="hsl(220, 15%, 17%)" />
+      </g>
+      
+      {/* Creator/recording indicator - subtle play button */}
+      <g transform="translate(30, 30)">
+        <circle cx="4" cy="4" r="5" fill="hsl(0, 0%, 10%)" opacity="0.8" />
+        <circle cx="4" cy="4" r="4" fill="hsl(0, 70%, 55%)" />
+        <circle cx="4" cy="4" r="3" fill="hsl(0, 75%, 60%)" />
+        {/* Recording dot shine */}
+        <circle cx="3" cy="3" r="1.2" fill="hsl(0, 70%, 75%)" />
+        {/* Pulse ring */}
+        <circle 
+          cx="4" 
+          cy="4" 
+          r="5" 
+          fill="none" 
+          stroke="hsl(0, 70%, 50%)" 
+          strokeWidth="1"
+          opacity="0.5"
+        >
+          <animate 
+            attributeName="r" 
+            values="4;7;4" 
+            dur="2s" 
+            repeatCount="indefinite"
+          />
+          <animate 
+            attributeName="opacity" 
+            values="0.5;0;0.5" 
+            dur="2s" 
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+      
+      {/* Data stream particles */}
+      <g opacity="0.7">
+        <circle cx="18" cy="38" r="1" fill="hsl(152, 60%, 50%)">
+          <animate 
+            attributeName="cy" 
+            values="38;34;38" 
+            dur="1.5s" 
+            repeatCount="indefinite"
+          />
+          <animate 
+            attributeName="opacity" 
+            values="0.7;0.3;0.7" 
+            dur="1.5s" 
+            repeatCount="indefinite"
+          />
+        </circle>
+        <circle cx="26" cy="40" r="0.8" fill="hsl(152, 60%, 45%)">
+          <animate 
+            attributeName="cy" 
+            values="40;36;40" 
+            dur="2s" 
+            repeatCount="indefinite"
+          />
+          <animate 
+            attributeName="opacity" 
+            values="0.6;0.2;0.6" 
+            dur="2s" 
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+      
+      {/* Highlight arc on circle edge */}
+      <path
+        d="M8 16 A18 18 0 0 1 32 8"
+        stroke="url(#sheen)"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+      
+      {/* Center glow overlay */}
+      <circle cx="24" cy="24" r="18" fill="url(#innerGlow)" />
     </svg>
   );
 };

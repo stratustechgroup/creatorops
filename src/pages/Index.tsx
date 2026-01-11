@@ -15,6 +15,7 @@ import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
+import { SecurityBadges } from "@/components/landing/SecurityBadges";
 
 /**
  * HOW TO RE-ENABLE HIDDEN SECTIONS:
@@ -48,6 +49,7 @@ const Index = () => {
         <Solution />
         <HowItWorks />
         <SafetyFeatures />
+        <SecurityBadges />
         <Audience />
         {/* <Testimonials /> - Uncomment to show testimonials carousel */}
         <Pricing />

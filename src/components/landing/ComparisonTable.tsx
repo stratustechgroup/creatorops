@@ -141,13 +141,24 @@ export const ComparisonTable = () => {
                 <div className="p-3 md:p-4 text-left">
                   <span className="text-xs md:text-sm font-medium text-muted-foreground">Feature</span>
                 </div>
-                <div className="p-3 md:p-4 text-center relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 hidden md:flex">
-                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap">
-                      <Sparkles className="w-3 h-3" />
-                      Recommended
-                    </span>
-                  </div>
+              <div className="p-3 md:p-4 text-center relative">
+                <motion.div 
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 hidden md:flex"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    opacity: [1, 0.9, 1]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap shadow-glow">
+                    <Sparkles className="w-3 h-3" />
+                    Recommended
+                  </span>
+                </motion.div>
                   <span className="text-xs md:text-sm font-semibold text-primary">Creator Ops</span>
                 </div>
                 <div className="p-3 md:p-4 text-center">

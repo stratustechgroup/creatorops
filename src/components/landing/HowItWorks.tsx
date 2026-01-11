@@ -47,7 +47,7 @@ export const HowItWorks = () => {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: index * 0.15, duration: 0.5 }}
                 className="relative text-center"
               >

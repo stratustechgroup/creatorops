@@ -42,7 +42,7 @@ export const PainPoints = () => {
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: index * 0.1, duration: 0.4 }}
                   className="flex items-center gap-4 p-4 rounded-lg bg-secondary/50 border border-border"
                 >
@@ -56,7 +56,7 @@ export const PainPoints = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.3, duration: 0.5 }}
               className="bg-card-gradient rounded-2xl border border-border p-8 shadow-card"
             >

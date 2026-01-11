@@ -117,7 +117,7 @@ export const Trust = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="max-w-3xl mx-auto"
         >
@@ -128,17 +128,13 @@ export const Trust = () => {
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               {promises.map((promise, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                   className="flex items-start gap-3"
                 >
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <p className="text-sm text-muted-foreground">{promise}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

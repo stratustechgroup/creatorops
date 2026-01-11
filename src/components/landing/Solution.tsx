@@ -63,7 +63,7 @@ export const Solution = () => {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className="group relative p-6 rounded-2xl bg-card-gradient border border-border shadow-card hover:border-primary/50 transition-all duration-300"
             >

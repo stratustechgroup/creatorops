@@ -127,17 +127,13 @@ export const Audience = () => {
             </h3>
             <ul className="space-y-4">
               {notFor.map((item, index) => (
-                <motion.li
+                <li
                   key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
                   className="flex items-start gap-3 text-muted-foreground"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 shrink-0" />
                   {item}
-                </motion.li>
+                </li>
               ))}
             </ul>
             <div className="mt-8 pt-6 border-t border-border">

@@ -134,7 +134,7 @@ export const ComparisonTable = () => {
           className="max-w-4xl mx-auto"
         >
           {/* Table container */}
-          <div className="rounded-2xl border border-border bg-card shadow-card overflow-x-auto">
+          <div className="rounded-2xl border border-border bg-card shadow-card overflow-x-auto pt-4">
             <div className="min-w-[500px]">
               {/* Table header */}
               <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr] bg-secondary/50 border-b border-border">

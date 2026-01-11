@@ -164,16 +164,18 @@ export const Pricing = () => {
                 {plan.name}
               </h3>
               <div className="mb-4">
-                <div className="flex items-baseline gap-1">
+                <div className="flex items-baseline gap-2 flex-wrap">
                   <motion.span 
                     key={isAnnual ? "annual" : "monthly"}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-bold text-foreground"
+                    className="text-3xl font-bold text-foreground whitespace-nowrap"
                   >
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                   </motion.span>
-                  <span className="text-muted-foreground">{plan.period}</span>
+                  {plan.period && (
+                    <span className="text-muted-foreground whitespace-nowrap">{plan.period}</span>
+                  )}
                 </div>
                 {isAnnual && plan.annualPrice !== "Custom" && (
                   <span className="text-xs text-primary mt-1 block">billed annually</span>

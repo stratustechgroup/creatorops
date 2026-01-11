@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
@@ -7,7 +8,8 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 const plans = [
   {
     name: "Creator Solo",
-    price: "$49–79",
+    monthlyPrice: "$49–79",
+    annualPrice: "$39–63",
     period: "/ month",
     description: "Perfect for individual creators with one production world.",
     features: [
@@ -21,7 +23,8 @@ const plans = [
   },
   {
     name: "Creator Pro",
-    price: "$149–249",
+    monthlyPrice: "$149–249",
+    annualPrice: "$119–199",
     period: "/ month",
     description: "For creators running multiple worlds or collaborations.",
     features: [
@@ -35,7 +38,8 @@ const plans = [
   },
   {
     name: "Events & Collabs",
-    price: "Custom",
+    monthlyPrice: "Custom",
+    annualPrice: "Custom",
     period: "",
     description: "Temporary scaling for special events and collaborations.",
     features: [
@@ -50,13 +54,22 @@ const plans = [
 ];
 
 export const Pricing = () => {
+  const [isAnnual, setIsAnnual] = useState(false);
   const { trackEvent } = useAnalytics();
 
   const handlePlanClick = (planName: string) => {
     trackEvent("cta_click", {
       location: "pricing",
       plan_name: planName,
+      billing_period: isAnnual ? "annual" : "monthly",
       button_text: "Get Started",
+    });
+  };
+
+  const handleToggle = (annual: boolean) => {
+    setIsAnnual(annual);
+    trackEvent("pricing_toggle", {
+      billing_period: annual ? "annual" : "monthly",
     });
   };
 
@@ -71,7 +84,7 @@ export const Pricing = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Transparent, Outcome-Based Pricing
@@ -79,6 +92,52 @@ export const Pricing = () => {
           <p className="text-muted-foreground max-w-xl mx-auto">
             No long-term contracts. You always own your world.
           </p>
+        </motion.div>
+
+        {/* Billing toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="flex items-center justify-center gap-4 mb-12"
+        >
+          <span 
+            className={`text-sm font-medium transition-colors cursor-pointer ${
+              !isAnnual ? "text-foreground" : "text-muted-foreground"
+            }`}
+            onClick={() => handleToggle(false)}
+          >
+            Monthly
+          </span>
+          
+          <button
+            onClick={() => handleToggle(!isAnnual)}
+            className={`relative w-14 h-7 rounded-full transition-colors ${
+              isAnnual ? "bg-primary" : "bg-muted"
+            }`}
+            aria-label="Toggle annual billing"
+          >
+            <motion.div
+              className="absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow-md"
+              animate={{ x: isAnnual ? 28 : 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            />
+          </button>
+          
+          <div className="flex items-center gap-2">
+            <span 
+              className={`text-sm font-medium transition-colors cursor-pointer ${
+                isAnnual ? "text-foreground" : "text-muted-foreground"
+              }`}
+              onClick={() => handleToggle(true)}
+            >
+              Annual
+            </span>
+            <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary/20 text-primary">
+              Save 20%
+            </span>
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -105,8 +164,18 @@ export const Pricing = () => {
                 {plan.name}
               </h3>
               <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-3xl font-bold text-foreground">{plan.price}</span>
+                <motion.span 
+                  key={isAnnual ? "annual" : "monthly"}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-3xl font-bold text-foreground"
+                >
+                  {isAnnual ? plan.annualPrice : plan.monthlyPrice}
+                </motion.span>
                 <span className="text-muted-foreground">{plan.period}</span>
+                {isAnnual && plan.annualPrice !== "Custom" && (
+                  <span className="text-xs text-primary ml-1">billed annually</span>
+                )}
               </div>
               <p className="text-sm text-muted-foreground mb-6">
                 {plan.description}
@@ -142,7 +211,10 @@ export const Pricing = () => {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-center text-sm text-muted-foreground mt-8"
         >
-          💡 Save up to 20% with annual billing
+          {isAnnual 
+            ? "🎉 You're viewing discounted annual rates" 
+            : "💡 Switch to annual billing to save up to 20%"
+          }
         </motion.p>
       </div>
     </section>

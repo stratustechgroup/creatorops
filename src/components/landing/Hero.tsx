@@ -103,6 +103,11 @@ export const Hero = () => {
                 <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
+            <Button variant="outline" size="xl" asChild>
+              <a href="#pricing">
+                View Pricing
+              </a>
+            </Button>
           </motion.div>
 
           {/* Trust indicators */}

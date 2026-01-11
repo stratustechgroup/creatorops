@@ -175,7 +175,7 @@ export const Pricing = () => {
                 y: -8, 
                 transition: { duration: 0.2, ease: "easeOut" } 
               }}
-              className={`relative p-8 rounded-2xl border transition-all duration-300 ${
+              className={`relative p-8 rounded-2xl border transition-all duration-300 flex flex-col ${
                 plan.highlighted
                   ? "bg-gradient-to-b from-card to-card/80 border-primary/50 shadow-glow"
                   : "bg-card border-border shadow-card hover:border-primary/30"
@@ -219,7 +219,7 @@ export const Pricing = () => {
               {/* Feature divider */}
               <div className="border-t border-border/50 mb-6" />
               
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-1">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3">
                     <div className={`mt-0.5 p-0.5 rounded-full ${feature.highlight ? 'bg-primary/20' : 'bg-secondary'}`}>

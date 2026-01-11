@@ -148,10 +148,14 @@ export const Pricing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className={`relative p-8 rounded-2xl border shadow-card ${
+              whileHover={{ 
+                y: -8, 
+                transition: { duration: 0.2, ease: "easeOut" } 
+              }}
+              className={`relative p-8 rounded-2xl border transition-shadow duration-300 cursor-pointer ${
                 plan.highlighted
-                  ? "bg-card-gradient border-primary/50 shadow-glow"
-                  : "bg-card-gradient border-border"
+                  ? "bg-card-gradient border-primary/50 shadow-glow hover:shadow-[0_0_40px_rgba(74,222,128,0.3)]"
+                  : "bg-card-gradient border-border shadow-card hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
               }`}
             >
               {plan.highlighted && (

@@ -14,6 +14,7 @@ import { FoundingProgram } from "@/components/landing/FoundingProgram";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
+import { NetworkFlow } from "@/components/landing/NetworkFlow";
 
 /**
  * HOW TO RE-ENABLE HIDDEN SECTIONS:
@@ -37,22 +38,43 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <NetworkFlow />
       <ScrollProgress />
       <Navbar />
       <main>
-        <Hero />
+        <section className="snap-section">
+          <Hero />
+        </section>
         {/* <SocialProof /> - Uncomment to show social proof */}
         {/* <CreatorLogos /> - Uncomment to show creator logos */}
-        <PainPoints />
-        <Solution />
-        <HowItWorks />
-        <Audience />
+        <section className="snap-section">
+          <PainPoints />
+        </section>
+        <section className="snap-section">
+          <Solution />
+        </section>
+        <section className="snap-section">
+          <HowItWorks />
+        </section>
+        <section className="snap-section">
+          <Audience />
+        </section>
         {/* <Testimonials /> - Uncomment to show testimonials carousel */}
-        <Pricing />
-        <Trust />
-        <FAQ />
-        <FoundingProgram />
-        <FinalCTA />
+        <section className="snap-section">
+          <Pricing />
+        </section>
+        <section className="snap-section">
+          <Trust />
+        </section>
+        <section className="snap-section">
+          <FAQ />
+        </section>
+        <section className="snap-section">
+          <FoundingProgram />
+        </section>
+        <section className="snap-section">
+          <FinalCTA />
+        </section>
       </main>
       <Footer />
     </div>

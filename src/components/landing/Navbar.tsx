@@ -51,7 +51,11 @@ export const Navbar = () => {
           {/* Logo and nav links together on the left */}
           <div className="flex items-center gap-8">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
+            <Link 
+              to="/" 
+              className="flex items-center gap-2"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
               <Logo className="w-9 h-9" />
               <span className="font-semibold text-foreground">Creator Ops</span>
             </Link>

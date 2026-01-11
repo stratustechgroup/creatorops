@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { PageSkeleton } from "@/components/PageSkeleton";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { AnalyticsPageTracker } from "@/components/AnalyticsPageTracker";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const AnimatedRoutes = () => {
   
   return (
     <>
+      <ScrollToTop />
       <AnalyticsPageTracker />
       <Suspense fallback={<PageSkeleton />}>
         <AnimatePresence mode="wait">

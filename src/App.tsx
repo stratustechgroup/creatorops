@@ -26,52 +26,19 @@ const AnimatedRoutes = () => {
   return (
     <>
       <AnalyticsPageTracker />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Index />} />
-          <Route
-            path="/apply"
-            element={
-              <Suspense fallback={<PageSkeleton />}>
-                <Apply />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/privacy"
-            element={
-              <Suspense fallback={<PageSkeleton />}>
-                <PrivacyPolicy />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/terms"
-            element={
-              <Suspense fallback={<PageSkeleton />}>
-                <TermsOfService />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/sla"
-            element={
-              <Suspense fallback={<PageSkeleton />}>
-                <SLAAgreement />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/fair-usage"
-            element={
-              <Suspense fallback={<PageSkeleton />}>
-                <FairUsagePolicy />
-              </Suspense>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AnimatePresence>
+      <Suspense fallback={<PageSkeleton />}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Index />} />
+            <Route path="/apply" element={<Apply />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/sla" element={<SLAAgreement />} />
+            <Route path="/fair-usage" element={<FairUsagePolicy />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AnimatePresence>
+      </Suspense>
       <CookieConsentBanner />
     </>
   );

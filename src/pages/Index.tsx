@@ -39,45 +39,22 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <ScrollProgress />
-      <ScrollProgress />
       <Navbar />
       <main>
-        <section className="snap-section">
-          <Hero />
-        </section>
+        <Hero />
         {/* <SocialProof /> - Uncomment to show social proof */}
         {/* <CreatorLogos /> - Uncomment to show creator logos */}
-        <section className="snap-section">
-          <PainPoints />
-        </section>
-        <section className="snap-section">
-          <Solution />
-        </section>
-        <section className="snap-section">
-          <HowItWorks />
-        </section>
-        <section className="snap-section">
-          <SafetyFeatures />
-        </section>
-        <section className="snap-section">
-          <Audience />
-        </section>
+        <PainPoints />
+        <Solution />
+        <HowItWorks />
+        <SafetyFeatures />
+        <Audience />
         {/* <Testimonials /> - Uncomment to show testimonials carousel */}
-        <section className="snap-section">
-          <Pricing />
-        </section>
-        <section className="snap-section">
-          <Trust />
-        </section>
-        <section className="snap-section">
-          <FAQ />
-        </section>
-        <section className="snap-section">
-          <FoundingProgram />
-        </section>
-        <section className="snap-section">
-          <FinalCTA />
-        </section>
+        <Pricing />
+        <Trust />
+        <FAQ />
+        <FoundingProgram />
+        <FinalCTA />
       </main>
       <Footer />
     </div>

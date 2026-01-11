@@ -52,9 +52,9 @@ export const Hero = () => {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
             <span className="text-gradient">Your Minecraft World.</span>
             <br />
-            <span className="text-foreground">Always Recording-Ready.</span>
+            <span className="text-foreground">Fully Managed.</span>
             <br />
-            <span className="text-muted-foreground">Never at Risk.</span>
+            <span className="text-muted-foreground">Zero Ops Required.</span>
           </h1>
 
           {/* Subheadline */}
@@ -64,7 +64,7 @@ export const Hero = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
           >
-            We run your Minecraft world on professional infrastructure so you can build, record, and collaborate—without worrying about backups, updates, or breaking your series.
+            We handle backups, updates, monitoring, and incident response—so you can focus on creating content, not managing infrastructure.
           </motion.p>
 
           {/* Trust line */}
@@ -74,7 +74,7 @@ export const Hero = () => {
             transition={{ delay: 0.5, duration: 0.6 }}
             className="text-sm text-muted-foreground mb-10"
           >
-            No panels. No setup. No surprises.
+            Automated backups. 24/7 monitoring. Instant incident response.
           </motion.p>
 
           {/* CTA */}
@@ -104,7 +104,7 @@ export const Hero = () => {
             Stop treating your content like a hobby server.
           </p>
           <p className="text-muted-foreground">
-            This is managed Minecraft infrastructure built specifically for creators.
+            Creator Ops: Managed infrastructure built specifically for content creators.
           </p>
         </motion.div>
       </div>

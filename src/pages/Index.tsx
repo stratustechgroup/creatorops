@@ -14,7 +14,7 @@ import { FoundingProgram } from "@/components/landing/FoundingProgram";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
-import { NetworkFlow } from "@/components/landing/NetworkFlow";
+import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
 
 /**
  * HOW TO RE-ENABLE HIDDEN SECTIONS:
@@ -38,7 +38,7 @@ import { NetworkFlow } from "@/components/landing/NetworkFlow";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <NetworkFlow />
+      <ScrollProgress />
       <ScrollProgress />
       <Navbar />
       <main>
@@ -55,6 +55,9 @@ const Index = () => {
         </section>
         <section className="snap-section">
           <HowItWorks />
+        </section>
+        <section className="snap-section">
+          <SafetyFeatures />
         </section>
         <section className="snap-section">
           <Audience />

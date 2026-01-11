@@ -32,7 +32,7 @@ export const Footer = () => {
             <div className="flex items-center gap-3">
               <Logo className="w-8 h-8" />
               <div>
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
                 <p className="text-xs text-muted-foreground">by Stratus Technology Group</p>
               </div>
             </div>
@@ -75,7 +75,7 @@ export const Footer = () => {
           {/* Trademark notice */}
           <div className="text-center">
             <p className="text-xs text-muted-foreground/70">
-              CreatorCloud™ is a trademark of Stratus Technology Group. 
+              Creator Ops™ is a trademark of Stratus Technology Group.
               Minecraft is a trademark of Mojang Studios. We are not affiliated with or endorsed by Mojang Studios.
             </p>
           </div>

@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
             <div className="flex items-center justify-between h-16">
               <Link to="/" className="flex items-center gap-2">
                 <Logo className="w-8 h-8" />
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/">

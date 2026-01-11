@@ -52,7 +52,7 @@ export const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <Logo className="w-9 h-9" />
-              <span className="font-semibold text-foreground">CreatorCloud</span>
+              <span className="font-semibold text-foreground">Creator Ops</span>
             </Link>
 
             {/* Desktop nav links - now next to logo */}

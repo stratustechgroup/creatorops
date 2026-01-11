@@ -14,7 +14,7 @@ const TermsOfService = () => {
             <div className="flex items-center justify-between h-16">
               <Link to="/" className="flex items-center gap-2">
                 <Logo className="w-8 h-8" />
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/">
@@ -34,14 +34,14 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground leading-relaxed">
-                By accessing or using CreatorCloud services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services.
+                By accessing or using Creator Ops services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">2. Service Description</h2>
               <p className="text-muted-foreground leading-relaxed">
-                CreatorCloud provides managed Minecraft infrastructure services for content creators, including world hosting, automated backups, version management, and technical support. Services are provided on a subscription basis.
+                Creator Ops provides managed Minecraft infrastructure services for content creators, including world hosting, automated backups, version management, and technical support. Services are provided on a subscription basis.
               </p>
             </section>
 

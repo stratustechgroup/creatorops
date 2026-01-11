@@ -133,6 +133,17 @@ export const Pricing = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Annual discount note */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-center text-sm text-muted-foreground mt-8"
+        >
+          💡 Save up to 20% with annual billing
+        </motion.p>
       </div>
     </section>
   );

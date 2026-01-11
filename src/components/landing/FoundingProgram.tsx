@@ -1,13 +1,22 @@
-import { motion } from "framer-motion";
-import { Sparkles, MessageSquare, DollarSign, Heart, Users, Zap, Clock, Star, ArrowRight, HelpCircle } from "lucide-react";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { Sparkles, MessageSquare, DollarSign, Heart, Users, Zap, Clock, Star, ArrowRight, HelpCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+// ============================================
+// SPOTS CONFIGURATION - Update this value as spots fill up
+// This can later be connected to a database/API
+// ============================================
+const TOTAL_SPOTS = 10;
+const SPOTS_TAKEN = 3; // Update this number as creators join
+const SPOTS_REMAINING = TOTAL_SPOTS - SPOTS_TAKEN;
 
 const benefits = [
   { 
@@ -57,11 +66,30 @@ const asks = [
   },
 ];
 
-const stats = [
-  { value: "10", label: "Founding Spots" },
-  { value: "Forever", label: "Locked Pricing" },
-  { value: "24hr", label: "Response Time" },
-];
+// Animated counter component
+const AnimatedCounter = ({ value, duration = 1.5 }: { value: number; duration?: number }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+  const motionValue = useMotionValue(0);
+  const rounded = useTransform(motionValue, (latest) => Math.round(latest));
+
+  useEffect(() => {
+    const unsubscribe = rounded.on("change", (latest) => {
+      setDisplayValue(latest);
+    });
+
+    const controls = animate(motionValue, value, {
+      duration,
+      ease: "easeOut",
+    });
+
+    return () => {
+      controls.stop();
+      unsubscribe();
+    };
+  }, [value, duration, motionValue, rounded]);
+
+  return <span>{displayValue}</span>;
+};
 
 const foundingFaqs = [
   {
@@ -106,34 +134,97 @@ export const FoundingProgram = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary font-medium">
+          {/* Spots remaining badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary font-medium"
+          >
             <Sparkles className="w-4 h-4" />
-            Limited to 10 Creators
-          </div>
+            Limited Availability
+          </motion.div>
+          
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             Founding Creator Program
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
             Join a small group of serious creators helping shape the future of Minecraft infrastructure. 
             Get exclusive benefits, locked-in pricing, and direct influence on what we build.
           </p>
           
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                className="text-center"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Spots Remaining Counter */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="max-w-md mx-auto mb-10"
+          >
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/15 via-primary/10 to-primary/5 border border-primary/30 relative overflow-hidden">
+              {/* Animated pulse background */}
+              <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <AlertCircle className="w-5 h-5 text-primary" />
+                  <span className="text-sm font-medium text-primary">Spots Filling Fast</span>
+                </div>
+                
+                {/* Large counter display */}
+                <div className="flex items-baseline justify-center gap-2 mb-4">
+                  <span className="text-6xl md:text-7xl font-bold text-primary">
+                    <AnimatedCounter value={SPOTS_REMAINING} />
+                  </span>
+                  <span className="text-2xl text-muted-foreground">/ {TOTAL_SPOTS}</span>
+                </div>
+                
+                <p className="text-sm text-muted-foreground mb-4">spots remaining</p>
+                
+                {/* Progress bar */}
+                <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${(SPOTS_TAKEN / TOTAL_SPOTS) * 100}%` }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+                    className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
+                  />
+                </div>
+                
+                {/* Spot indicators */}
+                <div className="flex justify-center gap-1.5 mt-4">
+                  {Array.from({ length: TOTAL_SPOTS }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.05, duration: 0.3 }}
+                      className={`w-3 h-3 rounded-full ${
+                        i < SPOTS_TAKEN 
+                          ? "bg-primary" 
+                          : "bg-muted border border-border"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Additional stats below */}
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="p-4 rounded-xl bg-secondary/30 border border-border text-center">
+                <div className="text-2xl font-bold text-foreground">Forever</div>
+                <div className="text-xs text-muted-foreground">Locked Pricing</div>
+              </div>
+              <div className="p-4 rounded-xl bg-secondary/30 border border-border text-center">
+                <div className="text-2xl font-bold text-foreground">24hr</div>
+                <div className="text-xs text-muted-foreground">Response Time</div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         <div className="max-w-5xl mx-auto">

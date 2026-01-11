@@ -134,32 +134,32 @@ export const ComparisonTable = () => {
           className="max-w-4xl mx-auto"
         >
           {/* Table container */}
-          <div className="rounded-2xl border border-border bg-card shadow-card overflow-x-auto pt-4">
+          <div className="rounded-2xl border border-border bg-card shadow-card overflow-x-auto">
             <div className="min-w-[500px]">
               {/* Table header */}
               <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr] bg-secondary/50 border-b border-border">
                 <div className="p-3 md:p-4 text-left">
                   <span className="text-xs md:text-sm font-medium text-muted-foreground">Feature</span>
                 </div>
-              <div className="p-3 md:p-4 text-center relative">
-                <motion.div 
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 hidden md:flex"
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                    opacity: [1, 0.9, 1]
-                  }}
-                  transition={{ 
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap shadow-glow">
-                    <Sparkles className="w-3 h-3" />
-                    Recommended
-                  </span>
-                </motion.div>
-                  <span className="text-xs md:text-sm font-semibold text-primary">Creator Ops</span>
+                <div className="p-3 md:p-4 text-center">
+                  <div className="flex flex-col items-center gap-1">
+                    <motion.span 
+                      className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary text-primary-foreground inline-flex items-center gap-1 whitespace-nowrap"
+                      animate={{ 
+                        scale: [1, 1.05, 1],
+                        opacity: [1, 0.9, 1]
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      Recommended
+                    </motion.span>
+                    <span className="text-xs md:text-sm font-semibold text-primary">Creator Ops</span>
+                  </div>
                 </div>
                 <div className="p-3 md:p-4 text-center">
                   <span className="text-xs md:text-sm font-medium text-foreground">Self-Hosting</span>

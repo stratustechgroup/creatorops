@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -17,19 +17,29 @@ const navLinks = [
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { trackEvent } = useAnalytics();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
     setIsMobileMenuOpen(false);
-    
+
     trackEvent("nav_click", {
       link_label: label,
       link_href: href,
     });
+
+    // If not on homepage, navigate there first with the hash
+    if (location.pathname !== "/") {
+      navigate("/" + href);
+      return;
+    }
+
+    // On homepage, scroll to the element
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const handleApplyClick = () => {

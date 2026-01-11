@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { PainPoints } from "@/components/landing/PainPoints";
@@ -17,7 +19,7 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
  * - HowItWorks: Merged into Solution section as compact step strip
  * - SecurityBadges: Consolidated with SafetyFeatures
  * - Audience: Removed to streamline page
- * 
+ *
  * COMMENTED OUT SECTIONS (ready to enable):
  * - SocialProof: src/components/landing/SocialProof.tsx
  * - CreatorLogos: src/components/landing/CreatorLogos.tsx
@@ -25,6 +27,21 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
  */
 
 const Index = () => {
+  const location = useLocation();
+
+  // Handle hash scrolling when navigating from other pages
+  useEffect(() => {
+    if (location.hash) {
+      // Small delay to ensure the page has rendered
+      setTimeout(() => {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
+
   return (
     <div className="min-h-screen bg-background">
       <ScrollProgress />

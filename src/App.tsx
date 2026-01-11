@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load pages
 const Apply = lazy(() => import("./pages/Apply"));
+const FoundingCreators = lazy(() => import("./pages/FoundingCreators"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const SLAAgreement = lazy(() => import("./pages/SLAAgreement"));
@@ -31,6 +32,7 @@ const AnimatedRoutes = () => {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Index />} />
             <Route path="/apply" element={<Apply />} />
+            <Route path="/founding-creators" element={<FoundingCreators />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/sla" element={<SLAAgreement />} />

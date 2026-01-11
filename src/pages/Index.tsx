@@ -10,7 +10,7 @@ import { Audience } from "@/components/landing/Audience";
 import { Pricing } from "@/components/landing/Pricing";
 import { Trust } from "@/components/landing/Trust";
 import { FAQ } from "@/components/landing/FAQ";
-import { FoundingProgram } from "@/components/landing/FoundingProgram";
+import { FoundingProgramTeaser } from "@/components/landing/FoundingProgramTeaser";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
@@ -53,7 +53,7 @@ const Index = () => {
         <Pricing />
         <Trust />
         <FAQ />
-        <FoundingProgram />
+        <FoundingProgramTeaser />
         <FinalCTA />
       </main>
       <Footer />

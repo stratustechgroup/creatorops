@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { SocialProof } from "@/components/landing/SocialProof";
-import { CreatorLogos } from "@/components/landing/CreatorLogos";
+// import { CreatorLogos } from "@/components/landing/CreatorLogos";
 import { PainPoints } from "@/components/landing/PainPoints";
 import { Solution } from "@/components/landing/Solution";
 import { HowItWorks } from "@/components/landing/HowItWorks";
@@ -16,20 +16,17 @@ import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 
 /**
- * HOW TO RE-ENABLE TESTIMONIALS:
+ * HOW TO RE-ENABLE HIDDEN SECTIONS:
  * 
- * 1. Uncomment the import above:
- *    import { Testimonials } from "@/components/landing/Testimonials";
+ * CREATOR LOGOS:
+ * 1. Uncomment: import { CreatorLogos } from "@/components/landing/CreatorLogos";
+ * 2. Uncomment: <CreatorLogos /> in the JSX below (after <SocialProof />)
+ * Component file: src/components/landing/CreatorLogos.tsx
  * 
- * 2. Uncomment <Testimonials /> in the JSX below (after <Audience />)
- * 
- * The Testimonials component includes:
- * - Carousel with 5 creator testimonials
- * - Profile photos, quotes, roles, and subscriber counts
- * - Optional video embed dialogs
- * - Navigation dots and prev/next buttons
- * 
- * To customize testimonials, edit: src/components/landing/Testimonials.tsx
+ * TESTIMONIALS:
+ * 1. Uncomment: import { Testimonials } from "@/components/landing/Testimonials";
+ * 2. Uncomment: <Testimonials /> in the JSX below (after <Audience />)
+ * Component file: src/components/landing/Testimonials.tsx
  */
 
 const Index = () => {
@@ -40,7 +37,7 @@ const Index = () => {
       <main>
         <Hero />
         <SocialProof />
-        <CreatorLogos />
+        {/* <CreatorLogos /> - Uncomment to show creator logos */}
         <PainPoints />
         <Solution />
         <HowItWorks />

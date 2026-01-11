@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -25,6 +25,11 @@ export const Hero = () => {
       location: "hero",
       button_text: "Apply for Creator Access",
     });
+  };
+
+  const scrollToContent = () => {
+    const nextSection = document.querySelector('#features')?.previousElementSibling || document.querySelector('section:nth-of-type(2)');
+    nextSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -80,19 +85,9 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
             We handle backups, updates, monitoring, and incident response—so you can focus on creating content, not managing infrastructure.
-          </motion.p>
-
-          {/* Trust line */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-sm text-muted-foreground mb-10"
-          >
-            Automated backups. 24/7 monitoring. Instant incident response.
           </motion.p>
 
           {/* CTA */}
@@ -109,16 +104,31 @@ export const Hero = () => {
               </Link>
             </Button>
           </motion.div>
+
+          {/* Trust indicators */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="flex flex-wrap items-center justify-center gap-6 mt-12"
+          >
+            {["Automated backups", "24/7 monitoring", "Instant response"].map((item, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                {item}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Sub-headline section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mt-20 pt-20 border-t border-border"
+          transition={{ delay: 1, duration: 0.6 }}
+          className="max-w-3xl mx-auto text-center mt-16 pt-16 border-t border-border/50"
         >
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-4">
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-2">
             Stop treating your content like a hobby server.
           </p>
           <p className="text-muted-foreground">
@@ -126,6 +136,24 @@ export const Hero = () => {
           </p>
         </motion.div>
       </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        onClick={scrollToContent}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        aria-label="Scroll to content"
+      >
+        <span className="text-xs uppercase tracking-widest">Explore</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5" />
+        </motion.div>
+      </motion.button>
     </section>
   );
 };

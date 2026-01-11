@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Link } from "react-router-dom";
+import { Twitter, Youtube, MessageCircle, Mail } from "lucide-react";
+
+const productLinks = [
+  { label: "Features", href: "#features" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Founding Program", href: "/founding-creators", isPage: true },
+];
 
 const legalLinks = [
   { label: "Privacy Policy", href: "/privacy" },
@@ -9,77 +17,136 @@ const legalLinks = [
   { label: "Fair Usage Policy", href: "/fair-usage" },
 ];
 
-const trustSignals = [
-  "Creator-first infrastructure",
-  "You own your world, always",
-  "Built for stability, not hype",
+const socialLinks = [
+  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
+  { icon: MessageCircle, href: "https://discord.com", label: "Discord" },
 ];
 
 export const Footer = () => {
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   return (
-    <footer className="border-t border-border py-12">
-      <div className="container px-4">
+    <footer className="relative border-t border-border bg-card/50">
+      {/* Main footer */}
+      <div className="container px-4 py-16">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="space-y-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8"
         >
-          {/* Main footer content */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Logo and company */}
-            <div className="flex items-center gap-3">
-              <Logo className="w-8 h-8" />
+          {/* Brand column */}
+          <div className="lg:col-span-1">
+            <Link to="/" className="flex items-center gap-3 mb-4">
+              <Logo className="w-10 h-10" />
               <div>
-                <span className="font-semibold text-foreground">Creator Ops</span>
+                <span className="font-bold text-lg text-foreground">Creator Ops</span>
                 <p className="text-xs text-muted-foreground">by Stratus Technology Group</p>
               </div>
-            </div>
-
-            {/* Trust signals */}
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              {trustSignals.map((signal, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span className="w-1 h-1 rounded-full bg-primary" />
-                  {signal}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-border" />
-
-          {/* Legal links and copyright */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Legal links */}
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              {legalLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            </Link>
+            <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+              Managed Minecraft infrastructure built specifically for content creators. Focus on creating, not managing servers.
+            </p>
+            {/* Social links */}
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-secondary/50 border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all"
+                  aria-label={social.label}
                 >
-                  {link.label}
-                </Link>
+                  <social.icon className="w-4 h-4" />
+                </a>
               ))}
             </div>
-
-            {/* Copyright */}
-            <p className="text-sm text-muted-foreground text-center">
-              © {new Date().getFullYear()} Stratus Technology Group. All rights reserved.
-            </p>
           </div>
 
-          {/* Trademark notice */}
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground/70">
-              Creator Ops™ is a trademark of Stratus Technology Group.
-              Minecraft is a trademark of Mojang Studios. We are not affiliated with or endorsed by Mojang Studios.
+          {/* Product column */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Product</h4>
+            <ul className="space-y-3">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  {link.isPage ? (
+                    <Link
+                      to={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleSmoothScroll(e, link.href)}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal column */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+            <ul className="space-y-3">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact column */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Get in Touch</h4>
+            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              Questions about our service? We'd love to hear from you.
             </p>
+            <a
+              href="mailto:hello@creatorops.com"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              hello@creatorops.com
+            </a>
           </div>
         </motion.div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-border">
+        <div className="container px-4 py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Stratus Technology Group. All rights reserved.
+            </p>
+            <p className="text-xs text-muted-foreground/60 text-center md:text-right max-w-md">
+              Creator Ops™ is a trademark of Stratus Technology Group. Minecraft is a trademark of Mojang Studios. We are not affiliated with or endorsed by Mojang Studios.
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

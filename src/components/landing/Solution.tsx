@@ -29,6 +29,13 @@ const features = [
   },
 ];
 
+const steps = [
+  { number: "01", title: "Apply", description: "We review your needs" },
+  { number: "02", title: "Onboard", description: "We set up your world" },
+  { number: "03", title: "Create", description: "You focus on content" },
+  { number: "04", title: "Relax", description: "We handle the rest" },
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -62,7 +69,7 @@ export const Solution = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mb-20"
+          className="max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
             We turn your Minecraft world into{" "}
@@ -74,6 +81,30 @@ export const Solution = () => {
           <p className="text-xl text-foreground font-medium">
             You focus on content. We handle the rest.
           </p>
+        </motion.div>
+
+        {/* How it works - compact strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="max-w-3xl mx-auto mb-16"
+        >
+          <div className="grid grid-cols-4 gap-2 md:gap-4 p-4 rounded-2xl bg-secondary/30 border border-border">
+            {steps.map((step, index) => (
+              <div key={index} className="text-center relative">
+                {index < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-4 left-[60%] w-[80%] h-px bg-border" />
+                )}
+                <div className="text-2xl md:text-3xl font-bold text-primary/40 mb-1">
+                  {step.number}
+                </div>
+                <div className="text-sm font-semibold text-foreground mb-0.5">{step.title}</div>
+                <div className="text-xs text-muted-foreground hidden sm:block">{step.description}</div>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Feature grid */}

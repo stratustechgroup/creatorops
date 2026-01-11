@@ -1,12 +1,9 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
-// import { SocialProof } from "@/components/landing/SocialProof";
-// import { CreatorLogos } from "@/components/landing/CreatorLogos";
 import { PainPoints } from "@/components/landing/PainPoints";
 import { Solution } from "@/components/landing/Solution";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { Audience } from "@/components/landing/Audience";
-// import { Testimonials } from "@/components/landing/Testimonials";
+import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
+import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { Pricing } from "@/components/landing/Pricing";
 import { Trust } from "@/components/landing/Trust";
 import { FAQ } from "@/components/landing/FAQ";
@@ -14,27 +11,17 @@ import { FoundingProgramTeaser } from "@/components/landing/FoundingProgramTease
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
-import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
-import { SecurityBadges } from "@/components/landing/SecurityBadges";
-import { ComparisonTable } from "@/components/landing/ComparisonTable";
 
 /**
- * HOW TO RE-ENABLE HIDDEN SECTIONS:
+ * REMOVED SECTIONS (can be re-added if needed):
+ * - HowItWorks: Merged into Solution section as compact step strip
+ * - SecurityBadges: Consolidated with SafetyFeatures
+ * - Audience: Removed to streamline page
  * 
- * SOCIAL PROOF:
- * 1. Uncomment: import { SocialProof } from "@/components/landing/SocialProof";
- * 2. Uncomment: <SocialProof /> in the JSX below (after <Hero />)
- * Component file: src/components/landing/SocialProof.tsx
- * 
- * CREATOR LOGOS:
- * 1. Uncomment: import { CreatorLogos } from "@/components/landing/CreatorLogos";
- * 2. Uncomment: <CreatorLogos /> in the JSX below (after <SocialProof />)
- * Component file: src/components/landing/CreatorLogos.tsx
- * 
- * TESTIMONIALS:
- * 1. Uncomment: import { Testimonials } from "@/components/landing/Testimonials";
- * 2. Uncomment: <Testimonials /> in the JSX below (after <Audience />)
- * Component file: src/components/landing/Testimonials.tsx
+ * COMMENTED OUT SECTIONS (ready to enable):
+ * - SocialProof: src/components/landing/SocialProof.tsx
+ * - CreatorLogos: src/components/landing/CreatorLogos.tsx
+ * - Testimonials: src/components/landing/Testimonials.tsx
  */
 
 const Index = () => {
@@ -44,15 +31,9 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
-        {/* <SocialProof /> - Uncomment to show social proof */}
-        {/* <CreatorLogos /> - Uncomment to show creator logos */}
         <PainPoints />
         <Solution />
-        <HowItWorks />
         <SafetyFeatures />
-        <SecurityBadges />
-        <Audience />
-        {/* <Testimonials /> - Uncomment to show testimonials carousel */}
         <ComparisonTable />
         <Pricing />
         <Trust />

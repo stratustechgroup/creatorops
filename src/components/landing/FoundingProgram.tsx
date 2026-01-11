@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
-import { Sparkles, MessageSquare, DollarSign, Heart, Users, Zap, Clock, Star, ArrowRight } from "lucide-react";
+import { Sparkles, MessageSquare, DollarSign, Heart, Users, Zap, Clock, Star, ArrowRight, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const benefits = [
   { 
@@ -57,6 +63,33 @@ const stats = [
   { value: "24hr", label: "Response Time" },
 ];
 
+const foundingFaqs = [
+  {
+    question: "How much does the Founding Creator Program cost?",
+    answer: "Founding creators receive significant discounts off our standard pricing—typically 30-50% off. The exact rate depends on your world size and requirements, but once locked in, your rate never increases, even as we raise prices for new customers."
+  },
+  {
+    question: "What commitment is required?",
+    answer: "We ask for a minimum 3-month commitment to give us enough time to learn from your real-world usage. After that, you can continue month-to-month at your locked-in rate. There are no long-term contracts required."
+  },
+  {
+    question: "How long will the Founding Program be open?",
+    answer: "We are limiting the program to just 10 creators to maintain quality and personalized support. Once all spots are filled, the program closes permanently. We review applications on a rolling basis and typically respond within 48 hours."
+  },
+  {
+    question: "What if I need to pause or cancel?",
+    answer: "Life happens. Founding creators can pause their service for up to 2 months per year without losing their locked-in rate. If you need to cancel, you can always return later—though at whatever the current pricing is at that time."
+  },
+  {
+    question: "How much feedback is actually expected?",
+    answer: "We are not looking for daily reports. A quick monthly check-in, honest responses when we ask for input, and flagging any issues you encounter is plenty. We respect your time—you are here to create content, not beta test software."
+  },
+  {
+    question: "Can I join if I have an existing world?",
+    answer: "Absolutely. We will help migrate your existing world to our infrastructure as part of onboarding. We have handled worlds of all sizes and complexity levels. Migration is included at no extra cost for founding creators."
+  },
+];
+
 export const FoundingProgram = () => {
   return (
     <section className="relative py-24 md:py-32 overflow-hidden">
@@ -104,7 +137,7 @@ export const FoundingProgram = () => {
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="grid lg:grid-cols-5 gap-8">
+          <div className="grid lg:grid-cols-5 gap-8 mb-16">
             {/* What you get - 3 columns */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -190,6 +223,62 @@ export const FoundingProgram = () => {
               </div>
             </motion.div>
           </div>
+
+          {/* Founding Program FAQ */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <HelpCircle className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-2xl font-semibold text-foreground">
+                Founding Program FAQ
+              </h3>
+            </div>
+            
+            <div className="p-6 rounded-2xl bg-card border border-border">
+              <Accordion type="single" collapsible className="w-full">
+                {foundingFaqs.map((faq, index) => (
+                  <AccordionItem 
+                    key={index} 
+                    value={`founding-faq-${index}`}
+                    className="border-border"
+                  >
+                    <AccordionTrigger className="text-left text-sm font-medium hover:text-primary transition-colors py-4">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-muted-foreground pb-4">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+
+            {/* Final CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mt-8 text-center"
+            >
+              <p className="text-muted-foreground mb-4">
+                Still have questions? We are happy to chat.
+              </p>
+              <Button variant="hero" size="lg" className="group" asChild>
+                <Link to="/apply">
+                  Apply for Founding Access
+                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

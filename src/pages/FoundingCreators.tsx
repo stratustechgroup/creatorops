@@ -320,7 +320,7 @@ const FoundingCreators = () => {
                         "We want partners, not just customers. Your input directly shapes what we build."
                       </p>
                       <Button variant="hero" size="lg" className="w-full group" asChild>
-                        <Link to="/apply">
+                        <Link to="/founding-apply">
                           Apply Now
                           <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </Link>
@@ -382,7 +382,7 @@ const FoundingCreators = () => {
                     Still have questions? We are happy to chat.
                   </p>
                   <Button variant="hero" size="xl" className="group" asChild>
-                    <Link to="/apply">
+                    <Link to="/founding-apply">
                       Apply for Founding Access
                       <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>

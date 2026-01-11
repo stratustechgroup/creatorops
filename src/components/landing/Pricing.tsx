@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, ShieldCheck, RefreshCcw, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -213,6 +213,28 @@ export const Pricing = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Trust badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-12 pt-8 border-t border-border/50"
+        >
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <ShieldCheck className="w-5 h-5 text-primary" />
+            <span>30-day money-back guarantee</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <RefreshCcw className="w-5 h-5 text-primary" />
+            <span>Cancel anytime</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Lock className="w-5 h-5 text-primary" />
+            <span>You always own your world</span>
+          </div>
+        </motion.div>
 
         {/* Annual discount note */}
         <motion.p

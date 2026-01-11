@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Link } from "react-router-dom";
-import { Twitter, Youtube, MessageCircle, Mail } from "lucide-react";
+import { MessageCircle, Mail } from "lucide-react";
 
 const productLinks = [
   { label: "Features", href: "#features" },
@@ -18,9 +18,7 @@ const legalLinks = [
 ];
 
 const socialLinks = [
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-  { icon: MessageCircle, href: "https://discord.com", label: "Discord" },
+  { icon: MessageCircle, href: "https://creatorops.io/discord", label: "Discord" },
 ];
 
 export const Footer = () => {

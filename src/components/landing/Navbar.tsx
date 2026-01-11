@@ -10,6 +10,7 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 const navLinks = [
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Founding Program", href: "/founding-creators", isPage: true },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -58,14 +59,25 @@ export const Navbar = () => {
             {/* Desktop nav links - now next to logo */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </a>
+                link.isPage ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={() => trackEvent("nav_click", { link_label: link.label, link_href: link.href })}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
             </div>
           </div>
@@ -106,17 +118,37 @@ export const Navbar = () => {
           >
             <div className="container px-4 py-4 space-y-4">
               {navLinks.map((link, index) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="block py-2 text-foreground hover:text-primary transition-colors"
-                >
-                  {link.label}
-                </motion.a>
+                link.isPage ? (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link
+                      to={link.href}
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        trackEvent("nav_click", { link_label: link.label, link_href: link.href });
+                      }}
+                      className="block py-2 text-foreground hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="block py-2 text-foreground hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </motion.a>
+                )
               ))}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}

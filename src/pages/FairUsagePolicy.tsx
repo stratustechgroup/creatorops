@@ -14,7 +14,7 @@ const FairUsagePolicy = () => {
             <div className="flex items-center justify-between h-16">
               <Link to="/" className="flex items-center gap-2">
                 <Logo className="w-8 h-8" />
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/">
@@ -34,14 +34,14 @@ const FairUsagePolicy = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Purpose</h2>
               <p className="text-muted-foreground leading-relaxed">
-                This Fair Usage Policy ensures all CreatorCloud customers receive consistent, high-quality service. Our infrastructure is optimized for content creator workflows, not unlimited general-purpose computing.
+                This Fair Usage Policy ensures all Creator Ops customers receive consistent, high-quality service. Our infrastructure is optimized for content creator workflows, not unlimited general-purpose computing.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">2. Intended Use</h2>
               <div className="text-muted-foreground leading-relaxed">
-                <p className="mb-4">CreatorCloud is designed for:</p>
+                <p className="mb-4">Creator Ops is designed for:</p>
                 <ul className="list-disc list-inside space-y-2">
                   <li>Content creation and recording sessions</li>
                   <li>Private creator worlds and SMPs</li>

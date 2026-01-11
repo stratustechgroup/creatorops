@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 type Theme = "dark" | "light";
 
-const STORAGE_KEY = "creatorcloud_theme";
+const STORAGE_KEY = "creatorops_theme";
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {

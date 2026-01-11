@@ -14,7 +14,7 @@ const SLAAgreement = () => {
             <div className="flex items-center justify-between h-16">
               <Link to="/" className="flex items-center gap-2">
                 <Logo className="w-8 h-8" />
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/">
@@ -34,7 +34,7 @@ const SLAAgreement = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Uptime Commitment</h2>
               <p className="text-muted-foreground leading-relaxed">
-                CreatorCloud commits to 99.5% uptime for all production worlds, measured monthly. Scheduled maintenance windows are excluded from uptime calculations and will be communicated at least 48 hours in advance.
+                Creator Ops commits to 99.5% uptime for all production worlds, measured monthly. Scheduled maintenance windows are excluded from uptime calculations and will be communicated at least 48 hours in advance.
               </p>
             </section>
 

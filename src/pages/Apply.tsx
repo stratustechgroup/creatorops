@@ -45,7 +45,7 @@ const trustPoints = [
   { icon: Users, text: "Join our founding creator community" },
 ];
 
-const STORAGE_KEY = "creatorcloud_application_draft";
+const STORAGE_KEY = "creatorops_application_draft";
 
 const defaultFormValues: ApplicationFormData = {
   firstName: "",
@@ -168,7 +168,7 @@ const Apply = () => {
             <div className="flex items-center justify-between h-16">
               <Link to="/" className="flex items-center gap-2">
                 <Logo className="w-9 h-9" />
-                <span className="font-semibold text-foreground">CreatorCloud</span>
+                <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/">
@@ -578,7 +578,7 @@ const Apply = () => {
                   <div className="p-6 rounded-2xl bg-secondary/30 border border-border">
                     <h3 className="font-semibold text-foreground mb-2">Have questions?</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Not sure if CreatorCloud is right for you? Check our FAQ or reach out directly.
+                      Not sure if Creator Ops is right for you? Check our FAQ or reach out directly.
                     </p>
                     <Button variant="outline" size="sm" asChild>
                       <Link to="/#faq">View FAQ</Link>
@@ -602,7 +602,7 @@ const Apply = () => {
                 Application Submitted!
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
-                Thank you for your interest in CreatorCloud. We'll review your application and get back to you within 48 hours.
+                Thank you for your interest in Creator Ops. We'll review your application and get back to you within 48 hours.
               </p>
               <div className="p-6 rounded-2xl bg-card-gradient border border-border mb-8 text-left max-w-md mx-auto">
                 <h3 className="font-semibold text-foreground mb-3">While you wait:</h3>

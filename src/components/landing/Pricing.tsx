@@ -164,6 +164,9 @@ export const Pricing = () => {
                 {plan.name}
               </h3>
               <div className="mb-4">
+                {plan.monthlyPrice !== "Custom" && (
+                  <span className="text-xs text-muted-foreground uppercase tracking-wide">Starting at</span>
+                )}
                 <div className="flex items-baseline gap-2 flex-wrap">
                   <motion.span 
                     key={isAnnual ? "annual" : "monthly"}

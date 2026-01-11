@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save, Check, Sparkles, Star, MessageSquare, Heart } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -94,6 +96,7 @@ const FoundingApply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
+  const { toast } = useToast();
 
   const memoizedDefaults = useMemo(() => defaultFormValues, []);
 
@@ -170,16 +173,34 @@ const FoundingApply = () => {
       feedback_style: data.feedbackStyle,
     });
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const { data: response, error } = await supabase.functions.invoke("send-application-email", {
+        body: {
+          formType: "founding",
+          formData: data,
+        },
+      });
 
-    clearSavedData();
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      if (error) {
+        throw error;
+      }
 
-    trackEvent("form_success", {
-      form_name: "founding_application",
-    });
+      clearSavedData();
+      setIsSubmitted(true);
+
+      trackEvent("form_success", {
+        form_name: "founding_application",
+      });
+    } catch (error) {
+      console.error("Error submitting founding application:", error);
+      toast({
+        title: "Submission Error",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

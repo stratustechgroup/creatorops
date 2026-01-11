@@ -88,8 +88,8 @@ const FoundingCreators = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
-        <Navbar />
-        
+        <Navbar hideNavLinks />
+
         <main className="pt-20">
           {/* Hero Section - Benefits Focused */}
           <section className="relative py-20 md:py-32 overflow-hidden">

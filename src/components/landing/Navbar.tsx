@@ -14,7 +14,11 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ];
 
-export const Navbar = () => {
+interface NavbarProps {
+  hideNavLinks?: boolean;
+}
+
+export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { trackEvent } = useAnalytics();
   const location = useLocation();
@@ -71,33 +75,35 @@ export const Navbar = () => {
             </Link>
 
             {/* Desktop nav links - now next to logo */}
-            <div className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                link.isPage ? (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    onClick={() => trackEvent("nav_click", { link_label: link.label, link_href: link.href })}
-                  >
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                )
-              ))}
-            </div>
+            {!hideNavLinks && (
+              <div className="hidden md:flex items-center gap-6">
+                {navLinks.map((link) => (
+                  link.isPage ? (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => trackEvent("nav_click", { link_label: link.label, link_href: link.href })}
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleSmoothScroll(e, link.href, link.label)}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  )
+                ))}
+              </div>
+            )}
           </div>
           
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Desktop CTA (and mobile when nav links hidden) */}
+          <div className={`${hideNavLinks ? 'flex' : 'hidden md:flex'} items-center gap-2`}>
             <ThemeToggle />
             <Button variant="hero" size="sm" asChild>
               <Link to="/apply" onClick={handleApplyClick}>
@@ -107,22 +113,24 @@ export const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-2">
-            <ThemeToggle />
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-foreground"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          {!hideNavLinks && (
+            <div className="md:hidden flex items-center gap-2">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors text-foreground"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {!hideNavLinks && isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}

@@ -49,7 +49,7 @@ export const FinalCTA = () => {
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
             <Button variant="hero" size="xl" className="group" asChild>
-              <Link to="/apply" onClick={handleApplyClick}>
+              <Link to="/founding-apply" onClick={handleApplyClick}>
                 Apply for Creator Access
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>

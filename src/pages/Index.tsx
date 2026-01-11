@@ -45,7 +45,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <ScrollProgress />
-      <Navbar />
+      <Navbar hideNavLinks />
       <main>
         <Hero />
         <PainPoints />

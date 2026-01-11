@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -79,12 +79,18 @@ const Apply = () => {
   });
 
   // Enable autosave to localStorage
-  const { clearSavedData } = useFormAutosave({
+  const { clearSavedData, hasSavedData } = useFormAutosave({
     watch,
     reset,
     storageKey: STORAGE_KEY,
     defaultValues: memoizedDefaults,
   });
+
+  const handleClearDraft = () => {
+    clearSavedData();
+    reset(defaultFormValues);
+    trackEvent("form_clear_draft", { form_name: "application" });
+  };
 
   const creatorType = watch("creatorType");
   const timeline = watch("timeline");
@@ -345,25 +351,39 @@ const Apply = () => {
 
                     {/* Submit */}
                     <div className="pt-6 border-t border-border">
-                      <Button
-                        type="submit"
-                        variant="hero"
-                        size="xl"
-                        className="w-full sm:w-auto"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                            Submitting Application...
-                          </>
-                        ) : (
-                          <>
-                            Submit Application
-                            <ArrowRight className="w-5 h-5" />
-                          </>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <Button
+                          type="submit"
+                          variant="hero"
+                          size="xl"
+                          className="w-full sm:w-auto"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              Submitting Application...
+                            </>
+                          ) : (
+                            <>
+                              Submit Application
+                              <ArrowRight className="w-5 h-5" />
+                            </>
+                          )}
+                        </Button>
+                        {hasSavedData() && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="xl"
+                            onClick={handleClearDraft}
+                            disabled={isSubmitting}
+                          >
+                            <RotateCcw className="w-4 h-4" />
+                            Clear Draft
+                          </Button>
                         )}
-                      </Button>
+                      </div>
                       <p className="text-sm text-muted-foreground mt-4">
                         By submitting, you agree to our{" "}
                         <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>

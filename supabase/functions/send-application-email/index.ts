@@ -125,7 +125,7 @@ const handler = async (req: Request): Promise<Response> => {
       `;
     }
 
-    // Send the email
+    // Send the internal notification email
     const emailResponse = await resend.emails.send({
       from: "Creator Ops <noreply@creatorops.io>",
       to: [recipientEmail],
@@ -133,9 +133,130 @@ const handler = async (req: Request): Promise<Response> => {
       html: emailHtml,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Internal notification email sent:", emailResponse);
 
-    return new Response(JSON.stringify({ success: true, emailResponse }), {
+    // Build and send confirmation email to applicant
+    const applicantEmail = formData.email as string;
+    const applicantName = formData.firstName as string;
+    
+    let confirmationSubject: string;
+    let confirmationHtml: string;
+
+    if (formType === "founding") {
+      confirmationSubject = "🌟 We received your Founding Creator application!";
+      confirmationHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">Welcome to the Journey, ${applicantName}! 🎮</h1>
+          </div>
+          
+          <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 12px 12px;">
+            <p style="font-size: 16px; margin-bottom: 20px;">
+              Thank you for applying to become a <strong>Founding Creator</strong> with Creator Ops! We're thrilled that you want to be part of this exclusive group shaping the future of Minecraft content infrastructure.
+            </p>
+            
+            <div style="background: white; border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+              <h3 style="margin-top: 0; color: #667eea;">What happens next?</h3>
+              <ol style="margin: 0; padding-left: 20px;">
+                <li style="margin-bottom: 10px;">Our team will personally review your application within <strong>48 hours</strong></li>
+                <li style="margin-bottom: 10px;">If selected, we'll reach out via Discord to schedule your onboarding call</li>
+                <li style="margin-bottom: 10px;">You'll get exclusive access to our Founding Creator community</li>
+              </ol>
+            </div>
+            
+            <p style="font-size: 16px;">
+              As a reminder, Founding Creators receive:
+            </p>
+            <ul style="margin: 15px 0;">
+              <li>🔒 Locked-in pricing forever</li>
+              <li>💜 White-glove priority support</li>
+              <li>🗣️ Direct product influence</li>
+              <li>⭐ Early access to new features</li>
+            </ul>
+            
+            <p style="font-size: 16px; margin-top: 25px;">
+              We're excited to potentially have you on this journey with us!
+            </p>
+            
+            <p style="font-size: 16px; margin-top: 25px;">
+              Best regards,<br>
+              <strong>The Creator Ops Team</strong>
+            </p>
+          </div>
+          
+          <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
+            <p>© ${new Date().getFullYear()} Creator Ops. All rights reserved.</p>
+          </div>
+        </body>
+        </html>
+      `;
+    } else {
+      confirmationSubject = "Thanks for applying to Creator Ops! 🎮";
+      confirmationHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">Application Received! 🎉</h1>
+          </div>
+          
+          <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 12px 12px;">
+            <p style="font-size: 16px; margin-bottom: 20px;">
+              Hi ${applicantName},
+            </p>
+            
+            <p style="font-size: 16px; margin-bottom: 20px;">
+              Thank you for applying to Creator Ops! We've received your application and are excited to learn more about your Minecraft content creation journey.
+            </p>
+            
+            <div style="background: white; border-left: 4px solid #10b981; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+              <h3 style="margin-top: 0; color: #059669;">What happens next?</h3>
+              <ol style="margin: 0; padding-left: 20px;">
+                <li style="margin-bottom: 10px;">Our team will review your application within <strong>48 hours</strong></li>
+                <li style="margin-bottom: 10px;">We'll reach out via your preferred contact method with next steps</li>
+                <li style="margin-bottom: 10px;">If we're a good fit, we'll discuss how we can support your content</li>
+              </ol>
+            </div>
+            
+            <p style="font-size: 16px; margin-top: 25px;">
+              In the meantime, if you have any questions, feel free to reply to this email.
+            </p>
+            
+            <p style="font-size: 16px; margin-top: 25px;">
+              Best regards,<br>
+              <strong>The Creator Ops Team</strong>
+            </p>
+          </div>
+          
+          <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
+            <p>© ${new Date().getFullYear()} Creator Ops. All rights reserved.</p>
+          </div>
+        </body>
+        </html>
+      `;
+    }
+
+    // Send confirmation email to applicant
+    const confirmationResponse = await resend.emails.send({
+      from: "Creator Ops <noreply@creatorops.io>",
+      to: [applicantEmail],
+      subject: confirmationSubject,
+      html: confirmationHtml,
+    });
+
+    console.log("Confirmation email sent to applicant:", confirmationResponse);
+
+    return new Response(JSON.stringify({ success: true, emailResponse, confirmationResponse }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

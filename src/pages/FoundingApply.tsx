@@ -91,9 +91,26 @@ const defaultFormValues: FoundingApplicationFormData = {
   additionalNotes: "",
 };
 
+const worldQuestions = [
+  "How large is your world (file size/chunks)?",
+  "What mods or plugins do you use?",
+  "How many people typically access it?",
+  "Is it a long-running series or project-based?",
+  "Do you have multiple worlds or just one main world?",
+];
+
+const painPointQuestions = [
+  "Have you ever lost world data or progress?",
+  "Do you experience lag or performance issues?",
+  "How do you currently handle backups?",
+  "Have recording sessions been interrupted by server issues?",
+  "Is coordinating with collaborators difficult?",
+];
+
 const FoundingApply = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [activeHelper, setActiveHelper] = useState<"world" | "painPoints" | null>(null);
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
   const { toast } = useToast();
@@ -474,12 +491,26 @@ const FoundingApply = () => {
                         <div className="relative">
                           <Textarea
                             id="worldDescription"
-                            placeholder="Tell us about your Minecraft world. How large is it? What mods/plugins do you use? How many people typically access it? Is it a long-running series world or project-based?"
+                            placeholder="Tell us about your Minecraft world..."
                             {...register("worldDescription")}
+                            onFocus={() => setActiveHelper("world")}
+                            onBlur={() => setActiveHelper(null)}
                             className={`min-h-[120px] resize-none ${errors.worldDescription ? "border-destructive" : isFieldValid("worldDescription") ? "border-primary/50" : ""}`}
                           />
                           {isFieldValid("worldDescription") && (
                             <Check className="absolute right-3 top-3 w-4 h-4 text-primary" />
+                          )}
+                          {activeHelper === "world" && (
+                            <motion.div
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              className="hidden lg:block absolute left-full ml-4 top-0 w-64 p-4 rounded-xl bg-muted/50 border border-border"
+                            >
+                              <h4 className="text-sm font-medium text-foreground mb-2">Questions to consider:</h4>
+                              <ul className="space-y-2 text-xs text-muted-foreground">
+                                {worldQuestions.map((q, i) => <li key={i}>• {q}</li>)}
+                              </ul>
+                            </motion.div>
                           )}
                         </div>
                         {errors.worldDescription && (
@@ -492,12 +523,26 @@ const FoundingApply = () => {
                         <div className="relative">
                           <Textarea
                             id="currentPainPoints"
-                            placeholder="What problems have you experienced with your current setup? Lost worlds? Corrupted saves? Unreliable hosting? Recording session interruptions?"
+                            placeholder="What problems have you experienced with your current setup?"
                             {...register("currentPainPoints")}
+                            onFocus={() => setActiveHelper("painPoints")}
+                            onBlur={() => setActiveHelper(null)}
                             className={`min-h-[120px] resize-none ${errors.currentPainPoints ? "border-destructive" : isFieldValid("currentPainPoints") ? "border-primary/50" : ""}`}
                           />
                           {isFieldValid("currentPainPoints") && (
                             <Check className="absolute right-3 top-3 w-4 h-4 text-primary" />
+                          )}
+                          {activeHelper === "painPoints" && (
+                            <motion.div
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              className="hidden lg:block absolute left-full ml-4 top-0 w-64 p-4 rounded-xl bg-muted/50 border border-border"
+                            >
+                              <h4 className="text-sm font-medium text-foreground mb-2">Questions to consider:</h4>
+                              <ul className="space-y-2 text-xs text-muted-foreground">
+                                {painPointQuestions.map((q, i) => <li key={i}>• {q}</li>)}
+                              </ul>
+                            </motion.div>
                           )}
                         </div>
                         {errors.currentPainPoints && (

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save, Check } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -72,10 +72,12 @@ const Apply = () => {
     setValue,
     watch,
     reset,
-    formState: { errors },
+    trigger,
+    formState: { errors, touchedFields, dirtyFields },
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
     defaultValues: defaultFormValues,
+    mode: "onChange",
   });
 
   // Enable autosave to localStorage
@@ -107,6 +109,22 @@ const Apply = () => {
   const creatorType = watch("creatorType");
   const timeline = watch("timeline");
   const subscriberCount = watch("subscriberCount");
+
+  // Helper to check if a field is valid (touched/dirty and no errors)
+  const isFieldValid = (fieldName: keyof ApplicationFormData) => {
+    const value = watch(fieldName);
+    const hasValue = value && value.toString().trim().length > 0;
+    const hasNoError = !errors[fieldName];
+    const wasTouched = touchedFields[fieldName] || dirtyFields[fieldName];
+    return hasValue && hasNoError && wasTouched;
+  };
+
+  // Helper to get input className based on validation state
+  const getInputClassName = (fieldName: keyof ApplicationFormData, baseClass = "") => {
+    if (errors[fieldName]) return `${baseClass} border-destructive pr-10`;
+    if (isFieldValid(fieldName)) return `${baseClass} border-primary/50 pr-10`;
+    return baseClass;
+  };
 
   const onSubmit = async (data: ApplicationFormData) => {
     setIsSubmitting(true);
@@ -207,24 +225,34 @@ const Apply = () => {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="firstName">First Name *</Label>
-                          <Input
-                            id="firstName"
-                            placeholder="John"
-                            {...register("firstName")}
-                            className={errors.firstName ? "border-destructive" : ""}
-                          />
+                          <div className="relative">
+                            <Input
+                              id="firstName"
+                              placeholder="John"
+                              {...register("firstName")}
+                              className={getInputClassName("firstName")}
+                            />
+                            {isFieldValid("firstName") && (
+                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
                           {errors.firstName && (
                             <p className="text-sm text-destructive">{errors.firstName.message}</p>
                           )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="lastName">Last Name *</Label>
-                          <Input
-                            id="lastName"
-                            placeholder="Doe"
-                            {...register("lastName")}
-                            className={errors.lastName ? "border-destructive" : ""}
-                          />
+                          <div className="relative">
+                            <Input
+                              id="lastName"
+                              placeholder="Doe"
+                              {...register("lastName")}
+                              className={getInputClassName("lastName")}
+                            />
+                            {isFieldValid("lastName") && (
+                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
                           {errors.lastName && (
                             <p className="text-sm text-destructive">{errors.lastName.message}</p>
                           )}
@@ -233,13 +261,18 @@ const Apply = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address *</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="you@example.com"
-                          {...register("email")}
-                          className={errors.email ? "border-destructive" : ""}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="you@example.com"
+                            {...register("email")}
+                            className={getInputClassName("email")}
+                          />
+                          {isFieldValid("email") && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                          )}
+                        </div>
                         {errors.email && (
                           <p className="text-sm text-destructive">{errors.email.message}</p>
                         )}
@@ -255,12 +288,17 @@ const Apply = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="channelUrl">Channel or Platform URL</Label>
-                        <Input
-                          id="channelUrl"
-                          placeholder="https://youtube.com/@yourchannel"
-                          {...register("channelUrl")}
-                          className={errors.channelUrl ? "border-destructive" : ""}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="channelUrl"
+                            placeholder="https://youtube.com/@yourchannel"
+                            {...register("channelUrl")}
+                            className={getInputClassName("channelUrl")}
+                          />
+                          {isFieldValid("channelUrl") && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                          )}
+                        </div>
                         {errors.channelUrl && (
                           <p className="text-sm text-destructive">{errors.channelUrl.message}</p>
                         )}
@@ -287,20 +325,25 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label>Creator Type *</Label>
-                          <Select value={creatorType} onValueChange={(value) => setValue("creatorType", value)}>
-                            <SelectTrigger className={errors.creatorType ? "border-destructive" : ""}>
-                              <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="youtube">YouTube Creator</SelectItem>
-                              <SelectItem value="twitch">Twitch Streamer</SelectItem>
-                              <SelectItem value="tiktok">TikTok Creator</SelectItem>
-                              <SelectItem value="smp">SMP Organizer</SelectItem>
-                              <SelectItem value="builder">Cinematic Builder</SelectItem>
-                              <SelectItem value="educator">Minecraft Educator</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <div className="relative">
+                            <Select value={creatorType} onValueChange={(value) => setValue("creatorType", value, { shouldDirty: true })}>
+                              <SelectTrigger className={errors.creatorType ? "border-destructive" : isFieldValid("creatorType") ? "border-primary/50" : ""}>
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="youtube">YouTube Creator</SelectItem>
+                                <SelectItem value="twitch">Twitch Streamer</SelectItem>
+                                <SelectItem value="tiktok">TikTok Creator</SelectItem>
+                                <SelectItem value="smp">SMP Organizer</SelectItem>
+                                <SelectItem value="builder">Cinematic Builder</SelectItem>
+                                <SelectItem value="educator">Minecraft Educator</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {isFieldValid("creatorType") && (
+                              <Check className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
                           {errors.creatorType && (
                             <p className="text-sm text-destructive">{errors.creatorType.message}</p>
                           )}
@@ -317,12 +360,17 @@ const Apply = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="currentSetup">Current Hosting Setup *</Label>
-                        <Textarea
-                          id="currentSetup"
-                          placeholder="Describe your current Minecraft setup - local worlds, existing hosting, self-hosted server, etc."
-                          {...register("currentSetup")}
-                          className={`min-h-[100px] resize-none ${errors.currentSetup ? "border-destructive" : ""}`}
-                        />
+                        <div className="relative">
+                          <Textarea
+                            id="currentSetup"
+                            placeholder="Describe your current Minecraft setup - local worlds, existing hosting, self-hosted server, etc."
+                            {...register("currentSetup")}
+                            className={`min-h-[100px] resize-none ${errors.currentSetup ? "border-destructive" : isFieldValid("currentSetup") ? "border-primary/50" : ""}`}
+                          />
+                          {isFieldValid("currentSetup") && (
+                            <Check className="absolute right-3 top-3 w-4 h-4 text-primary" />
+                          )}
+                        </div>
                         {errors.currentSetup && (
                           <p className="text-sm text-destructive">{errors.currentSetup.message}</p>
                         )}
@@ -330,12 +378,17 @@ const Apply = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="useCase">Content & Use Case *</Label>
-                        <Textarea
-                          id="useCase"
-                          placeholder="What kind of Minecraft content do you create? What are your biggest pain points? What would reliable infrastructure enable you to do?"
-                          {...register("useCase")}
-                          className={`min-h-[140px] resize-none ${errors.useCase ? "border-destructive" : ""}`}
-                        />
+                        <div className="relative">
+                          <Textarea
+                            id="useCase"
+                            placeholder="What kind of Minecraft content do you create? What are your biggest pain points? What would reliable infrastructure enable you to do?"
+                            {...register("useCase")}
+                            className={`min-h-[140px] resize-none ${errors.useCase ? "border-destructive" : isFieldValid("useCase") ? "border-primary/50" : ""}`}
+                          />
+                          {isFieldValid("useCase") && (
+                            <Check className="absolute right-3 top-3 w-4 h-4 text-primary" />
+                          )}
+                        </div>
                         {errors.useCase && (
                           <p className="text-sm text-destructive">{errors.useCase.message}</p>
                         )}
@@ -359,12 +412,17 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="referral">How did you hear about us?</Label>
-                          <Input
-                            id="referral"
-                            placeholder="Friend, Twitter, YouTube, etc."
-                            {...register("referral")}
-                            className={errors.referral ? "border-destructive" : ""}
-                          />
+                          <div className="relative">
+                            <Input
+                              id="referral"
+                              placeholder="Friend, Twitter, YouTube, etc."
+                              {...register("referral")}
+                              className={getInputClassName("referral")}
+                            />
+                            {isFieldValid("referral") && (
+                              <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                            )}
+                          </div>
                           {errors.referral && (
                             <p className="text-sm text-destructive">{errors.referral.message}</p>
                           )}

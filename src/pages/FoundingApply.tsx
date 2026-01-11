@@ -615,16 +615,17 @@ const FoundingApply = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <Label>Availability for Onboarding Call *</Label>
+                          <Label>Onboarding Preference *</Label>
                           <Select value={availabilityCall} onValueChange={(value) => setValue("availabilityCall", value, { shouldDirty: true })}>
                             <SelectTrigger className={errors.availabilityCall ? "border-destructive" : ""}>
-                              <SelectValue placeholder="When can you do a 30-min call?" />
+                              <SelectValue placeholder="How would you like to onboard?" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="this-week">This week</SelectItem>
-                              <SelectItem value="next-week">Next week</SelectItem>
-                              <SelectItem value="2-weeks">Within 2 weeks</SelectItem>
-                              <SelectItem value="flexible">Flexible</SelectItem>
+                              <SelectItem value="call-this-week">Voice/video call - this week</SelectItem>
+                              <SelectItem value="call-next-week">Voice/video call - next week</SelectItem>
+                              <SelectItem value="call-2-weeks">Voice/video call - within 2 weeks</SelectItem>
+                              <SelectItem value="chat-only">Chat only (Discord/email)</SelectItem>
+                              <SelectItem value="flexible">Either works - I'm flexible</SelectItem>
                             </SelectContent>
                           </Select>
                           {errors.availabilityCall && (

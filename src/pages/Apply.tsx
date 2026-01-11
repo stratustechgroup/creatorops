@@ -36,6 +36,7 @@ const applicationSchema = z.object({
   useCase: z.string().trim().min(20, "Please provide more detail about your content and needs").max(2000, "Must be less than 2000 characters"),
   budgetRange: z.string().optional(),
   timeline: z.string().optional(),
+  onboardingPreference: z.string().optional(),
   referral: z.string().trim().max(200, "Must be less than 200 characters").optional().or(z.literal("")),
 });
 
@@ -62,6 +63,7 @@ const defaultFormValues: ApplicationFormData = {
   useCase: "",
   budgetRange: "",
   timeline: "",
+  onboardingPreference: "",
   referral: "",
 };
 
@@ -120,6 +122,7 @@ const Apply = () => {
   const subscriberCount = watch("subscriberCount");
   const budgetRange = watch("budgetRange");
   const preferredContact = watch("preferredContact");
+  const onboardingPreference = watch("onboardingPreference");
 
   // Helper to check if a field is valid (touched/dirty and no errors)
   const isFieldValid = (fieldName: keyof ApplicationFormData) => {
@@ -488,6 +491,20 @@ const Apply = () => {
                             </SelectContent>
                           </Select>
                         </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Onboarding Preference</Label>
+                        <Select value={onboardingPreference} onValueChange={(value) => setValue("onboardingPreference", value)}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="How would you like to onboard?" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="voice-call">Voice/video call</SelectItem>
+                            <SelectItem value="chat-only">Chat only (Discord/email)</SelectItem>
+                            <SelectItem value="either">Either works</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div className="space-y-2">

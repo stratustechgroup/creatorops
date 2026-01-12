@@ -157,8 +157,8 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">9. Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
                 For questions about these Terms of Service, contact us at{" "}
-                <a href="mailto:hello@creatorops.io" className="text-primary hover:underline">
-                  hello@creatorops.io
+                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
+                  legal@creatorops.io
                 </a>
               </p>
             </section>

@@ -208,8 +208,8 @@ const SLAAgreement = () => {
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 To claim credits, contact{" "}
-                <a href="mailto:hello@creatorops.io" className="text-primary hover:underline">
-                  hello@creatorops.io
+                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
+                  legal@creatorops.io
                 </a>{" "}
                 with incident details including dates, times, and impact description.
               </p>

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { PageTransition } from "@/components/PageTransition";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { PainPoints } from "@/components/landing/PainPoints";
@@ -44,24 +45,26 @@ const Index = () => {
   }, [location.hash]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <ScrollProgress />
-      <Navbar hideNavLinks />
-      <main>
-        <Hero />
-        <PainPoints />
-        <CreatorDifference />
-        <Solution />
-        <SafetyFeatures />
-        <ComparisonTable />
-        <Pricing />
-        <Trust />
-        <FAQ />
-        <FoundingProgramTeaser />
-        <FinalCTA />
-      </main>
-      <Footer />
-    </div>
+    <PageTransition>
+      <div className="min-h-screen bg-background">
+        <ScrollProgress />
+        <Navbar hideNavLinks />
+        <main>
+          <Hero />
+          <PainPoints />
+          <CreatorDifference />
+          <Solution />
+          <SafetyFeatures />
+          <ComparisonTable />
+          <Pricing />
+          <Trust />
+          <FAQ />
+          <FoundingProgramTeaser />
+          <FinalCTA />
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 

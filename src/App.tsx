@@ -17,6 +17,8 @@ import NotFound from "./pages/NotFound";
 const Apply = lazy(() => import("./pages/Apply"));
 const FoundingCreators = lazy(() => import("./pages/FoundingCreators"));
 const FoundingApply = lazy(() => import("./pages/FoundingApply"));
+const About = lazy(() => import("./pages/About"));
+const Team = lazy(() => import("./pages/Team"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const SLAAgreement = lazy(() => import("./pages/SLAAgreement"));
@@ -38,6 +40,8 @@ const AnimatedRoutes = () => {
             <Route path="/apply" element={<Apply />} />
             <Route path="/founding-creators" element={<FoundingCreators />} />
             <Route path="/founding-apply" element={<FoundingApply />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/team" element={<Team />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/sla" element={<SLAAgreement />} />

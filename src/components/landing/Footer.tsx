@@ -10,6 +10,11 @@ const productLinks = [
   { label: "Founding Program", href: "/founding-creators", isPage: true },
 ];
 
+const companyLinks = [
+  { label: "About Us", href: "/about" },
+  { label: "Our Team", href: "/team" },
+];
+
 const legalLinks = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "/terms" },
@@ -41,7 +46,7 @@ export const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8"
         >
           {/* Brand column */}
           <div className="lg:col-span-1">
@@ -94,6 +99,23 @@ export const Footer = () => {
                       {link.label}
                     </a>
                   )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company column */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Company</h4>
+            <ul className="space-y-3">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -95,10 +95,10 @@ const Team = () => {
                     We're always looking for passionate people who care about creators and infrastructure.
                   </p>
                   <a
-                    href="mailto:careers@creatorops.com"
+                    href="mailto:hello@creatorops.io"
                     className="text-sm text-primary hover:underline"
                   >
-                    careers@creatorops.com
+                    hello@creatorops.io
                   </a>
                 </motion.div>
               </div>

@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Link } from "react-router-dom";
-import { MessageCircle, Mail, ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 
 const footerLinks = {
   product: [
@@ -60,33 +59,6 @@ export const Footer = () => {
     <footer className="relative border-t border-border/50 bg-gradient-to-b from-background to-secondary/20">
       {/* Main footer content */}
       <div className="container px-4">
-        {/* Top section with CTA */}
-        <div className="py-16 border-b border-border/50">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row md:items-center md:justify-between gap-8"
-          >
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">Ready to focus on creating?</h3>
-              <p className="text-muted-foreground">Join creators who've made the switch to managed infrastructure.</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button variant="hero" size="lg" asChild>
-                <Link to="/founding-apply">Apply Now</Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href="https://creatorops.io/discord" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Discord
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-
         {/* Links section */}
         <div className="py-12">
           <motion.div

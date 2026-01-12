@@ -46,8 +46,8 @@ const About = () => {
                 className="max-w-3xl mx-auto text-center"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                  Built by Creators,{" "}
-                  <span className="text-gradient">for Creators</span>
+                  Infrastructure Experts,{" "}
+                  <span className="text-gradient">Creator Focused</span>
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
                   We started Creator Ops because we were tired of watching amazing content get ruined by preventable technical problems. Server crashes during streams, lost worlds from bad updates, hours wasted on infrastructure instead of creating.
@@ -72,10 +72,10 @@ const About = () => {
                     Creator Ops was born from a simple observation: content creators shouldn't need to be system administrators. Yet every day, talented creators lose valuable time—and sometimes entire projects—to infrastructure problems that should never have happened.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    We've spent years in the Minecraft hosting space, watching the same patterns repeat. Creators start with passion projects, grow their audiences, and then hit a wall when their technical needs outpace their technical skills. The existing options? Either expensive enterprise solutions designed for corporations, or budget hosting that treats your content like just another game server.
+                    We've spent years in the Minecraft hosting and infrastructure space, watching the same patterns repeat. Creators start with passion projects, grow their audiences, and then hit a wall when their technical needs outpace their technical skills. The existing options? Either expensive enterprise solutions designed for corporations, or budget hosting that treats your content like just another game server.
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
-                    Creator Ops fills that gap. We provide enterprise-grade infrastructure with creator-focused service. We speak your language—content schedules, recording sessions, collaboration workflows—not server specs and JVM flags. When you work with us, you get a technical partner who understands that your world isn't just data. It's your livelihood.
+                    Creator Ops fills that gap. We're infrastructure people who've dedicated ourselves to understanding creator workflows. We provide enterprise-grade reliability with service tailored to content schedules, recording sessions, and collaboration needs. When you work with us, you get a technical partner who understands that your world isn't just data—it's your livelihood.
                   </p>
                 </div>
               </motion.div>

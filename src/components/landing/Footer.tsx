@@ -1,30 +1,30 @@
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Link } from "react-router-dom";
-import { MessageCircle, Mail, ArrowRight } from "lucide-react";
+import { MessageCircle, Mail, ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const productLinks = [
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
-];
-
-const programLinks = [
-  { label: "Founding Program", href: "/founding-creators" },
-  { label: "Apply Now", href: "/founding-apply" },
-];
-
-const companyLinks = [
-  { label: "About Us", href: "/about" },
-  { label: "Our Team", href: "/team" },
-];
-
-const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
-  { label: "SLA Agreement", href: "/sla" },
-  { label: "Fair Usage Policy", href: "/fair-usage" },
-];
+const footerLinks = {
+  product: [
+    { label: "Features", href: "#features", isAnchor: true },
+    { label: "Pricing", href: "#pricing", isAnchor: true },
+    { label: "FAQ", href: "#faq", isAnchor: true },
+  ],
+  program: [
+    { label: "Founding Program", href: "/founding-creators" },
+    { label: "Apply Now", href: "/founding-apply" },
+  ],
+  company: [
+    { label: "About Us", href: "/about" },
+    { label: "Our Team", href: "/team" },
+  ],
+  legal: [
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "SLA", href: "/sla" },
+    { label: "Fair Usage", href: "/fair-usage" },
+  ],
+};
 
 export const Footer = () => {
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -37,74 +37,90 @@ export const Footer = () => {
     }
   };
 
-  return (
-    <footer className="relative border-t border-border bg-card/50">
-      {/* Main footer */}
-      <div className="container px-4 py-16 md:py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+  const FooterLink = ({ href, label, isAnchor }: { href: string; label: string; isAnchor?: boolean }) => {
+    if (isAnchor) {
+      return (
+        <a
+          href={href}
+          onClick={(e) => handleSmoothScroll(e, href)}
+          className="text-muted-foreground hover:text-foreground transition-colors"
         >
-          {/* Top section - Brand and CTA */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12 mb-16">
-            {/* Brand */}
-            <div className="max-w-sm">
-              <Link to="/" className="flex items-center gap-3 mb-4">
-                <Logo className="w-10 h-10" />
-                <div>
-                  <span className="font-bold text-lg text-foreground">Creator Ops</span>
-                  <p className="text-xs text-muted-foreground">by Stratus Technology Group</p>
-                </div>
+          {label}
+        </a>
+      );
+    }
+    return (
+      <Link to={href} className="text-muted-foreground hover:text-foreground transition-colors">
+        {label}
+      </Link>
+    );
+  };
+
+  return (
+    <footer className="relative border-t border-border/50 bg-gradient-to-b from-background to-secondary/20">
+      {/* Main footer content */}
+      <div className="container px-4">
+        {/* Top section with CTA */}
+        <div className="py-16 border-b border-border/50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row md:items-center md:justify-between gap-8"
+          >
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">Ready to focus on creating?</h3>
+              <p className="text-muted-foreground">Join creators who've made the switch to managed infrastructure.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button variant="hero" size="lg" asChild>
+                <Link to="/founding-apply">Apply Now</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://creatorops.io/discord" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Discord
+                </a>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Links section */}
+        <div className="py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="grid grid-cols-2 md:grid-cols-6 gap-8 md:gap-12"
+          >
+            {/* Brand - spans 2 columns on md+ */}
+            <div className="col-span-2">
+              <Link to="/" className="inline-flex items-center gap-3 mb-4">
+                <Logo className="w-9 h-9" />
+                <span className="font-bold text-lg text-foreground">Creator Ops</span>
               </Link>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Managed Minecraft infrastructure built specifically for content creators. Focus on creating, not managing servers.
+              <p className="text-sm text-muted-foreground mb-4 max-w-xs">
+                Managed Minecraft infrastructure for content creators. You create, we handle the rest.
               </p>
+              <a
+                href="mailto:hello@creatorops.io"
+                className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                hello@creatorops.io
+              </a>
             </div>
 
-            {/* Contact CTA */}
-            <div className="lg:text-right">
-              <h4 className="font-semibold text-foreground mb-3">Get in Touch</h4>
-              <div className="flex flex-col gap-3">
-                <a
-                  href="mailto:hello@creatorops.io"
-                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors lg:justify-end"
-                >
-                  <Mail className="w-4 h-4" />
-                  hello@creatorops.io
-                </a>
-                <a
-                  href="https://creatorops.io/discord"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors lg:justify-end"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Join our Discord
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-border mb-12" />
-
-          {/* Links grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {/* Product */}
             <div>
-              <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Product</h4>
-              <ul className="space-y-3">
-                {productLinks.map((link) => (
+              <h4 className="font-semibold text-foreground mb-4">Product</h4>
+              <ul className="space-y-3 text-sm">
+                {footerLinks.product.map((link) => (
                   <li key={link.href}>
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleSmoothScroll(e, link.href)}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    <FooterLink {...link} />
                   </li>
                 ))}
               </ul>
@@ -112,16 +128,11 @@ export const Footer = () => {
 
             {/* Program */}
             <div>
-              <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Program</h4>
-              <ul className="space-y-3">
-                {programLinks.map((link) => (
+              <h4 className="font-semibold text-foreground mb-4">Program</h4>
+              <ul className="space-y-3 text-sm">
+                {footerLinks.program.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      to={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    <FooterLink {...link} />
                   </li>
                 ))}
               </ul>
@@ -129,16 +140,11 @@ export const Footer = () => {
 
             {/* Company */}
             <div>
-              <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Company</h4>
-              <ul className="space-y-3">
-                {companyLinks.map((link) => (
+              <h4 className="font-semibold text-foreground mb-4">Company</h4>
+              <ul className="space-y-3 text-sm">
+                {footerLinks.company.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      to={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    <FooterLink {...link} />
                   </li>
                 ))}
               </ul>
@@ -146,33 +152,30 @@ export const Footer = () => {
 
             {/* Legal */}
             <div>
-              <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Legal</h4>
-              <ul className="space-y-3">
-                {legalLinks.map((link) => (
+              <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+              <ul className="space-y-3 text-sm">
+                {footerLinks.legal.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      to={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    <FooterLink {...link} />
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-border">
-        <div className="container px-4 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Stratus Technology Group. All rights reserved.
-            </p>
-            <p className="text-xs text-muted-foreground/60 text-center md:text-right max-w-md">
-              Creator Ops is a trademark of Stratus Technology Group. Minecraft is a trademark of Mojang Studios. We are not affiliated with or endorsed by Mojang Studios.
+      <div className="border-t border-border/50 bg-secondary/30">
+        <div className="container px-4 py-5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <span>© {new Date().getFullYear()}</span>
+              <span className="text-border mx-2">·</span>
+              <span>Stratus Technology Group</span>
+            </div>
+            <p className="text-xs text-muted-foreground/60 text-center md:text-right">
+              Not affiliated with Mojang Studios. Minecraft is a trademark of Mojang Studios.
             </p>
           </div>
         </div>

@@ -5,13 +5,14 @@ import { Footer } from "@/components/landing/Footer";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Mail } from "lucide-react";
+import jamesFarmerImg from "@/assets/james-farmer.jpg";
 
 const team = [
   {
     name: "James Farmer",
     role: "Founder & CEO",
     bio: "Passionate about building infrastructure that lets creators focus on what they do best. Years of experience in Minecraft hosting and a deep understanding of what content creators actually need.",
-    image: null, // Placeholder - can add image path later
+    image: jamesFarmerImg,
   },
   // Add more team members here as needed
 ];

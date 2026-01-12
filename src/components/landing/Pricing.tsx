@@ -242,7 +242,7 @@ export const Pricing = () => {
                 className="w-full"
                 asChild
               >
-                <Link to="/apply" onClick={() => handlePlanClick(plan.name)}>
+                <Link to="/founding-apply" onClick={() => handlePlanClick(plan.name)}>
                   Get Started
                 </Link>
               </Button>

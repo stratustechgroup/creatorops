@@ -117,7 +117,7 @@ export const Hero = () => {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-6 mt-12"
           >
-            {["Automated backups", "24/7 monitoring", "Instant response"].map((item, index) => (
+            {["Never lose progress", "Issues caught before you notice", "Problems fixed while you create"].map((item, index) => (
               <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 {item}

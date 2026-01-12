@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const benefits = [
-  { icon: Lock, title: "Locked Pricing", description: "Your rate never increases" },
-  { icon: Crown, title: "VIP Access", description: "Priority support & features" },
-  { icon: MessageSquare, title: "Direct Input", description: "Shape product roadmap" },
+  { icon: Lock, title: "Price Locked Forever", description: "Your rate stays the same, even as we add features" },
+  { icon: Crown, title: "Priority Everything", description: "First access to new tools and priority support" },
+  { icon: MessageSquare, title: "Shape the Roadmap", description: "Your feedback directly influences what we build" },
 ];
 
 const containerVariants = {
@@ -86,7 +86,7 @@ export const FoundingProgramTeaser = () => {
               </h2>
               
               <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-                Join an exclusive group of visionary creators shaping the future of Minecraft infrastructure.
+                Lock in founder pricing forever while shaping infrastructure built by people who understand what creators actually need.
               </p>
               
               {/* Benefits grid */}

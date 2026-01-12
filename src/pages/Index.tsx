@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { PainPoints } from "@/components/landing/PainPoints";
+import { CreatorDifference } from "@/components/landing/CreatorDifference";
 import { Solution } from "@/components/landing/Solution";
 import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
 import { ComparisonTable } from "@/components/landing/ComparisonTable";
@@ -49,6 +50,7 @@ const Index = () => {
       <main>
         <Hero />
         <PainPoints />
+        <CreatorDifference />
         <Solution />
         <SafetyFeatures />
         <ComparisonTable />

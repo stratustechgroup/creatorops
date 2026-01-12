@@ -1,31 +1,64 @@
 import { motion } from "framer-motion";
-import { Zap, Shield, RefreshCw, Users, Settings } from "lucide-react";
+import { Zap, Shield, RefreshCw, Users, Settings, PlayCircle, Radio, Download } from "lucide-react";
 
 const features = [
   {
     icon: Zap,
-    title: "Recording-Ready Worlds",
-    description: "Your world is always online, stable, and ready to join when inspiration hits.",
+    title: "Always Ready When You Are",
+    description: "Your world is always online, stable, and ready to join when inspiration hits. No warmup time, no lag spikes.",
   },
   {
     icon: RefreshCw,
-    title: "Automatic Backups & Rollback",
-    description: "Frequent backups with the ability to restore your world to a previous point—fast.",
+    title: "Instant Rollback Anytime",
+    description: "Something go wrong? Restore to any point in the last 30 days. Your progress is always protected.",
   },
   {
     icon: Shield,
-    title: "Safe Upgrades (No Series Breakage)",
-    description: "We pin your version. Upgrades happen only when you approve them—and they're fully reversible.",
+    title: "Updates That Don't Break Your Series",
+    description: "We pin your version. Upgrades happen only when you approve them—test in staging first, rollback if needed.",
   },
   {
     icon: Users,
-    title: "Collaboration Without Chaos",
-    description: "Invite collaborators safely. Spin up staging or collab worlds without risking production.",
+    title: "Safe Collaboration",
+    description: "Invite collaborators safely. Spin up staging or collab worlds without risking your main production world.",
   },
   {
     icon: Settings,
-    title: "Zero-Ops Experience",
-    description: "No server panels. No JVM flags. No guesswork. If something breaks, we fix it.",
+    title: "We Handle Everything",
+    description: "No server panels. No JVM flags. No guesswork. If something breaks, we fix it—you keep creating.",
+  },
+];
+
+const managedServices = [
+  {
+    icon: PlayCircle,
+    phase: "Pre-Stream",
+    title: "Recording-Ready Setup",
+    items: [
+      "Chunks pre-generated for smooth exploration",
+      "Configurations tested and optimized",
+      "World verified stable before you go live",
+    ],
+  },
+  {
+    icon: Radio,
+    phase: "During Stream",
+    title: "Live Support Available",
+    items: [
+      "Admin support in Discord for emergencies",
+      "Real-time monitoring of your session",
+      "Instant griefer bans or crash recovery",
+    ],
+  },
+  {
+    icon: Download,
+    phase: "Post-Stream",
+    title: "Content Delivered",
+    items: [
+      "World downloads ready within hours",
+      "Backups verified and secured",
+      "Performance reports on request",
+    ],
   },
 ];
 
@@ -103,6 +136,59 @@ export const Solution = () => {
                 <div className="text-sm font-semibold text-foreground mb-0.5">{step.title}</div>
                 <div className="text-xs text-muted-foreground hidden sm:block">{step.description}</div>
               </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* What Fully Managed Means */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-5xl mx-auto mb-20"
+        >
+          <div className="text-center mb-10">
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+              What "Fully Managed" Actually Means
+            </h3>
+            <p className="text-muted-foreground">
+              Think of us as your Technical Director, not just your server host.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {managedServices.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="p-6 rounded-2xl bg-card border border-border"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <service.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-medium text-primary uppercase tracking-wide">
+                      {service.phase}
+                    </div>
+                    <div className="text-sm font-semibold text-foreground">
+                      {service.title}
+                    </div>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {service.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <span className="text-primary mt-1">•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             ))}
           </div>
         </motion.div>

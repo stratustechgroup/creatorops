@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ShieldCheck, RefreshCcw, Lock, Sparkles } from "lucide-react";
+import { Check, ShieldCheck, RefreshCcw, Lock, Sparkles, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -43,11 +43,11 @@ const plans = [
     period: "",
     description: "Temporary scaling for special events and collaborations.",
     features: [
-      { text: "Temporary scaling", highlight: true },
-      { text: "Event-ready infrastructure", highlight: false },
-      { text: "Time-boxed pricing", highlight: false },
-      { text: "Dedicated support", highlight: true },
-      { text: "Custom configuration", highlight: false },
+      { text: "Pre-event stress testing", highlight: true },
+      { text: "Dedicated monitoring during event", highlight: true },
+      { text: "Instant rollback capability", highlight: false },
+      { text: "Post-event performance report", highlight: false },
+      { text: "Event Assurance guarantee", highlight: true, detail: "included" },
     ],
     highlighted: false,
   },
@@ -256,12 +256,13 @@ export const Pricing = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mt-16 pt-8 border-t border-border/50"
+          className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-16 pt-8 border-t border-border/50"
         >
           {[
             { icon: ShieldCheck, text: "30-day money-back guarantee" },
             { icon: RefreshCcw, text: "Cancel anytime" },
             { icon: Lock, text: "You always own your world" },
+            { icon: Zap, text: "Event Assurance included" },
           ].map((item, index) => (
             <div key={index} className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <div className="p-1.5 rounded-lg bg-secondary/50">
@@ -270,6 +271,19 @@ export const Pricing = () => {
               <span>{item.text}</span>
             </div>
           ))}
+        </motion.div>
+
+        {/* Event Assurance note */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ delay: 0.35, duration: 0.5 }}
+          className="max-w-2xl mx-auto mt-8 p-4 rounded-xl bg-primary/5 border border-primary/20 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            <span className="text-foreground font-medium">Event Assurance:</span> If your server crashes during a scheduled live event due to our infrastructure, you get one month credit. We put our money where our mouth is.
+          </p>
         </motion.div>
 
         {/* Annual discount note */}

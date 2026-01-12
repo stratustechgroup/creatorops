@@ -42,8 +42,13 @@ export const FinalCTA = () => {
           </h2>
           
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground mb-4 max-w-xl mx-auto leading-relaxed">
             If you're serious about Minecraft creation, your infrastructure should be too.
+          </p>
+
+          {/* Security reinforcement */}
+          <p className="text-sm text-primary mb-8">
+            Your IP protected. Your content safe. Your infrastructure handled.
           </p>
           
           {/* CTA */}

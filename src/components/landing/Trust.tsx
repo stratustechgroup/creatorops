@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, Download, Database, CheckCircle2, Zap } from "lucide-react";
+import { Shield, Clock, Download, Database, CheckCircle2, Zap, Radio } from "lucide-react";
 
 const trustItems = [
   {
@@ -15,10 +15,10 @@ const trustItems = [
     stat: "< 2 hour response"
   },
   {
-    icon: Shield,
-    title: "Clear Response Times",
-    description: "SLA-backed response times you can count on, documented and guaranteed",
-    stat: "99.9% uptime"
+    icon: Radio,
+    title: "Event Protection",
+    description: "Pre-tested, monitored in real-time, with instant rollback if anything goes wrong",
+    stat: "Live monitoring"
   },
   {
     icon: Download,
@@ -31,8 +31,8 @@ const trustItems = [
 const promises = [
   "Your content is treated like production data—because it is",
   "No surprise downtimes during recording sessions",
-  "Direct human support, not ticket queues",
-  "Transparent operations with full visibility"
+  "Live events protected by our Event Assurance guarantee",
+  "Direct human support, not ticket queues"
 ];
 
 const containerVariants = {

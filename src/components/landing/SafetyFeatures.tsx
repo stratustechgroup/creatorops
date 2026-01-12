@@ -1,41 +1,61 @@
 import { motion } from "framer-motion";
-import { Shield, Database, Activity, AlertTriangle, Clock, RotateCcw } from "lucide-react";
+import { Shield, Database, Activity, AlertTriangle, Clock, RotateCcw, Globe, Zap, Lock } from "lucide-react";
 
 const safetyFeatures = [
+  // Security features first
+  {
+    icon: Globe,
+    title: "Proxy Protection",
+    description: "Your IP stays hidden. We handle all proxy and velocity layers so your home network is never exposed to viewers or attackers.",
+    highlight: "IP Hidden",
+  },
+  {
+    icon: Zap,
+    title: "DDoS Shield",
+    description: "Stream-safe DDoS mitigation that protects your server without disconnecting players mid-session. Your content keeps flowing.",
+    highlight: "Stream-safe",
+  },
+  {
+    icon: Lock,
+    title: "Creator Confidentiality",
+    description: "Your projects, server IPs, and upcoming content stay strictly confidential. We work under discretion—your secrets are safe.",
+    highlight: "NDA Ready",
+  },
+  // Reliability features with outcome-focused copy
   {
     icon: Database,
-    title: "Automated Backups",
-    description: "Every 4 hours, your world is backed up automatically. 30-day retention with off-site storage means your builds are never at risk.",
-    highlight: "Every 4 hours",
+    title: "Never Lose Progress",
+    description: "Backups so frequent you'll never wonder if you're protected. 30-day retention with off-site storage means your builds are always recoverable.",
+    highlight: "Auto-backups",
   },
   {
     icon: Activity,
-    title: "24/7 Monitoring",
-    description: "Our systems watch your server around the clock. CPU, memory, disk, and network—we catch problems before they affect your content.",
-    highlight: "Always watching",
+    title: "Problems Caught Before Your Stream",
+    description: "We detect issues before they interrupt your recording. Real-time monitoring means problems get fixed while you focus on content.",
+    highlight: "Proactive",
   },
   {
     icon: AlertTriangle,
-    title: "Incident Response",
+    title: "Instant Incident Response",
     description: "When issues arise, we respond immediately. No tickets, no waiting—our team handles problems so you can keep creating.",
-    highlight: "Immediate action",
+    highlight: "Immediate",
   },
   {
     icon: Shield,
-    title: "Version Protection",
-    description: "We never update your Minecraft version without your approval. Test in staging first, rollback within 72 hours if needed.",
-    highlight: "You control updates",
+    title: "Updates That Don't Break Your Series",
+    description: "We never update your Minecraft version without approval. Test in staging first, rollback within 72 hours if something's off.",
+    highlight: "You control",
   },
   {
     icon: Clock,
-    title: "Uptime Guarantee",
-    description: "99.5% uptime SLA backed by service credits. Scheduled maintenance is always communicated 48 hours in advance.",
+    title: "Stream-Ready Reliability",
+    description: "Uptime guarantees that matter during your content windows. Scheduled maintenance is always communicated 48 hours in advance.",
     highlight: "99.5% SLA",
   },
   {
     icon: RotateCcw,
-    title: "Instant Restores",
-    description: "Need to rollback? Restores happen in hours, not days. Creator Pro gets 4-hour restore times, guaranteed.",
+    title: "Rapid Rollback",
+    description: "Need to undo something? Restores happen in hours, not days. Creator Pro gets 4-hour restore times, guaranteed.",
     highlight: "Hours, not days",
   },
 ];
@@ -76,13 +96,13 @@ export const SafetyFeatures = () => {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary">
             <Shield className="w-4 h-4" />
-            Infrastructure Protection
+            Security & Protection
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            How We Keep You Safe
+            Security & Safety Built for Creators
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Your world is your livelihood. We treat it that way with enterprise-grade protection and operations.
+            Your IP protected. Your content safe. Your infrastructure handled. We treat your world like the production asset it is.
           </p>
         </motion.div>
 

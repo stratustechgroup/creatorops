@@ -36,7 +36,7 @@ const TermsOfService = () => {
             </p>
           </div>
 
-          <div className="prose prose-invert max-w-none space-y-10">
+          <div className="prose prose-invert max-w-none space-y-12">
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Service Scope</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">

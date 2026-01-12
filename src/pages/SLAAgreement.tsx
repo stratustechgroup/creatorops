@@ -220,7 +220,7 @@ const SLAAgreement = () => {
         <footer className="border-t border-border py-8">
           <div className="container px-4 text-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Stratus Technology Group. All rights reserved.
+              Copyright {new Date().getFullYear()} © Stratus Technology Group
             </p>
           </div>
         </footer>

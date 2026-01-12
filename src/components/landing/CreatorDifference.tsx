@@ -15,7 +15,7 @@ const differentiators = [
   {
     icon: Target,
     title: "Outcome Guarantees",
-    description: "We measure success by uninterrupted content, not uptime percentages. Your stream matters more than our metrics.",
+    description: "We measure success by uninterrupted content, not uptime percentages. Your recording session matters more than our metrics.",
   },
   {
     icon: Sparkles,

@@ -12,8 +12,8 @@ const safetyFeatures = [
   {
     icon: Zap,
     title: "DDoS Shield",
-    description: "Stream-safe DDoS mitigation that protects your server without disconnecting players mid-session. Your content keeps flowing.",
-    highlight: "Stream-safe",
+    description: "Content-safe DDoS mitigation that protects your server without disconnecting players mid-session. Your recording keeps rolling.",
+    highlight: "Always protected",
   },
   {
     icon: Lock,
@@ -30,8 +30,8 @@ const safetyFeatures = [
   },
   {
     icon: Activity,
-    title: "Problems Caught Before Your Stream",
-    description: "We detect issues before they interrupt your recording. Real-time monitoring means problems get fixed while you focus on content.",
+    title: "Problems Caught Before You Notice",
+    description: "We detect issues before they interrupt your session. Real-time monitoring means problems get fixed while you focus on content.",
     highlight: "Proactive",
   },
   {
@@ -48,7 +48,7 @@ const safetyFeatures = [
   },
   {
     icon: Clock,
-    title: "Stream-Ready Reliability",
+    title: "Recording-Ready Reliability",
     description: "Uptime guarantees that matter during your content windows. Scheduled maintenance is always communicated 48 hours in advance.",
     highlight: "99.5% SLA",
   },

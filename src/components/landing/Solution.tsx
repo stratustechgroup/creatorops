@@ -32,17 +32,17 @@ const features = [
 const managedServices = [
   {
     icon: PlayCircle,
-    phase: "Pre-Stream",
-    title: "Recording-Ready Setup",
+    phase: "Before You Record",
+    title: "Session-Ready Setup",
     items: [
       "Chunks pre-generated for smooth exploration",
       "Configurations tested and optimized",
-      "World verified stable before you go live",
+      "World verified stable before you hit record",
     ],
   },
   {
     icon: Radio,
-    phase: "During Stream",
+    phase: "While You Create",
     title: "Live Support Available",
     items: [
       "Admin support in Discord for emergencies",
@@ -52,7 +52,7 @@ const managedServices = [
   },
   {
     icon: Download,
-    phase: "Post-Stream",
+    phase: "After Your Session",
     title: "Content Delivered",
     items: [
       "World downloads ready within hours",

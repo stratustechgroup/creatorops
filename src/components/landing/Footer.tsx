@@ -142,7 +142,7 @@ export const Footer = () => {
         <div className="container px-4 py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
             <div className="flex items-center gap-1 text-muted-foreground">
-              <span>Copyright {new Date().getFullYear()} © Stratus Technology Group</span>
+              <span>Copyright {new Date().getFullYear()} © Stratus Technology Group, LLC DBA Creator Ops</span>
             </div>
             <p className="text-xs text-muted-foreground/60 text-center md:text-right">
               Not affiliated with Mojang Studios. Minecraft is a trademark of Mojang Studios.

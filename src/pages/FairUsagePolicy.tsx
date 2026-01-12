@@ -127,7 +127,7 @@ const FairUsagePolicy = () => {
         <footer className="border-t border-border py-8">
           <div className="container px-4 text-center">
             <p className="text-sm text-muted-foreground">
-              Copyright {new Date().getFullYear()} © Stratus Technology Group
+              Copyright {new Date().getFullYear()} © Stratus Technology Group, LLC DBA Creator Ops
             </p>
           </div>
         </footer>

@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import {
   useServerResources,
   useServerBackups,
@@ -24,7 +23,7 @@ interface ServerCardProps {
 }
 
 export function ServerCard({ server }: ServerCardProps) {
-  const { data: resourcesData, isLoading: resourcesLoading } =
+  const { data: resourcesData, isLoading: resourcesLoading, isError: resourcesError } =
     useServerResources(server.identifier);
   const { data: backupsData } = useServerBackups(server.identifier);
 
@@ -44,6 +43,9 @@ export function ServerCard({ server }: ServerCardProps) {
   const successfulBackups = backups.filter((b) => b.attributes.is_successful);
   const lastBackup = successfulBackups[0]?.attributes;
 
+  // If resources failed to load (no client API key), show static view
+  const showStaticView = resourcesError && !resourcesLoading;
+
   return (
     <Card className="border-white/5 hover:border-white/10 transition-colors">
       <CardHeader className="pb-3">
@@ -61,13 +63,18 @@ export function ServerCard({ server }: ServerCardProps) {
               )}
             </div>
           </div>
-          <StatusBadge state={state} isLoading={resourcesLoading} />
+          <StatusBadge
+            state={state}
+            isLoading={resourcesLoading}
+            suspended={server.suspended}
+            showStatic={showStaticView}
+          />
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Uptime */}
-        {state === "running" && resources?.uptime && (
+        {/* Uptime - only show if we have real-time data */}
+        {!showStaticView && state === "running" && resources?.uptime && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Clock className="w-3.5 h-3.5" />
             <span>Uptime: {formatUptime(resources.uptime)}</span>
@@ -80,49 +87,69 @@ export function ServerCard({ server }: ServerCardProps) {
           <ResourceRow
             icon={<Cpu className="w-4 h-4" />}
             label="CPU"
-            value={`${cpuPercent.toFixed(1)}%`}
-            percent={Math.min(cpuPercent, 100)}
+            value={showStaticView ? `${server.limits.cpu}%` : `${cpuPercent.toFixed(1)}%`}
+            percent={showStaticView ? undefined : Math.min(cpuPercent, 100)}
             limit={`${server.limits.cpu}%`}
+            showProgress={!showStaticView}
           />
 
           {/* Memory */}
           <ResourceRow
             icon={<MemoryStick className="w-4 h-4" />}
             label="Memory"
-            value={formatBytes(resources?.memory_bytes ?? 0)}
-            percent={Math.min(memoryPercent, 100)}
-            limit={`${server.limits.memory} MB`}
+            value={showStaticView
+              ? formatBytes(server.limits.memory * 1024 * 1024)
+              : formatBytes(resources?.memory_bytes ?? 0)
+            }
+            percent={showStaticView ? undefined : Math.min(memoryPercent, 100)}
+            limit={formatBytes(server.limits.memory * 1024 * 1024)}
+            showProgress={!showStaticView}
           />
 
           {/* Disk */}
           <ResourceRow
             icon={<HardDrive className="w-4 h-4" />}
             label="Disk"
-            value={formatBytes(resources?.disk_bytes ?? 0)}
-            percent={Math.min(diskPercent, 100)}
-            limit={`${server.limits.disk} MB`}
+            value={showStaticView
+              ? formatBytes(server.limits.disk * 1024 * 1024)
+              : formatBytes(resources?.disk_bytes ?? 0)
+            }
+            percent={showStaticView ? undefined : Math.min(diskPercent, 100)}
+            limit={formatBytes(server.limits.disk * 1024 * 1024)}
+            showProgress={!showStaticView}
           />
         </div>
 
-        {/* Backups section */}
-        <div className="pt-3 border-t border-white/5">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Archive className="w-4 h-4" />
-              <span>{successfulBackups.length} backups</span>
+        {/* Backups section - only show if we have real-time data */}
+        {!showStaticView && (
+          <div className="pt-3 border-t border-white/5">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Archive className="w-4 h-4" />
+                <span>{successfulBackups.length} backups</span>
+              </div>
+              {lastBackup && (
+                <span className="text-xs text-muted-foreground">
+                  Last: {formatDate(lastBackup.created_at)}
+                </span>
+              )}
             </div>
             {lastBackup && (
-              <span className="text-xs text-muted-foreground">
-                Last: {formatDate(lastBackup.created_at)}
-              </span>
+              <p className="text-xs text-muted-foreground mt-1 truncate">
+                {lastBackup.name} ({formatBytes(lastBackup.bytes)})
+              </p>
             )}
           </div>
-          {lastBackup && (
-            <p className="text-xs text-muted-foreground mt-1 truncate">
-              {lastBackup.name} ({formatBytes(lastBackup.bytes)})
+        )}
+
+        {/* Static view info */}
+        {showStaticView && (
+          <div className="pt-3 border-t border-white/5">
+            <p className="text-xs text-muted-foreground text-center">
+              Real-time data unavailable
             </p>
-          )}
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -131,15 +158,32 @@ export function ServerCard({ server }: ServerCardProps) {
 function StatusBadge({
   state,
   isLoading,
+  suspended,
+  showStatic,
 }: {
   state: string;
   isLoading: boolean;
+  suspended: boolean;
+  showStatic: boolean;
 }) {
+  if (suspended) {
+    return <Badge variant="destructive">Suspended</Badge>;
+  }
+
   if (isLoading) {
     return (
       <Badge variant="secondary" className="gap-1">
         <Loader2 className="w-3 h-3 animate-spin" />
         Loading
+      </Badge>
+    );
+  }
+
+  if (showStatic) {
+    return (
+      <Badge variant="default" className="gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-current" />
+        Active
       </Badge>
     );
   }
@@ -172,12 +216,14 @@ function ResourceRow({
   value,
   percent,
   limit,
+  showProgress = true,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
-  percent: number;
+  percent?: number;
   limit: string;
+  showProgress?: boolean;
 }) {
   // Color based on usage
   const getProgressColor = (pct: number) => {
@@ -194,15 +240,23 @@ function ResourceRow({
           {label}
         </span>
         <span className="font-mono text-xs">
-          {value} <span className="text-muted-foreground">/ {limit}</span>
+          {showProgress ? (
+            <>
+              {value} <span className="text-muted-foreground">/ {limit}</span>
+            </>
+          ) : (
+            value
+          )}
         </span>
       </div>
-      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-300 ${getProgressColor(percent)}`}
-          style={{ width: `${Math.min(percent, 100)}%` }}
-        />
-      </div>
+      {showProgress && percent !== undefined && (
+        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${getProgressColor(percent)}`}
+            style={{ width: `${Math.min(percent, 100)}%` }}
+          />
+        </div>
+      )}
     </div>
   );
 }

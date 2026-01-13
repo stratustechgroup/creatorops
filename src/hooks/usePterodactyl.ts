@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-// Types based on Pterodactyl API responses
+// Types based on Pterodactyl Application API responses
 export interface ServerListItem {
+  id: number;
   identifier: string;
   uuid: string;
   name: string;
   description: string;
+  suspended: boolean;
   limits: {
     memory: number;
     swap: number;
@@ -19,8 +21,13 @@ export interface ServerListItem {
     allocations: number;
     backups: number;
   };
+  user: number;
+  node: number;
+  created_at: string;
+  updated_at: string;
 }
 
+// Types for Client API responses (real-time data)
 export interface ServerResources {
   current_state: "running" | "starting" | "stopping" | "offline";
   is_suspended: boolean;
@@ -71,7 +78,7 @@ async function callPterodactylProxy<T>(
   return data;
 }
 
-// List all servers for current user
+// List all servers for current user (Application API)
 export function useServers() {
   return useQuery({
     queryKey: ["servers"],
@@ -84,7 +91,22 @@ export function useServers() {
   });
 }
 
-// Get real-time resources for a specific server
+// Get server details by identifier (Application API)
+export function useServerDetails(serverId: string | undefined) {
+  return useQuery({
+    queryKey: ["server-details", serverId],
+    queryFn: () =>
+      callPterodactylProxy<{ attributes: ServerListItem }>(
+        "server_details",
+        serverId
+      ),
+    staleTime: 60_000,
+    enabled: !!serverId,
+    retry: 1,
+  });
+}
+
+// Get real-time resources for a specific server (Client API - requires service account)
 export function useServerResources(serverId: string | undefined) {
   return useQuery({
     queryKey: ["server-resources", serverId],
@@ -99,7 +121,7 @@ export function useServerResources(serverId: string | undefined) {
   });
 }
 
-// Get backups for a specific server
+// Get backups for a specific server (Client API - requires service account)
 export function useServerBackups(serverId: string | undefined) {
   return useQuery({
     queryKey: ["server-backups", serverId],

@@ -18,7 +18,9 @@
       "Bash(source ~/.nvm/nvm.sh)",
       "Bash(nvm use:*)",
       "WebFetch(domain:pterodactyl-api-docs.netvpx.com)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "mcp__plugin_supabase_supabase__list_edge_functions",
+      "mcp__plugin_supabase_supabase__list_tables"
     ]
   }
 }

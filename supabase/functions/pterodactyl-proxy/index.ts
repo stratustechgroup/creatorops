@@ -8,11 +8,23 @@ const corsHeaders = {
 };
 
 const PTERODACTYL_URL = Deno.env.get("PTERODACTYL_URL");
-const PTERODACTYL_API_KEY = Deno.env.get("PTERODACTYL_API_KEY");
+const PTERODACTYL_APP_API_KEY = Deno.env.get("PTERODACTYL_API_KEY"); // Application API key
+const PTERODACTYL_CLIENT_API_KEY = Deno.env.get("PTERODACTYL_CLIENT_API_KEY"); // Client API key (service account)
 
 interface ProxyRequest {
   action: "list_servers" | "server_details" | "server_resources" | "server_backups";
-  serverId?: string;
+  serverId?: string; // Server identifier for Client API or numeric ID for Application API
+}
+
+// Helper to call Pterodactyl API
+async function callPterodactyl(path: string, apiKey: string): Promise<Response> {
+  return fetch(`${PTERODACTYL_URL}${path}`, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -23,7 +35,8 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     // Check environment variables
-    if (!PTERODACTYL_URL || !PTERODACTYL_API_KEY) {
+    if (!PTERODACTYL_URL || !PTERODACTYL_APP_API_KEY) {
+      console.error("Missing env vars - URL:", !!PTERODACTYL_URL, "APP_KEY:", !!PTERODACTYL_APP_API_KEY);
       throw new Error("Pterodactyl configuration missing");
     }
 
@@ -43,6 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      console.error("Auth error:", authError);
       return new Response(
         JSON.stringify({ error: "Unauthorized" }),
         {
@@ -52,30 +66,19 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get user's allowed server IDs from database
-    const { data: allowedServers, error: dbError } = await supabase
-      .from("client_servers")
-      .select("pterodactyl_identifier")
-      .eq("client_id", user.id);
+    console.log("Authenticated user:", user.id);
 
-    if (dbError) {
-      console.error("Database error:", dbError);
-      throw new Error("Failed to fetch user servers");
-    }
+    // Get user's Pterodactyl user ID from database
+    const { data: userMapping, error: dbError } = await supabase
+      .from("client_pterodactyl_users")
+      .select("pterodactyl_user_id")
+      .eq("supabase_user_id", user.id)
+      .single();
 
-    const allowedIds = new Set(
-      allowedServers?.map((s: { pterodactyl_identifier: string }) => s.pterodactyl_identifier) ?? []
-    );
-
-    // Parse request body
-    const { action, serverId }: ProxyRequest = await req.json();
-
-    console.log(`User ${user.id} requesting ${action}${serverId ? ` for server ${serverId}` : ""}`);
-
-    // Validate server access for server-specific endpoints
-    if (serverId && !allowedIds.has(serverId)) {
+    if (dbError || !userMapping) {
+      console.error("Database error or no mapping found:", dbError);
       return new Response(
-        JSON.stringify({ error: "Access denied to this server" }),
+        JSON.stringify({ error: "User not linked to Pterodactyl account" }),
         {
           status: 403,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -83,39 +86,90 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Determine Pterodactyl API path
+    const pterodactylUserId = userMapping.pterodactyl_user_id;
+    console.log("Pterodactyl user ID:", pterodactylUserId);
+
+    // Parse request body
+    const { action, serverId }: ProxyRequest = await req.json();
+
+    console.log(`User ${user.id} (ptero: ${pterodactylUserId}) requesting ${action}${serverId ? ` for server ${serverId}` : ""}`);
+
+    // For server-specific actions, verify the user owns this server
+    if (serverId && ["server_details", "server_resources", "server_backups"].includes(action)) {
+      // Get all servers to verify ownership
+      const verifyResponse = await callPterodactyl(
+        `/api/application/servers`,
+        PTERODACTYL_APP_API_KEY
+      );
+
+      if (!verifyResponse.ok) {
+        throw new Error("Failed to verify server ownership");
+      }
+
+      const allServers = await verifyResponse.json();
+      // Filter to find servers owned by this user
+      const userServerIdentifiers = new Set(
+        allServers.data
+          ?.filter((s: { attributes: { user: number } }) => s.attributes.user === pterodactylUserId)
+          .map((s: { attributes: { identifier: string } }) => s.attributes.identifier) ?? []
+      );
+
+      if (!userServerIdentifiers.has(serverId)) {
+        return new Response(
+          JSON.stringify({ error: "Access denied to this server" }),
+          {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+
     let pterodactylPath: string;
+    let apiKey: string;
+
     switch (action) {
       case "list_servers":
-        pterodactylPath = "/api/client";
+        // Use Application API to list all servers, then filter by user
+        pterodactylPath = `/api/application/servers`;
+        apiKey = PTERODACTYL_APP_API_KEY;
         break;
+
       case "server_details":
-        if (!serverId) throw new Error("Server ID required");
-        pterodactylPath = `/api/client/servers/${serverId}`;
+        // Use Application API for server details
+        pterodactylPath = `/api/application/servers`;
+        apiKey = PTERODACTYL_APP_API_KEY;
         break;
+
       case "server_resources":
+        // Use Client API for real-time resources (requires service account key)
+        if (!PTERODACTYL_CLIENT_API_KEY) {
+          throw new Error("Client API key not configured for real-time data");
+        }
         if (!serverId) throw new Error("Server ID required");
         pterodactylPath = `/api/client/servers/${serverId}/resources`;
+        apiKey = PTERODACTYL_CLIENT_API_KEY;
         break;
+
       case "server_backups":
+        // Use Client API for backups (requires service account key)
+        if (!PTERODACTYL_CLIENT_API_KEY) {
+          throw new Error("Client API key not configured for backups");
+        }
         if (!serverId) throw new Error("Server ID required");
         pterodactylPath = `/api/client/servers/${serverId}/backups`;
+        apiKey = PTERODACTYL_CLIENT_API_KEY;
         break;
+
       default:
         throw new Error("Invalid action");
     }
 
-    // Call Pterodactyl API
-    const pterodactylResponse = await fetch(
-      `${PTERODACTYL_URL}${pterodactylPath}`,
-      {
-        headers: {
-          Authorization: `Bearer ${PTERODACTYL_API_KEY}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    console.log("Calling Pterodactyl:", `${PTERODACTYL_URL}${pterodactylPath}`);
+
+    const pterodactylResponse = await callPterodactyl(pterodactylPath, apiKey);
+
+    console.log("Pterodactyl response status:", pterodactylResponse.status);
 
     if (!pterodactylResponse.ok) {
       const errorText = await pterodactylResponse.text();
@@ -125,12 +179,30 @@ const handler = async (req: Request): Promise<Response> => {
 
     let data = await pterodactylResponse.json();
 
-    // For list_servers, filter to only user's allowed servers
+    // For list_servers, filter to only this user's servers
     if (action === "list_servers" && data.data) {
       data.data = data.data.filter(
-        (server: { attributes: { identifier: string } }) =>
-          allowedIds.has(server.attributes.identifier)
+        (s: { attributes: { user: number } }) => s.attributes.user === pterodactylUserId
       );
+    }
+
+    // For server_details, find the specific server from the list
+    if (action === "server_details" && serverId && data.data) {
+      const server = data.data.find(
+        (s: { attributes: { identifier: string; user: number } }) =>
+          s.attributes.identifier === serverId && s.attributes.user === pterodactylUserId
+      );
+      if (server) {
+        data = server;
+      } else {
+        return new Response(
+          JSON.stringify({ error: "Server not found" }),
+          {
+            status: 404,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
     }
 
     return new Response(JSON.stringify(data), {

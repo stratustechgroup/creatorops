@@ -1,160 +1,120 @@
 import { motion } from "framer-motion";
-import { Shield, Database, Activity, AlertTriangle, Clock, RotateCcw, Globe, Zap, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Shield, Lock, Eye, Clock, Activity, Zap, Settings, Calendar, RotateCcw } from "lucide-react";
 
 const safetyFeatures = [
-  // Security features first
   {
-    icon: Globe,
-    title: "Proxy Protection",
-    description: "Your IP stays hidden. We handle all proxy and velocity layers so your home network is never exposed to viewers or attackers.",
-    highlight: "IP Hidden",
+    category: "Security",
+    items: [
+      { icon: Lock, title: "Proxy Protection", description: "Your IP stays hidden. We handle all proxy layers.", tag: "IP Hidden" },
+      { icon: Shield, title: "DDoS Shield", description: "Content-safe mitigation without disconnecting players.", tag: "Always On" },
+      { icon: Eye, title: "Creator Confidentiality", description: "Your projects and server IPs stay strictly confidential.", tag: "NDA Ready" },
+    ],
   },
   {
-    icon: Zap,
-    title: "DDoS Shield",
-    description: "Content-safe DDoS mitigation that protects your server without disconnecting players mid-session. Your recording keeps rolling.",
-    highlight: "Always protected",
+    category: "Reliability",
+    items: [
+      { icon: Clock, title: "Never Lose Progress", description: "Backups so frequent you'll never wonder if you're protected.", tag: "Auto-backups" },
+      { icon: Activity, title: "Proactive Monitoring", description: "We detect issues before they interrupt your session.", tag: "24/7" },
+      { icon: Zap, title: "Instant Response", description: "When issues arise, we respond immediately. No tickets.", tag: "Immediate" },
+    ],
   },
   {
-    icon: Lock,
-    title: "Creator Confidentiality",
-    description: "Your projects, server IPs, and upcoming content stay strictly confidential. We work under discretion—your secrets are safe.",
-    highlight: "NDA Ready",
-  },
-  // Reliability features with outcome-focused copy
-  {
-    icon: Database,
-    title: "Never Lose Progress",
-    description: "Backups so frequent you'll never wonder if you're protected. 30-day retention with off-site storage means your builds are always recoverable.",
-    highlight: "Auto-backups",
-  },
-  {
-    icon: Activity,
-    title: "Problems Caught Before You Notice",
-    description: "We detect issues before they interrupt your session. Real-time monitoring means problems get fixed while you focus on content.",
-    highlight: "Proactive",
-  },
-  {
-    icon: AlertTriangle,
-    title: "Instant Incident Response",
-    description: "When issues arise, we respond immediately. No tickets, no waiting—our team handles problems so you can keep creating.",
-    highlight: "Immediate",
-  },
-  {
-    icon: Shield,
-    title: "Updates That Don't Break Your Series",
-    description: "We never update your Minecraft version without approval. Test in staging first, rollback within 72 hours if something's off.",
-    highlight: "You control",
-  },
-  {
-    icon: Clock,
-    title: "Recording-Ready Reliability",
-    description: "Uptime guarantees that matter during your content windows. Scheduled maintenance is always communicated 48 hours in advance.",
-    highlight: "99.5% SLA",
-  },
-  {
-    icon: RotateCcw,
-    title: "Rapid Rollback",
-    description: "Need to undo something? Restores happen in hours, not days. Creator Pro gets 4-hour restore times, guaranteed.",
-    highlight: "Hours, not days",
+    category: "Control",
+    items: [
+      { icon: Settings, title: "Safe Updates", description: "We never update your Minecraft version without approval.", tag: "You Approve" },
+      { icon: Calendar, title: "Recording-Ready", description: "Uptime guarantees during your content windows.", tag: "99.5% SLA" },
+      { icon: RotateCcw, title: "Rapid Rollback", description: "Restores happen in hours, not days.", tag: "< 4 Hours" },
+    ],
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.15
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
-  }
-};
-
 export const SafetyFeatures = () => {
   return (
-    <section className="py-24 md:py-32 relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-      
-      <div className="container relative z-10 px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary">
-            <Shield className="w-4 h-4" />
-            Security & Protection
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Security & Safety Built for Creators
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Your IP protected. Your content safe. Your infrastructure handled. We treat your world like the production asset it is.
-          </p>
-        </motion.div>
+    <section className="py-24 lg:py-32 bg-card/30">
+      <div className="container-default">
+        {/* Header */}
+        <div className="max-w-3xl mb-16">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-sm text-primary font-medium mb-4 tracking-wide"
+          >
+            PROTECTION
+          </motion.p>
 
-        <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          {safetyFeatures.map((feature) => (
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] mb-6"
+          >
+            Security & safety built for creators.
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-muted-foreground"
+          >
+            Your IP protected. Your content safe. Your infrastructure handled.
+          </motion.p>
+        </div>
+
+        {/* Categories */}
+        <div className="space-y-12">
+          {safetyFeatures.map((category, catIndex) => (
             <motion.div
-              key={feature.title}
-              variants={cardVariants}
-              className="group relative p-6 rounded-2xl border border-border bg-card shadow-card hover:border-primary/30 transition-all duration-300"
+              key={category.category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: catIndex * 0.1 }}
             >
-              {/* Highlight badge */}
-              <div className="absolute -top-3 left-6">
-                <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary border border-primary/30">
-                  {feature.highlight}
-                </span>
+              <div className="flex items-center gap-4 mb-6">
+                <h3 className="text-sm font-medium text-muted-foreground tracking-wide">
+                  {category.category.toUpperCase()}
+                </h3>
+                <div className="flex-1 h-px bg-white/5" />
               </div>
-              
-              {/* Icon */}
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 mt-2 group-hover:bg-primary/20 transition-colors">
-                <feature.icon className="w-6 h-6 text-primary" />
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {category.items.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="group p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <item.icon className="w-5 h-5 text-primary" />
+                      <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">
+                        {item.tag}
+                      </span>
+                    </div>
+                    <h4 className="text-base font-semibold text-foreground mb-2">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                ))}
               </div>
-              
-              {/* Content */}
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Bottom CTA */}
+        {/* SLA link */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
+          viewport={{ once: true }}
+          className="mt-16 text-center"
         >
           <p className="text-muted-foreground">
             Read our full{" "}
-            <a href="/sla" className="text-primary hover:underline">
+            <Link to="/sla" className="text-primary hover:underline">
               Service Level Agreement
-            </a>{" "}
+            </Link>{" "}
             for complete details.
           </p>
         </motion.div>

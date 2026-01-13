@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(command:*)",
+      "Bash([ -s \"$HOME/.nvm/nvm.sh\" ])",
+      "Bash(export NVM_DIR=\"$HOME/.nvm\")",
+      "Bash([ -s \"$NVM_DIR/nvm.sh\" ])",
+      "Bash(. \"$NVM_DIR/nvm.sh\")",
+      "Bash(node --version:*)",
+      "Skill(frontend-design)",
+      "WebSearch",
+      "WebFetch(domain:www.toptal.com)",
+      "WebFetch(domain:www.bookmarkify.io)",
+      "WebFetch(domain:attio.com)",
+      "WebFetch(domain:kevinhufnagl.com)",
+      "Bash(npm run build:*)",
+      "Bash(source ~/.nvm/nvm.sh)",
+      "Bash(nvm use:*)",
+      "WebFetch(domain:pterodactyl-api-docs.netvpx.com)",
+      "Bash(pkill:*)"
+    ]
+  }
+}

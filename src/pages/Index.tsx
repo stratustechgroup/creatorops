@@ -48,7 +48,7 @@ const Index = () => {
     <PageTransition>
       <div className="min-h-screen bg-background">
         <ScrollProgress />
-        <Navbar hideNavLinks />
+        <Navbar />
         <main>
           <Hero />
           <PainPoints />

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Shield, Zap, Server } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -10,55 +9,63 @@ export const FinalCTA = () => {
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "final_cta",
-      button_text: "Apply for Creator Access",
+      button_text: "Apply for Access",
     });
   };
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary/20 via-background to-background" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]" />
-      
-      {/* Decorative border top */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      
-      <div className="container relative z-10 px-4">
+    <section className="py-24 lg:py-32 bg-card/30">
+      <div className="container-default">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto text-center"
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto text-center"
         >
-          {/* Eyebrow */}
-          <p className="text-sm font-medium tracking-wider uppercase text-primary mb-4">
-            Ready to level up?
-          </p>
-          
-          {/* Headline */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-tight">
-            Stop risking your content on fragile setups.
-          </h2>
-          
-          {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-4 max-w-xl mx-auto leading-relaxed">
-            If you're serious about Minecraft creation, your infrastructure should be too.
+          {/* Label */}
+          <p className="text-sm text-primary font-medium mb-6 tracking-wide">
+            READY WHEN YOU ARE
           </p>
 
-          {/* Security reinforcement */}
-          <p className="text-sm text-primary mb-8">
-            Your IP protected. Your content safe. Your infrastructure handled.
+          {/* Headline */}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] mb-6">
+            Stop risking your content on fragile setups.
+          </h2>
+
+          {/* Subheadline */}
+          <p className="text-xl text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
+            If you're serious about Minecraft creation, your infrastructure
+            should be too.
           </p>
-          
+
+          {/* Trust badges */}
+          <div className="flex flex-wrap items-center justify-center gap-8 mb-10">
+            {[
+              { icon: Shield, label: "IP Protected" },
+              { icon: Zap, label: "Content Safe" },
+              { icon: Server, label: "Infra Handled" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex items-center gap-2 text-sm text-muted-foreground"
+              >
+                <item.icon className="w-4 h-4 text-primary" />
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
-            <Button variant="hero" size="xl" className="group" asChild>
-              <Link to="/founding-apply" onClick={handleApplyClick}>
-                Apply for Creator Access
-                <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+            <Link
+              to="/founding-apply"
+              onClick={handleApplyClick}
+              className="btn-primary text-lg px-8 py-4"
+            >
+              Apply for Access
+              <ArrowRight className="w-5 h-5" />
+            </Link>
             <p className="text-sm text-muted-foreground">
               No commitment required · Response within 48 hours
             </p>

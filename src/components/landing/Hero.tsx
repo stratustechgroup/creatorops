@@ -12,12 +12,26 @@ const features = [
 
 export const Hero = () => {
   const { trackEvent } = useAnalytics();
-  const { spotsRemaining } = useSpotsConfig();
+  const { spotsRemaining, loading } = useSpotsConfig();
+
+  const foundingOpen = !loading && spotsRemaining > 0;
+
+  const primaryCta = foundingOpen
+    ? {
+        to: "/founding-apply",
+        label: "Apply for founding access",
+        analyticsLabel: "Apply for founding access",
+      }
+    : {
+        to: "/apply",
+        label: "Request access",
+        analyticsLabel: "Request access",
+      };
 
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "hero",
-      button_text: "Request access",
+      button_text: primaryCta.analyticsLabel,
     });
   };
 
@@ -91,20 +105,29 @@ export const Hero = () => {
               className="flex flex-wrap items-center gap-4"
             >
               <Link
-                to="/apply"
+                to={primaryCta.to}
                 onClick={handleApplyClick}
                 className="btn-primary"
               >
-                Request access
+                {primaryCta.label}
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <a
-                href="#features"
-                className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Play className="w-4 h-4" />
-                See how it works
-              </a>
+              {foundingOpen ? (
+                <Link
+                  to="/apply"
+                  className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Just exploring? Request standard access
+                </Link>
+              ) : (
+                <a
+                  href="#features"
+                  className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Play className="w-4 h-4" />
+                  See how it works
+                </a>
+              )}
             </motion.div>
 
             {/* Social proof line */}
@@ -114,7 +137,13 @@ export const Hero = () => {
               transition={{ duration: 0.5, delay: 0.5 }}
               className="mt-10 text-sm text-muted-foreground"
             >
-              <span className="text-accent font-medium">{spotsRemaining} spots remaining</span> in the Founding Creator program
+              {foundingOpen ? (
+                <>
+                  <span className="text-accent font-medium">{spotsRemaining} spots remaining</span> in the Founding Creator program
+                </>
+              ) : (
+                <>Now accepting standard creator applications</>
+              )}
             </motion.p>
           </div>
 

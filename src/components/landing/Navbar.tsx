@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
+import { FoundingBanner } from "./FoundingBanner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { urlForPath } from "@/lib/hosts";
@@ -102,6 +103,7 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
           : "bg-transparent border-b border-transparent",
       )}
     >
+      <FoundingBanner hidden={hideNavLinks} />
       <div className="container-default">
         <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Logo — UNCHANGED */}

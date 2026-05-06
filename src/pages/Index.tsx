@@ -27,21 +27,43 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
  * - CreatorLogos: src/components/landing/CreatorLogos.tsx
  */
 
+// Clean-URL section aliases. /pricing renders this same homepage but
+// auto-scrolls to the matching section on mount or pathname change.
+// Hash-based links (#pricing) still work for backwards compatibility.
+const PATH_TO_SECTION: Record<string, string> = {
+  "/features": "features",
+  "/pricing": "pricing",
+  "/faq": "faq",
+};
+
 const Index = () => {
   const location = useLocation();
 
-  // Handle hash scrolling when navigating from other pages
   useEffect(() => {
-    if (location.hash) {
-      // Small delay to ensure the page has rendered
-      setTimeout(() => {
-        const element = document.querySelector(location.hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
+    const fromPath = PATH_TO_SECTION[location.pathname];
+    const fromHash = location.hash ? location.hash.replace("#", "") : null;
+    const sectionId = fromPath ?? fromHash;
+
+    if (!sectionId) {
+      // Bare "/" — make sure we're at the top so navigating home from
+      // a deep section (e.g., /pricing) returns to the hero, not wherever
+      // the previous scroll position was.
+      if (location.pathname === "/" && !location.hash) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
     }
-  }, [location.hash]);
+
+    // Small delay so the page has time to render lazy sections.
+    const id = window.setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 80);
+
+    return () => window.clearTimeout(id);
+  }, [location.pathname, location.hash]);
 
   return (
     <PageTransition>

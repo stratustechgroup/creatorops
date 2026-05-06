@@ -16,10 +16,10 @@ interface NavLinkDef {
 }
 
 const navLinks: NavLinkDef[] = [
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Features", href: "/features", isPage: true },
+  { label: "Pricing", href: "/pricing", isPage: true },
   { label: "Founding Program", href: "/founding-creators", isPage: true },
-  { label: "FAQ", href: "#faq" },
+  { label: "FAQ", href: "/faq", isPage: true },
 ];
 
 interface NavbarProps {

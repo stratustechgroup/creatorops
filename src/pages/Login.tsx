@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   AlertCircle,
   Eye,
@@ -21,6 +22,13 @@ import { urlForPath } from "@/lib/hosts";
 
 type Stage = "credentials" | "second_factor";
 type SecondFactorMode = "totp" | "backup_code";
+
+const stageMotion = {
+  initial: { opacity: 0, y: 6 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -6 },
+  transition: { duration: 0.2, ease: "easeOut" as const },
+};
 
 export default function Login() {
   const [stage, setStage] = useState<Stage>("credentials");
@@ -96,7 +104,7 @@ export default function Login() {
           {/* Logo */}
           <a
             href={urlForPath("/")}
-            className="flex flex-col items-center gap-3 mb-10 group w-fit mx-auto"
+            className="flex flex-col items-center gap-3 mb-12 group w-fit mx-auto"
           >
             <Logo className="w-10 h-10 transition-transform group-hover:scale-105" />
             <span className="font-semibold text-foreground tracking-tight">
@@ -104,17 +112,14 @@ export default function Login() {
             </span>
           </a>
 
-          {/* Card */}
-          <div className="bg-card border border-white/10 rounded-xl p-7">
+          {/* Stage content (no card chrome — borderless) */}
+          <AnimatePresence mode="wait" initial={false}>
             {stage === "credentials" ? (
-              <>
-                <div className="mb-6">
-                  <h1 className="text-xl font-semibold tracking-tight">
-                    Sign in
+              <motion.div key="credentials" {...stageMotion}>
+                <div className="mb-7">
+                  <h1 className="text-2xl font-semibold tracking-tight">
+                    Sign in to Creator Ops
                   </h1>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Welcome back.
-                  </p>
                 </div>
 
                 <form
@@ -198,15 +203,25 @@ export default function Login() {
                       "Sign in"
                     )}
                   </Button>
+
+                  <p className="pt-2 text-center text-xs text-muted-foreground">
+                    Trouble signing in?{" "}
+                    <a
+                      href="mailto:hi@creatorops.io"
+                      className="text-primary hover:underline"
+                    >
+                      hi@creatorops.io
+                    </a>
+                  </p>
                 </form>
-              </>
+              </motion.div>
             ) : (
-              <>
+              <motion.div key="second_factor" {...stageMotion}>
                 <div className="mb-6">
                   <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary mb-3">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <h1 className="text-xl font-semibold tracking-tight">
+                  <h1 className="text-2xl font-semibold tracking-tight">
                     {secondFactorMode === "totp"
                       ? "Two-factor verification"
                       : "Enter a backup code"}
@@ -318,21 +333,20 @@ export default function Login() {
                       Back to sign in
                     </button>
                   </div>
-                </form>
-              </>
-            )}
-          </div>
 
-          {/* Recovery links */}
-          <div className="mt-6 text-center text-xs text-muted-foreground">
-            Trouble signing in?{" "}
-            <a
-              href="mailto:hi@creatorops.io"
-              className="text-primary hover:underline"
-            >
-              hi@creatorops.io
-            </a>
-          </div>
+                  <p className="pt-2 text-center text-xs text-muted-foreground">
+                    Trouble signing in?{" "}
+                    <a
+                      href="mailto:hi@creatorops.io"
+                      className="text-primary hover:underline"
+                    >
+                      hi@creatorops.io
+                    </a>
+                  </p>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
 

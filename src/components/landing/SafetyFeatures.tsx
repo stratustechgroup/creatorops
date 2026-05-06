@@ -23,8 +23,8 @@ const safetyFeatures = [
     category: "Control",
     items: [
       { icon: Settings, title: "Safe Updates", description: "We never update your Minecraft version without approval.", tag: "You Approve" },
-      { icon: Calendar, title: "Recording-Ready", description: "Uptime guarantees during your content windows.", tag: "99.5% SLA" },
-      { icon: RotateCcw, title: "Rapid Rollback", description: "Restores happen in hours, not days.", tag: "< 4 Hours" },
+      { icon: Calendar, title: "Recording-Ready", description: "Service-level commitments tailored to your tier.", tag: "Tier-based SLA" },
+      { icon: RotateCcw, title: "Rapid Rollback", description: "Restore times by tier — see SLA.", tag: "Up to 4 hours" },
     ],
   },
 ];

@@ -1,73 +1,98 @@
-# Welcome to your Lovable project
+# Creator Ops
 
-## Project info
+Marketing site and client dashboard for Creator Ops — a managed Minecraft infrastructure platform for content creators.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Tech Stack
 
-## How can I edit this code?
+- **React 18** + TypeScript + Vite (SWC)
+- **React Router v6** with lazy-loaded routes
+- **TanStack Query** for server state
+- **Tailwind CSS** + **shadcn/ui** components
+- **Framer Motion** for animations
+- **react-hook-form** + **Zod** for forms
+- **Convex** for backend (queries, mutations, actions)
+- **Clerk** for authentication
+- **Vercel Analytics** for traffic insights
 
-There are several ways of editing your application.
+## Prerequisites
 
-**Use Lovable**
+- Node.js **20+** (`nvm use 20`)
+- npm
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Getting Started
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the dev server (port 8080)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Available Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Command            | Description                                |
+| ------------------ | ------------------------------------------ |
+| `npm run dev`      | Start the dev server on port 8080          |
+| `npm run build`    | Build for production                       |
+| `npm run lint`     | Run ESLint                                 |
+| `npm run preview`  | Preview the production build locally       |
 
-**Use GitHub Codespaces**
+## Environment Variables
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Create a `.env.local` at the project root with:
 
-## What technologies are used for this project?
+```env
+# Convex backend URL (required for data fetches)
+VITE_CONVEX_URL=
 
-This project is built with:
+# Clerk publishable key (required for authenticated routes)
+VITE_CLERK_PUBLISHABLE_KEY=
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+If `VITE_CLERK_PUBLISHABLE_KEY` is omitted, the app falls back to an unauthenticated Convex client so public marketing pages still render.
 
-## How can I deploy this project?
+## Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```
+src/
+  pages/              Route components (lazy-loaded)
+  components/
+    landing/          Marketing landing sections
+    dashboard/        Client dashboard (server cards, layout)
+    auth/             ProtectedRoute wrapper
+    ui/               shadcn/ui primitives
+  contexts/           AuthContext
+  hooks/              useAnalytics, usePterodactyl, useFormAutosave
+  integrations/       Supabase client (legacy)
+  lib/                Utilities (cn, convexAuth, spotsConfig)
+convex/               Convex functions (queries, mutations, actions)
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Routing
 
-Yes, you can!
+Public:
+- `/` Landing
+- `/about`, `/team`
+- `/apply`, `/founding-apply`, `/founding-creators`
+- `/studio`, `/events-quote`
+- `/privacy`, `/terms`, `/sla`, `/fair-usage`
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Auth:
+- `/login`, `/forgot-password`
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Protected (Clerk-gated):
+- `/dashboard`
+- `/support`
+- `/settings/{profile,security,notifications,team,account}`
+
+## Conventions
+
+- Path alias `@/` maps to `src/`
+- Forms autosave drafts to localStorage via `useFormAutosave` (debounced 500ms)
+- Analytics is GDPR-aware via `useAnalytics` and the cookie consent banner
+- Dark mode is class-based; theme tokens live in `src/index.css`
+
+## Deployment
+
+Production builds are deployed to Vercel. The Convex backend is deployed separately via the Convex CLI.

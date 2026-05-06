@@ -96,10 +96,10 @@ const Team = () => {
                     We're always looking for passionate people who care about creators and infrastructure.
                   </p>
                   <a
-                    href="mailto:hello@creatorops.io"
+                    href="mailto:hi@creatorops.io"
                     className="text-sm text-primary hover:underline"
                   >
-                    hello@creatorops.io
+                    hi@creatorops.io
                   </a>
                 </motion.div>
               </div>
@@ -128,7 +128,7 @@ const Team = () => {
                     </a>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
-                    <a href="mailto:hello@creatorops.com">
+                    <a href="mailto:hi@creatorops.io">
                       <Mail className="w-4 h-4 mr-2" />
                       Email Us
                     </a>

@@ -10,7 +10,7 @@ const trustItems = [
   },
   {
     icon: Activity,
-    stat: "< 2 hour response",
+    stat: "Human-led",
     title: "Human-Initiated Restores",
     description: "Real people review and execute restores with care and context",
   },

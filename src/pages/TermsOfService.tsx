@@ -28,11 +28,11 @@ const TermsOfService = () => {
 
         <main className="container px-4 py-16 max-w-3xl">
           <h1 className="text-4xl font-bold text-foreground mb-2">Terms of Service</h1>
-          <p className="text-muted-foreground mb-8">Effective Date: January 2026</p>
+          <p className="text-muted-foreground mb-8">Effective Date: May 2026</p>
 
           <div className="p-4 rounded-lg bg-secondary/30 border border-border mb-8">
             <p className="text-sm text-muted-foreground">
-              CreatorOps ("CreatorOps", "we", "us") provides managed Minecraft world infrastructure and operational services to creators ("Customer", "you"). By accessing or using CreatorOps, you agree to these Terms of Service.
+              Creator Ops ("Creator Ops", "we", "us") provides managed Minecraft world infrastructure and operational services to creators ("Customer", "you"). By accessing or using Creator Ops, you agree to these Terms of Service.
             </p>
           </div>
 
@@ -40,7 +40,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Service Scope</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                CreatorOps provides managed infrastructure services, including but not limited to:
+                Creator Ops provides managed infrastructure services, including but not limited to:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>Server provisioning and operation</li>
@@ -49,7 +49,7 @@ const TermsOfService = () => {
                 <li>Operational support based on selected service tier</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                CreatorOps does <strong className="text-foreground">not</strong> provide gameplay services, content creation, or guarantees related to third-party mods, plugins, or software.
+                Creator Ops does <strong className="text-foreground">not</strong> provide gameplay services, content creation, or guarantees related to third-party mods, plugins, or software.
               </p>
             </section>
 
@@ -58,7 +58,7 @@ const TermsOfService = () => {
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>You retain <strong className="text-foreground">full ownership</strong> of your world data at all times.</li>
                 <li>You may request a full world export at any time.</li>
-                <li>Upon cancellation or termination, CreatorOps will provide a final world export upon request.</li>
+                <li>Upon cancellation or termination, Creator Ops will provide a final world export upon request.</li>
               </ul>
             </section>
 
@@ -70,12 +70,12 @@ const TermsOfService = () => {
                 <li>Restore requests beyond included limits may incur additional charges.</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mb-2">
-                CreatorOps does not guarantee recovery from:
+                Creator Ops does not guarantee recovery from:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>Corrupt, malicious, or incompatible mods/plugins</li>
                 <li>Experimental or unsupported configurations</li>
-                <li>Actions taken outside CreatorOps-managed environments</li>
+                <li>Actions taken outside Creator Ops-managed environments</li>
               </ul>
             </section>
 
@@ -83,6 +83,8 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">4. Pricing & Billing</h2>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mb-4">
                 <li>Pricing is tier-based and <strong className="text-foreground">starting at</strong> advertised rates.</li>
+                <li>Current service tiers: Creator Solo ($99/mo), Creator Plus ($129/mo), Creator Pro ($199/mo), Creator Studio ($399/mo).</li>
+                <li>Annual billing available at a discount.</li>
                 <li>Final pricing reflects world size, performance requirements, and operational complexity.</li>
                 <li>Billing is monthly unless otherwise agreed.</li>
               </ul>
@@ -115,7 +117,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">6. Termination</h2>
               <p className="text-muted-foreground leading-relaxed mb-2">
-                CreatorOps may suspend or terminate service for:
+                Creator Ops may suspend or terminate service for:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mb-4">
                 <li>Non-payment</li>
@@ -134,7 +136,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">7. Limitation of Liability</h2>
               <p className="text-muted-foreground leading-relaxed mb-2">
-                CreatorOps is not liable for:
+                Creator Ops is not liable for:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mb-4">
                 <li>Lost revenue</li>
@@ -149,7 +151,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">8. Changes to Terms</h2>
               <p className="text-muted-foreground leading-relaxed">
-                CreatorOps may update these Terms at any time. Continued use of the service constitutes acceptance of updated terms. Material changes will be communicated via email with reasonable notice.
+                Creator Ops may update these Terms at any time. Continued use of the service constitutes acceptance of updated terms. Material changes will be communicated via email with reasonable notice.
               </p>
             </section>
 
@@ -157,8 +159,8 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">9. Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
                 For questions about these Terms of Service, contact us at{" "}
-                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
-                  legal@creatorops.io
+                <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">
+                  hi@creatorops.io
                 </a>
               </p>
             </section>

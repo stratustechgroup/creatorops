@@ -2,15 +2,17 @@ import { motion } from "framer-motion";
 import { ArrowRight, Play, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useSpotsConfig } from "@/hooks/useSpotsConfig";
 
 const features = [
-  "Automated backups every 6 hours",
+  "Automated backups multiple times daily",
   "One-click rollback to any point",
   "Zero downtime during recordings",
 ];
 
 export const Hero = () => {
   const { trackEvent } = useAnalytics();
+  const { spotsRemaining } = useSpotsConfig();
 
   const handleApplyClick = () => {
     trackEvent("cta_click", {
@@ -89,7 +91,7 @@ export const Hero = () => {
               className="flex flex-wrap items-center gap-4"
             >
               <Link
-                to="/founding-apply"
+                to="/apply"
                 onClick={handleApplyClick}
                 className="btn-primary"
               >
@@ -112,7 +114,7 @@ export const Hero = () => {
               transition={{ duration: 0.5, delay: 0.5 }}
               className="mt-10 text-sm text-muted-foreground"
             >
-              <span className="text-accent font-medium">7 spots remaining</span> in the Founding Creator program
+              <span className="text-accent font-medium">{spotsRemaining} spots remaining</span> in the Founding Creator program
             </motion.p>
           </div>
 
@@ -168,7 +170,7 @@ export const Hero = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-muted-foreground mb-1">UPTIME</p>
-                      <p className="text-lg font-mono text-emerald-400">99.97%</p>
+                      <p className="text-lg font-mono text-emerald-400">Live</p>
                     </div>
                   </div>
 

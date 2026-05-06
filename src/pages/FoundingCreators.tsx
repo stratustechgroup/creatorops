@@ -25,12 +25,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { PageTransition } from "@/components/PageTransition";
 
-// ============================================
-// SPOTS CONFIGURATION
-// ============================================
-const TOTAL_SPOTS = 10;
-const SPOTS_TAKEN = 5;
-const SPOTS_REMAINING = TOTAL_SPOTS - SPOTS_TAKEN;
+import { useSpotsConfig } from "@/hooks/useSpotsConfig";
 
 const keyBenefits = [
   {
@@ -64,7 +59,7 @@ const allBenefits = [
 const foundingFaqs = [
   {
     question: "What's the pricing for founding creators?",
-    answer: "Founding creators receive 30-50% off standard pricing, locked in forever. Your exact rate depends on world size, but once set, it never increases—even as we raise prices.",
+    answer: "Founding creators lock in their rate forever. Once set, it never increases — even as we raise prices for new customers.",
   },
   {
     question: "What commitment is required?",
@@ -85,6 +80,7 @@ const foundingFaqs = [
 ];
 
 const FoundingCreators = () => {
+  const { totalSpots, spotsTaken, spotsRemaining } = useSpotsConfig();
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
@@ -108,7 +104,7 @@ const FoundingCreators = () => {
                 >
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
                     <Sparkles className="w-3.5 h-3.5" />
-                    Only {SPOTS_REMAINING} spots left
+                    Only {spotsRemaining} spots left
                   </div>
                   
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
@@ -186,14 +182,14 @@ const FoundingCreators = () => {
                           </div>
                         </div>
                         <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                          <span className="text-xs font-medium text-primary">#{SPOTS_TAKEN + 1}</span>
+                          <span className="text-xs font-medium text-primary">#{spotsTaken + 1}</span>
                         </div>
                       </div>
 
                       {/* Stats */}
                       <div className="grid grid-cols-3 gap-4 mb-8">
                         <div className="text-center p-4 rounded-xl bg-background/50">
-                          <div className="text-2xl font-bold text-foreground">{SPOTS_REMAINING}</div>
+                          <div className="text-2xl font-bold text-foreground">{spotsRemaining}</div>
                           <div className="text-xs text-muted-foreground">Spots Left</div>
                         </div>
                         <div className="text-center p-4 rounded-xl bg-background/50">
@@ -210,12 +206,12 @@ const FoundingCreators = () => {
                       <div className="mb-6">
                         <div className="flex justify-between text-sm mb-2">
                           <span className="text-muted-foreground">Spots filled</span>
-                          <span className="font-medium text-foreground">{SPOTS_TAKEN}/{TOTAL_SPOTS}</span>
+                          <span className="font-medium text-foreground">{spotsTaken}/{totalSpots}</span>
                         </div>
                         <div className="h-2 bg-muted rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
-                            animate={{ width: `${(SPOTS_TAKEN / TOTAL_SPOTS) * 100}%` }}
+                            animate={{ width: `${(spotsTaken / totalSpots) * 100}%` }}
                             transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
                             className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
                           />
@@ -379,7 +375,7 @@ const FoundingCreators = () => {
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary">
                   <Sparkles className="w-4 h-4" />
-                  {SPOTS_REMAINING} founding spots remaining
+                  {spotsRemaining} founding spots remaining
                 </div>
                 
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -397,7 +393,7 @@ const FoundingCreators = () => {
                 </Button>
 
                 <p className="text-sm text-muted-foreground mt-6">
-                  Questions? <a href="mailto:hello@creatorops.dev" className="text-primary hover:underline">Reach out directly</a>
+                  Questions? <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">Reach out directly</a>
                 </p>
               </motion.div>
             </div>

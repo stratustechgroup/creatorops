@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Link } from "react-router-dom";
-import { Github, Twitter, Youtube } from "lucide-react";
-
 const footerLinks = {
   product: [
     { label: "Features", href: "#features", isAnchor: true },
@@ -25,11 +23,6 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  { icon: Twitter, href: "https://twitter.com/creatorops", label: "Twitter" },
-  { icon: Youtube, href: "https://youtube.com/@creatorops", label: "YouTube" },
-  { icon: Github, href: "https://github.com/creatorops", label: "GitHub" },
-];
 
 export const Footer = () => {
   const handleSmoothScroll = (
@@ -100,27 +93,11 @@ export const Footer = () => {
                 create, we handle the rest.
               </p>
 
-              {/* Social links */}
-              <div className="flex items-center gap-3 mb-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/10 transition-all duration-200"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-
               <a
-                href="mailto:hello@creatorops.io"
+                href="mailto:hi@creatorops.io"
                 className="text-sm text-primary hover:text-primary/80 transition-colors"
               >
-                hello@creatorops.io
+                hi@creatorops.io
               </a>
             </div>
 

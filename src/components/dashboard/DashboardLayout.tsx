@@ -15,8 +15,6 @@ import {
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/landing/Logo";
 import { UserMenu } from "@/components/dashboard/UserMenu";
@@ -150,10 +148,6 @@ function SidebarContent({
         </ul>
       </nav>
 
-      {/* Debug panel — visible when NOT staff. Shows the live whoami result
-          so we can see why isStaff is false. Remove once admin auth is sorted. */}
-      {!isStaff && <DebugPanel />}
-
       {/* Admin section — pinned just above the user menu when staff */}
       {isStaff && (
         <div className="px-3 pt-3 pb-2 border-t border-white/5">
@@ -200,41 +194,6 @@ function SidebarContent({
   );
 }
 
-/**
- * Debug panel — renders inline whoami output when the current user is NOT
- * staff. Use this to diagnose why admin access isn't kicking in.
- */
-function DebugPanel() {
-  // @ts-expect-error api types regenerate after convex deploy; whoami exists at runtime
-  const whoami = useQuery(api.admin.whoami);
-
-  return (
-    <div className="px-3 py-2 border-t border-white/5">
-      <details className="group" open>
-        <summary className="cursor-pointer text-[10px] uppercase tracking-wider text-muted-foreground font-semibold list-none">
-          🔍 Auth debug (not staff)
-        </summary>
-        <div className="mt-2 px-3 py-2 rounded-md bg-amber-500/[0.06] border border-amber-500/20 text-[10px] text-foreground font-mono leading-relaxed space-y-0.5 break-all">
-          {whoami === undefined && <div className="text-muted-foreground">Loading whoami...</div>}
-          {whoami && !whoami.authenticated && (
-            <div className="text-red-400">Not authenticated — JWT not reaching Convex.</div>
-          )}
-          {whoami && whoami.authenticated && (
-            <>
-              <div>email: <span className="text-amber-300">{whoami.identity?.email ?? "null"}</span></div>
-              <div>userId: <span className="text-amber-300">{whoami.identity?.clerkUserId?.slice(0, 24) ?? "null"}...</span></div>
-              <div>ADMIN_EMAILS set: <span className="text-amber-300">{String(whoami.env?.ADMIN_EMAILS_set)}</span></div>
-              <div>ADMIN_CLERK_USER_IDS set: <span className="text-amber-300">{String(whoami.env?.ADMIN_CLERK_USER_IDS_set)}</span></div>
-              <div>email match: <span className="text-amber-300">{String(whoami.matches?.email_in_ADMIN_EMAILS)}</span></div>
-              <div>id match: <span className="text-amber-300">{String(whoami.matches?.clerkUserId_in_ADMIN_CLERK_USER_IDS)}</span></div>
-              <div className="pt-1 text-muted-foreground">{whoami.verdict}</div>
-            </>
-          )}
-        </div>
-      </details>
-    </div>
-  );
-}
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();

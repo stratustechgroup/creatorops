@@ -248,7 +248,7 @@ export const listApplications = query({
       lastName: string;
       email: string;
       submittedAt: number;
-      status: "pending" | "approved" | "rejected";
+      status: "pending" | "approved" | "rejected" | "needs_info";
       fullData: unknown;
     };
 

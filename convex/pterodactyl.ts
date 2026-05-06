@@ -3,10 +3,15 @@ import { action, internalQuery } from "./_generated/server";
 import { api } from "./_generated/api";
 
 async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
-  const url = process.env.PTERODACTYL_URL;
-  if (!url) throw new ConvexError("PTERODACTYL_URL not configured");
+  const rawUrl = process.env.PTERODACTYL_URL;
+  if (!rawUrl) throw new ConvexError("PTERODACTYL_URL not configured");
 
-  const response = await fetch(`${url}${path}`, {
+  // Defensive: strip trailing slashes so `host/` + `/api/client` doesn't
+  // produce a `host//api/client` that some panels 404.
+  const url = rawUrl.replace(/\/+$/, "");
+  const fullUrl = `${url}${path}`;
+
+  const response = await fetch(fullUrl, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       Accept: "application/json",
@@ -16,7 +21,10 @@ async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
 
   if (!response.ok) {
     const text = await response.text();
-    throw new ConvexError(`Pterodactyl API error ${response.status}: ${text}`);
+    // Include the full URL we hit in the error so 404s are easy to debug.
+    throw new ConvexError(
+      `Pterodactyl API error ${response.status} from ${fullUrl}: ${text}`,
+    );
   }
 
   return response.json();

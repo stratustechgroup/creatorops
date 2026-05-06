@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { action, internalMutation } from "./_generated/server";
 import { internal } from "./_generated/api";
+import type { Id } from "./_generated/dataModel";
 import { sendEmail } from "./email";
 
 const colors = {
@@ -53,8 +54,14 @@ export const submitSupportTicket = action({
     description: v.string(),
     priority: v.union(v.literal("low"), v.literal("normal"), v.literal("high")),
   },
-  handler: async (ctx, args) => {
-    const ticketId = await ctx.runMutation(internal.support.storeSupportTicket, args);
+  handler: async (
+    ctx,
+    args,
+  ): Promise<{ success: true; ticketId: Id<"supportTickets"> }> => {
+    const ticketId: Id<"supportTickets"> = await ctx.runMutation(
+      internal.support.storeSupportTicket,
+      args,
+    );
 
     // In-app notification: fan out to all staff.
     await ctx.runMutation(internal.notifications.notifyStaff, {

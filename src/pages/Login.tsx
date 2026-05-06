@@ -96,9 +96,9 @@ export default function Login() {
           {/* Logo */}
           <a
             href={urlForPath("/")}
-            className="flex items-center justify-center gap-2.5 mb-10 group"
+            className="flex flex-col items-center gap-3 mb-10 group w-fit mx-auto"
           >
-            <Logo className="w-8 h-8 transition-transform group-hover:scale-105" />
+            <Logo className="w-10 h-10 transition-transform group-hover:scale-105" />
             <span className="font-semibold text-foreground tracking-tight">
               Creator Ops
             </span>

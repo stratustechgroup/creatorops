@@ -83,7 +83,7 @@ export const FoundingProgramTeaser = () => {
                 to="/founding-creators"
                 className="btn-primary"
               >
-                Claim Your Spot
+                Apply for founding access
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <p className="mt-4 text-sm text-muted-foreground">

@@ -49,22 +49,43 @@ async function requireStaff(
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) throw new Error("Not authenticated.");
   const email = (identity.email ?? "").toLowerCase();
-  if (!email) throw new Error("No email on identity.");
   const clerkUserId = identity.subject ?? null;
 
+  // Bootstrap admins via env vars. Email is preferred (readable), but the
+  // Clerk default Convex JWT template doesn't include `email` — so we also
+  // accept clerkUserId. Either env var works:
+  //   ADMIN_EMAILS=foo@example.com,bar@example.com
+  //   ADMIN_CLERK_USER_IDS=user_2abc...,user_2xyz...
   const adminEmails = (process.env.ADMIN_EMAILS ?? "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
+  const adminClerkUserIds = (process.env.ADMIN_CLERK_USER_IDS ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
-  if (adminEmails.includes(email)) {
+  if (email && adminEmails.includes(email)) {
     return { email, role: "admin", clerkUserId };
   }
+  if (clerkUserId && adminClerkUserIds.includes(clerkUserId)) {
+    return { email: email || clerkUserId, role: "admin", clerkUserId };
+  }
 
-  const staff = await ctx.db
-    .query("staffMembers")
-    .withIndex("by_email", (q) => q.eq("email", email))
-    .first();
+  // Look up in staffMembers — by email if available, otherwise by clerkUserId.
+  let staff = null;
+  if (email) {
+    staff = await ctx.db
+      .query("staffMembers")
+      .withIndex("by_email", (q) => q.eq("email", email))
+      .first();
+  }
+  if (!staff && clerkUserId) {
+    staff = await ctx.db
+      .query("staffMembers")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", clerkUserId))
+      .first();
+  }
 
   if (!staff) throw new Error("Not authorized.");
 
@@ -75,7 +96,7 @@ async function requireStaff(
     }
   }
 
-  return { email, role: staff.role, clerkUserId };
+  return { email: email || staff.email, role: staff.role, clerkUserId };
 }
 
 // =====================================================================
@@ -86,6 +107,67 @@ async function requireStaff(
  * Returns the caller's staff status. Does NOT throw if the user is not staff —
  * just returns isStaff: false. Safe to call from any authenticated client.
  */
+/**
+ * Diagnostic — returns what Convex is actually seeing for the current request.
+ * Use this when admin access isn't working as expected. It does NOT leak
+ * env-var values, only whether they're set + whether your identity matches.
+ *
+ * Call from the browser console on dash.creatorops.io once signed in:
+ *   convex.query("admin:whoami").then(console.log)
+ * or from the Convex dashboard's Run Function panel.
+ */
+export const whoami = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return {
+        authenticated: false,
+        message: "No identity. The Convex client isn't authenticated.",
+      };
+    }
+
+    const email = (identity.email ?? "").toLowerCase();
+    const clerkUserId = identity.subject ?? null;
+
+    const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    const adminClerkUserIds = (process.env.ADMIN_CLERK_USER_IDS ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    return {
+      authenticated: true,
+      identity: {
+        email: identity.email ?? null,
+        emailLowercased: email || null,
+        clerkUserId,
+        name: identity.name ?? null,
+        issuer: identity.issuer ?? null,
+      },
+      env: {
+        ADMIN_EMAILS_set: adminEmails.length > 0,
+        ADMIN_EMAILS_count: adminEmails.length,
+        ADMIN_CLERK_USER_IDS_set: adminClerkUserIds.length > 0,
+        ADMIN_CLERK_USER_IDS_count: adminClerkUserIds.length,
+      },
+      matches: {
+        email_in_ADMIN_EMAILS: !!email && adminEmails.includes(email),
+        clerkUserId_in_ADMIN_CLERK_USER_IDS:
+          !!clerkUserId && adminClerkUserIds.includes(clerkUserId),
+      },
+      verdict:
+        (!!email && adminEmails.includes(email)) ||
+        (!!clerkUserId && adminClerkUserIds.includes(clerkUserId))
+          ? "Should be admin via env-var bootstrap."
+          : "Not admin via env-var bootstrap. Check the matches/identity/env fields above for why.",
+    };
+  },
+});
+
 export const getStaffRole = query({
   args: {},
   handler: async (ctx) => {
@@ -94,29 +176,47 @@ export const getStaffRole = query({
       return { isStaff: false, role: null, email: null };
     }
     const email = (identity.email ?? "").toLowerCase();
-    if (!email) {
-      return { isStaff: false, role: null, email: null };
-    }
+    const clerkUserId = identity.subject ?? null;
 
     const adminEmails = (process.env.ADMIN_EMAILS ?? "")
       .split(",")
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean);
+    const adminClerkUserIds = (process.env.ADMIN_CLERK_USER_IDS ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
 
-    if (adminEmails.includes(email)) {
+    if (email && adminEmails.includes(email)) {
       return { isStaff: true, role: "admin" as const, email };
     }
-
-    const staff = await ctx.db
-      .query("staffMembers")
-      .withIndex("by_email", (q) => q.eq("email", email))
-      .first();
-
-    if (!staff) {
-      return { isStaff: false, role: null, email };
+    if (clerkUserId && adminClerkUserIds.includes(clerkUserId)) {
+      return {
+        isStaff: true,
+        role: "admin" as const,
+        email: email || null,
+      };
     }
 
-    return { isStaff: true, role: staff.role, email };
+    let staff = null;
+    if (email) {
+      staff = await ctx.db
+        .query("staffMembers")
+        .withIndex("by_email", (q) => q.eq("email", email))
+        .first();
+    }
+    if (!staff && clerkUserId) {
+      staff = await ctx.db
+        .query("staffMembers")
+        .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", clerkUserId))
+        .first();
+    }
+
+    if (!staff) {
+      return { isStaff: false, role: null, email: email || null };
+    }
+
+    return { isStaff: true, role: staff.role, email: email || staff.email };
   },
 });
 

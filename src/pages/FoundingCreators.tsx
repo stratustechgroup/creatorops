@@ -108,14 +108,13 @@ const FoundingCreators = () => {
                   </div>
                   
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                    <span className="text-foreground">Become a</span>
+                    <span className="text-foreground">The first {totalSpots} creators get</span>
                     <br />
-                    <span className="text-gradient">Founding Creator</span>
+                    <span className="text-gradient">a permanent rate.</span>
                   </h1>
-                  
+
                   <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-                    Join an exclusive group shaping the future of Minecraft infrastructure. 
-                    Get permanent perks, priority treatment, and a direct line to our team.
+                    Founding creators lock in pricing forever, get white-glove migration, and have a direct line to me — the founder. We're picking {spotsRemaining} more, then the cohort closes.
                   </p>
 
                   {/* Key Benefits */}
@@ -147,12 +146,12 @@ const FoundingCreators = () => {
                   >
                     <Button variant="hero" size="xl" className="group" asChild>
                       <Link to="/founding-apply">
-                        Apply Now
+                        Apply for founding access
                         <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </Button>
                     <Button variant="outline" size="xl" asChild>
-                      <a href="#benefits">See All Benefits</a>
+                      <a href="#pricing">See locked-in rates</a>
                     </Button>
                   </motion.div>
                 </motion.div>
@@ -193,8 +192,8 @@ const FoundingCreators = () => {
                           <div className="text-xs text-muted-foreground">Spots Left</div>
                         </div>
                         <div className="text-center p-4 rounded-xl bg-background/50">
-                          <div className="text-2xl font-bold text-foreground">50%</div>
-                          <div className="text-xs text-muted-foreground">Max Discount</div>
+                          <div className="text-2xl font-bold text-foreground">Forever</div>
+                          <div className="text-xs text-muted-foreground">Locked Rate</div>
                         </div>
                         <div className="text-center p-4 rounded-xl bg-background/50">
                           <div className="text-2xl font-bold text-foreground">24h</div>
@@ -230,6 +229,62 @@ const FoundingCreators = () => {
                     </div>
                   </div>
                 </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* Locked-in Pricing Section */}
+          <section id="pricing" className="py-20 md:py-28 border-t border-border">
+            <div className="container px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Locked-in founding rates
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Even when standard prices rise, your rate doesn't. Every plan stays at its founding price for as long as you're with us.
+                </p>
+              </motion.div>
+
+              <div className="max-w-4xl mx-auto">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {[
+                    { tier: "Solo Founding", founding: 79, standard: 99 },
+                    { tier: "Plus Founding", founding: 103, standard: 129 },
+                    { tier: "Pro Founding", founding: 159, standard: 199 },
+                    { tier: "Studio Founding", founding: 319, standard: 399 },
+                  ].map((plan, index) => {
+                    const annualSavings = (plan.standard - plan.founding) * 12;
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.05, duration: 0.4 }}
+                        className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
+                      >
+                        <div className="flex items-baseline justify-between mb-3">
+                          <h3 className="font-semibold text-foreground">{plan.tier}</h3>
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                            Saves ${annualSavings}/yr
+                          </span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-foreground">${plan.founding}</span>
+                          <span className="text-sm text-muted-foreground">/mo</span>
+                          <span className="text-sm text-muted-foreground line-through ml-2">${plan.standard}/mo</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">Locked forever, even when standard pricing rises.</p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </section>
@@ -274,37 +329,70 @@ const FoundingCreators = () => {
             </div>
           </section>
 
-          {/* What We Ask */}
-          <section className="py-20 md:py-28 bg-secondary/30">
+          {/* From the Founder */}
+          <section className="py-20 md:py-28 border-t border-border">
             <div className="container px-4">
-              <div className="max-w-3xl mx-auto text-center">
+              <div className="max-w-2xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                    What We Ask in Return
+                  <div className="text-xs uppercase tracking-wider text-primary font-medium mb-4">
+                    From the founder
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground">
+                    I'm Alec. Here's why I'm building this.
                   </h2>
-                  <p className="text-muted-foreground mb-12">
-                    We want partners, not just customers. Here's what that looks like:
+                  <div className="space-y-4 text-muted-foreground leading-relaxed">
+                    <p>
+                      Every creator I've talked to has a story about a server crash that ate a recording session. That shouldn't be the price of running a Minecraft channel.
+                    </p>
+                    <p>
+                      Founding creators get my phone number, basically. We figure out together what reliable infrastructure for creators actually looks like — and you lock in the rate that funds it, forever.
+                    </p>
+                    <p>
+                      That's the trade. You're early, your feedback shapes the product, and your pricing never moves.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* What We're Asking */}
+          <section className="py-20 md:py-28 bg-secondary/30">
+            <div className="container px-4">
+              <div className="max-w-3xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="text-center mb-12"
+                >
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    What we're asking from you
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Honest framing — no surprises, no fine print.
                   </p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-3 gap-6">
                   {[
                     {
-                      title: "Use It",
-                      description: "Run real sessions so we can learn from genuine creator workflows",
+                      title: "3-month minimum",
+                      description: "So we can learn from real usage. After that, month-to-month at your locked rate.",
                     },
                     {
-                      title: "Share Feedback",
-                      description: "Tell us what works and what doesn't—we're listening",
+                      title: "Monthly 15-min check-in",
+                      description: "Not a focus group — just direct feedback on what's working and what isn't.",
                     },
                     {
-                      title: "Spread the Word",
-                      description: "Optional: share your experience to help other creators discover us",
+                      title: "Honest input when something breaks",
+                      description: "Tell us when it's broken. We'd rather hear it from you than guess.",
                     },
                   ].map((ask, index) => (
                     <motion.div
@@ -315,7 +403,7 @@ const FoundingCreators = () => {
                       transition={{ delay: index * 0.1, duration: 0.4 }}
                       className="p-6 rounded-2xl bg-card border border-border"
                     >
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                         <span className="text-xl font-bold text-primary">{index + 1}</span>
                       </div>
                       <h3 className="font-semibold text-foreground mb-2">{ask.title}</h3>

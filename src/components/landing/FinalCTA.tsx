@@ -9,7 +9,7 @@ export const FinalCTA = () => {
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "final_cta",
-      button_text: "Apply for Access",
+      button_text: "Request access",
     });
   };
 
@@ -63,7 +63,7 @@ export const FinalCTA = () => {
               onClick={handleApplyClick}
               className="btn-primary text-lg px-8 py-4"
             >
-              Apply for Access
+              Request access
               <ArrowRight className="w-5 h-5" />
             </Link>
             <p className="text-sm text-muted-foreground">

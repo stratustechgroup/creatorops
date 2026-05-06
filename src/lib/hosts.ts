@@ -33,13 +33,23 @@ export function getDashboardUrl(): string {
   return "";
 }
 
+/**
+ * Normalize a host for comparison: strip leading "www." and lowercase.
+ * Treats `www.creatorops.io` and `creatorops.io` as the same host so we
+ * don't infinite-loop redirect between them.
+ */
+function normalizeHost(host: string): string {
+  const lower = host.toLowerCase();
+  return lower.startsWith("www.") ? lower.slice(4) : lower;
+}
+
 export function isOnDashboardHost(): boolean {
   // If env vars are unset (local dev / preview), treat all hosts as "both"
   if (!MARKETING_URL || !DASHBOARD_URL) return true; // default to permissive
   if (typeof window === "undefined") return false;
   try {
-    const dashHost = new URL(DASHBOARD_URL).host;
-    return window.location.host === dashHost;
+    const dashHost = normalizeHost(new URL(DASHBOARD_URL).host);
+    return normalizeHost(window.location.host) === dashHost;
   } catch {
     return false;
   }
@@ -49,8 +59,8 @@ export function isOnMarketingHost(): boolean {
   if (!MARKETING_URL || !DASHBOARD_URL) return true;
   if (typeof window === "undefined") return false;
   try {
-    const mktHost = new URL(MARKETING_URL).host;
-    return window.location.host === mktHost;
+    const mktHost = normalizeHost(new URL(MARKETING_URL).host);
+    return normalizeHost(window.location.host) === mktHost;
   } catch {
     return false;
   }

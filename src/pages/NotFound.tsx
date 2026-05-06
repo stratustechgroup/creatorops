@@ -31,8 +31,8 @@ const NotFound = () => {
                 <Home className="w-4 h-4" />
                 Home
               </a>
-              <a href={urlForPath("/") + "#pricing"} className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Pricing
+              <a href={urlForPath("/") + "#plans"} className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Plans
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a href={urlForPath("/") + "#faq"} className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">

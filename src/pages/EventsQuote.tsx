@@ -139,7 +139,7 @@ const EventsQuote = () => {
                 <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
-                <Link to="/#pricing">
+                <Link to="/#plans">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Plans
                 </Link>
@@ -523,7 +523,7 @@ function PathD() {
       </p>
       <div className="space-y-3">
         <Link
-          to="/#pricing"
+          to="/#plans"
           className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           View Creator Pro & Studio Plans

@@ -151,7 +151,7 @@ const FoundingCreators = () => {
                       </Link>
                     </Button>
                     <Button variant="outline" size="xl" asChild>
-                      <a href="#pricing">See locked-in rates</a>
+                      <a href="#plans">See locked-in rates</a>
                     </Button>
                   </motion.div>
                 </motion.div>
@@ -234,7 +234,7 @@ const FoundingCreators = () => {
           </section>
 
           {/* Locked-in Pricing Section */}
-          <section id="pricing" className="py-20 md:py-28 border-t border-border">
+          <section id="plans" className="py-20 md:py-28 border-t border-border">
             <div className="container px-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

@@ -77,7 +77,7 @@ const AnimatedRoutes = () => {
             <Route path="/" element={<Index />} />
             {/* Section aliases — render the same Index page, scrolled to section */}
             <Route path="/features" element={<Index />} />
-            <Route path="/pricing" element={<Index />} />
+            <Route path="/plans" element={<Index />} />
             <Route path="/faq" element={<Index />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/founding-creators" element={<FoundingCreators />} />

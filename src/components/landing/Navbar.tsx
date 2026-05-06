@@ -17,7 +17,7 @@ interface NavLinkDef {
 
 const navLinks: NavLinkDef[] = [
   { label: "Features", href: "/features", isPage: true },
-  { label: "Pricing", href: "/pricing", isPage: true },
+  { label: "Plans", href: "/plans", isPage: true },
   { label: "Founding Program", href: "/founding-creators", isPage: true },
   { label: "FAQ", href: "/faq", isPage: true },
 ];

@@ -33,7 +33,7 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
 // Hash-based links (#pricing) still work for backwards compatibility.
 const PATH_TO_SECTION: Record<string, string> = {
   "/features": "features",
-  "/pricing": "pricing",
+  "/plans": "plans",
   "/faq": "faq",
 };
 

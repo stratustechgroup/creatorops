@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const footerLinks = {
   product: [
     { label: "Features", href: "#features", isAnchor: true },
-    { label: "Pricing", href: "#pricing", isAnchor: true },
+    { label: "Plans", href: "#plans", isAnchor: true },
     { label: "FAQ", href: "#faq", isAnchor: true },
   ],
   program: [

@@ -113,7 +113,7 @@ const StudioContact = () => {
                 <span className="font-semibold text-foreground">Creator Ops</span>
               </Link>
               <Button variant="ghost" size="sm" asChild>
-                <Link to="/#pricing">
+                <Link to="/#plans">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Plans
                 </Link>

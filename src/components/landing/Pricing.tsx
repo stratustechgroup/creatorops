@@ -84,7 +84,7 @@ export const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-24 lg:py-32 bg-card/30">
+    <section id="plans" className="py-24 lg:py-32 bg-card/30">
       <div className="container-default">
         {/* Header */}
         <div className="max-w-3xl mb-12">
@@ -94,7 +94,7 @@ export const Pricing = () => {
             viewport={{ once: true }}
             className="text-sm text-primary font-medium mb-4 tracking-wide"
           >
-            PRICING
+            PLANS
           </motion.p>
 
           <motion.h2
@@ -104,7 +104,7 @@ export const Pricing = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] mb-6"
           >
-            Transparent, outcome-based pricing.
+            Transparent, outcome-based plans.
           </motion.h2>
 
           <motion.p

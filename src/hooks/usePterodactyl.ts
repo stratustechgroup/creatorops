@@ -2,30 +2,38 @@ import { useQuery } from "@tanstack/react-query";
 import { useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
-// Types based on Pterodactyl Application API responses
+// Types based on Pterodactyl Client API (`GET /api/client` and
+// `GET /api/client/servers/{id}`). The proxy normalizes `is_suspended` to
+// `suspended` so existing UI consumers keep working. Application-API-only
+// fields (`user`, `node` as number, `created_at`, `updated_at`) are
+// optional or absent — the client API doesn't expose them.
 export interface ServerListItem {
-  id: number;
   identifier: string;
   uuid: string;
   name: string;
   description: string;
   suspended: boolean;
+  is_suspended?: boolean;
+  server_owner?: boolean;
+  internal_id?: number;
+  node?: string;
+  status?: string | null;
+  is_installing?: boolean;
+  is_transferring?: boolean;
   limits: {
     memory: number;
     swap: number;
     disk: number;
     io: number;
     cpu: number;
+    threads?: number | null;
+    oom_disabled?: boolean;
   };
   feature_limits: {
     databases: number;
     allocations: number;
     backups: number;
   };
-  user: number;
-  node: number;
-  created_at: string;
-  updated_at: string;
 }
 
 // Types for Client API responses (real-time data)

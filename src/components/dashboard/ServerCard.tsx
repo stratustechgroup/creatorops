@@ -98,7 +98,7 @@ export function ServerCard({ server }: ServerCardProps) {
   const rawState = resourcesData?.attributes?.current_state;
   const resources = resourcesData?.attributes?.resources;
 
-  const status: ServerStatus = server.suspended
+  const status: ServerStatus = (server.suspended || server.is_suspended)
     ? "suspended"
     : resourcesError
     ? "unknown"

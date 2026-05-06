@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Zap } from "lucide-react";
+import { Check, ArrowRight, Zap, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -15,7 +15,7 @@ const plans = [
       "Roll back to any point — never lose world progress",
       "Locked to your exact version until you decide to change",
       "We handle updates. You just hit record.",
-      "Standard support when you need us",
+      "Standard support, 24-hour response window",
     ],
     highlighted: false,
     cta: "Apply Now",
@@ -31,7 +31,7 @@ const plans = [
       "Push updates to staging first — go live when ready",
       "Roll back to any point — never lose world progress",
       "Managed updates and version control",
-      "Standard support when you need us",
+      "Standard support, 12-hour response window",
     ],
     highlighted: false,
     cta: "Apply Now",
@@ -45,9 +45,9 @@ const plans = [
     features: [
       "Unlimited worlds — production, staging, and more",
       "4-hour guaranteed restore, even at 2am before a big upload",
-      "We upgrade your server alongside you, step by step",
+      "Event Assurance + pre-event stress testing for collabs and charity streams",
       "Performance tuned for larger audiences and heavier modpacks",
-      "Priority support with real response times",
+      "Priority support, 1-hour response window",
     ],
     highlighted: true,
     cta: "Apply Now",
@@ -60,10 +60,10 @@ const plans = [
     description: "For established creators and networks who need dedicated infrastructure and a real point of contact.",
     features: [
       "Dedicated managed server built for your workflow",
-      "Custom SLA — you define the uptime requirements",
-      "Dedicated account manager who knows your setup",
+      "Custom SLA — you define the restore times and response windows",
+      "Dedicated account manager who knows your setup by name",
       "White-glove onboarding and world migration included",
-      "Event Assurance + pre-event stress testing included",
+      "Network-level support: multi-creator SMPs, event burst capacity",
     ],
     highlighted: false,
     cta: "Talk to Us",
@@ -212,6 +212,12 @@ export const Pricing = () => {
                 {plan.cta}
                 <ArrowRight className="w-4 h-4" />
               </Link>
+
+              {/* Money-back guarantee — visible on every card, not buried below */}
+              <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+                <Shield className="w-3.5 h-3.5 text-primary" />
+                <span>30-day money-back guarantee</span>
+              </div>
             </motion.div>
           ))}
         </div>

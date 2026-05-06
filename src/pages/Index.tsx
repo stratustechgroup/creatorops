@@ -10,6 +10,7 @@ import { SafetyFeatures } from "@/components/landing/SafetyFeatures";
 import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { Pricing } from "@/components/landing/Pricing";
 import { Trust } from "@/components/landing/Trust";
+import { Testimonials } from "@/components/landing/Testimonials";
 import { FAQ } from "@/components/landing/FAQ";
 import { FoundingProgramTeaser } from "@/components/landing/FoundingProgramTeaser";
 import { FinalCTA } from "@/components/landing/FinalCTA";
@@ -71,16 +72,32 @@ const Index = () => {
         <ScrollProgress />
         <Navbar />
         <main>
+          {/*
+            Section order is conversion-tuned:
+            1. Hero — value prop
+            2. PainPoints — problem agitation
+            3. Solution — what we do (must come BEFORE differentiation)
+            4. CreatorDifference — why we're different from alternatives
+            5. SafetyFeatures — concrete reliability proof
+            6. ComparisonTable — vs self-hosted / self-managed competitors
+            7. Trust — internal reliability promises
+            8. Testimonials — external social proof (renders null if no testimonials)
+            9. Pricing — only AFTER trust + social proof have landed
+            10. FoundingProgramTeaser — primary CTA when spots are open
+            11. FAQ — final objection handling
+            12. FinalCTA — closer
+          */}
           <Hero />
           <PainPoints />
-          <CreatorDifference />
           <Solution />
+          <CreatorDifference />
           <SafetyFeatures />
           <ComparisonTable />
-          <Pricing />
           <Trust />
-          <FAQ />
+          <Testimonials />
+          <Pricing />
           <FoundingProgramTeaser />
+          <FAQ />
           <FinalCTA />
         </main>
         <Footer />

@@ -9,9 +9,19 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 
 const faqs = [
   {
+    question: "What is managed Minecraft server hosting?",
+    answer:
+      "Managed Minecraft server hosting means a provider handles all technical operations on your behalf — backups, monitoring, incident response, version upgrades, and mod configuration. Unlike traditional shared hosting where you manage the server yourself through a control panel (Pterodactyl, Multicraft, etc.), a managed service lets content creators focus entirely on recording and streaming while infrastructure runs in the background. Creator Ops is built specifically for this model — we don't sell you a panel and walk away.",
+  },
+  {
+    question: "How is Creator Ops different from Apex, BisectHosting, or Shockbyte?",
+    answer:
+      "Apex, BisectHosting, Shockbyte, and similar hosts sell you server access — you manage the panel, install mods, configure backups, and handle crashes via tickets. Creator Ops is the opposite model: we run your server like production infrastructure for your content business. That includes a 4-hour restore SLA on Pro, dedicated staging environments, version pinning, IP-hidden proxy protection, and direct human support. We're a managed service, not a hosting commodity.",
+  },
+  {
     question: "How do backups work?",
     answer:
-      "We run automated backups multiple times daily, stored off-server for maximum safety. You can request a restore at any time, and we'll roll your world back to a previous state within hours. Your content is treated like production data—because it is.",
+      "We run automated backups every 6 hours, stored off-server for maximum safety, with 30-day retention. You can request a restore at any time. Pro tier guarantees restoration within 4 hours, even at 2am before a big upload. Your content is treated like production data — because it is.",
   },
   {
     question: "Can I transfer my existing world?",

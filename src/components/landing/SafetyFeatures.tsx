@@ -6,25 +6,25 @@ const safetyFeatures = [
   {
     category: "Security",
     items: [
-      { icon: Lock, title: "Proxy Protection", description: "Your IP stays hidden. We handle all proxy layers.", tag: "IP Hidden" },
-      { icon: Shield, title: "DDoS Shield", description: "Content-safe mitigation without disconnecting players.", tag: "Always On" },
-      { icon: Eye, title: "Creator Confidentiality", description: "Your projects and server IPs stay strictly confidential.", tag: "NDA Ready" },
+      { icon: Lock, title: "Proxy Protection", description: "Your real server IP never leaves our network. Audiences can't grief, swat, or DDoS what they can't see.", tag: "IP Hidden" },
+      { icon: Shield, title: "DDoS Shield", description: "Content-safe mitigation absorbs attacks at the edge — players never disconnect.", tag: "Always On" },
+      { icon: Eye, title: "Creator Confidentiality", description: "Your projects, server IPs, and unreleased content stay strictly confidential. NDAs available on request.", tag: "NDA Ready" },
     ],
   },
   {
     category: "Reliability",
     items: [
-      { icon: Clock, title: "Never Lose Progress", description: "Backups so frequent you'll never wonder if you're protected.", tag: "Auto-backups" },
-      { icon: Activity, title: "Proactive Monitoring", description: "We detect issues before they interrupt your session.", tag: "24/7" },
-      { icon: Zap, title: "Instant Response", description: "When issues arise, we respond immediately. No tickets.", tag: "Immediate" },
+      { icon: Clock, title: "Never Lose Progress", description: "Off-server backups every 6 hours, retained for 30 days. Restore to any point — never wonder if you're protected.", tag: "Every 6 hours" },
+      { icon: Activity, title: "Proactive Monitoring", description: "Live TPS and MSPT monitoring with the Spark profiler. We detect issues before they hit your stream.", tag: "24/7 live" },
+      { icon: Zap, title: "Instant Response", description: "Real engineers — not ticket queues. Pro+ gets priority response with named SLAs.", tag: "No tickets" },
     ],
   },
   {
     category: "Control",
     items: [
-      { icon: Settings, title: "Safe Updates", description: "We never update your Minecraft version without approval.", tag: "You Approve" },
-      { icon: Calendar, title: "Recording-Ready", description: "Service-level commitments tailored to your tier.", tag: "Tier-based SLA" },
-      { icon: RotateCcw, title: "Rapid Rollback", description: "Restore times by tier — see SLA.", tag: "Up to 4 hours" },
+      { icon: Settings, title: "Safe Updates", description: "We pin your Minecraft version. Upgrades happen only when you approve, tested in staging first.", tag: "You Approve" },
+      { icon: Calendar, title: "Recording-Ready SLA", description: "Solo: best-effort. Pro: 4-hour guaranteed restore. Studio: custom SLA you define.", tag: "Tier-based SLA" },
+      { icon: RotateCcw, title: "Rapid Rollback", description: "Pro tier guarantees a 4-hour restore window — even at 2am before a big upload.", tag: "≤ 4 hours" },
     ],
   },
 ];

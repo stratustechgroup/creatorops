@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Server, Headphones, Target, Sparkles } from "lucide-react";
+import { Server, Headphones, Target, Activity } from "lucide-react";
 
 const differentiators = [
   {
@@ -18,14 +18,13 @@ const differentiators = [
     icon: Target,
     title: "Outcome Guarantees",
     description:
-      "We measure success by uninterrupted content, not uptime percentages. Your recording session matters more than our metrics.",
+      "Pro tier guarantees a 4-hour restore window — even at 2am before a big upload. Studio defines a custom SLA. Real, signed commitments — not aspirational uptime numbers.",
   },
   {
-    icon: Sparkles,
-    title: "SparkAnalyzer",
+    icon: Activity,
+    title: "Proactive Profiling",
     description:
-      "Proprietary profiling tools that catch performance issues before they happen. See problems we fix before you even notice them.",
-    badge: "Coming Soon",
+      "We run live TPS and MSPT monitoring on every server, with the Spark profiler catching issues before they hit your stream. Most problems get fixed before you notice them.",
   },
 ];
 
@@ -85,11 +84,6 @@ export const CreatorDifference = () => {
                     <h3 className="text-lg font-semibold text-foreground">
                       {item.title}
                     </h3>
-                    {item.badge && (
-                      <span className="text-xs font-medium text-muted-foreground bg-white/5 px-2 py-0.5 rounded">
-                        {item.badge}
-                      </span>
-                    )}
                   </div>
                   <p className="text-muted-foreground leading-relaxed">
                     {item.description}

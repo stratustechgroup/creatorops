@@ -2,14 +2,21 @@ import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap, Server } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useSpotsConfig } from "@/hooks/useSpotsConfig";
 
 export const FinalCTA = () => {
   const { trackEvent } = useAnalytics();
+  const { spotsRemaining, loading } = useSpotsConfig();
+
+  const foundingOpen = !loading && spotsRemaining > 0;
+  const cta = foundingOpen
+    ? { to: "/founding-apply", label: "Apply for founding access" }
+    : { to: "/apply", label: "Request access" };
 
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "final_cta",
-      button_text: "Request access",
+      button_text: cta.label,
     });
   };
 
@@ -59,15 +66,15 @@ export const FinalCTA = () => {
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
             <Link
-              to="/founding-apply"
+              to={cta.to}
               onClick={handleApplyClick}
               className="btn-primary text-lg px-8 py-4"
             >
-              Request access
+              {cta.label}
               <ArrowRight className="w-5 h-5" />
             </Link>
             <p className="text-sm text-muted-foreground">
-              No commitment required · Response within 48 hours
+              No commitment required · Response within 48 hours · 30-day money-back guarantee
             </p>
           </div>
         </motion.div>

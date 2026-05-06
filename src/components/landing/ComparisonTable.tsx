@@ -5,15 +5,16 @@ type FeatureValue = "yes" | "no" | "partial" | string;
 
 const comparisonData = [
   { feature: "Automated backups", creatorOps: "yes", selfHosting: "no", otherHosts: "partial" },
-  { feature: "One-click rollback", creatorOps: "yes", selfHosting: "no", otherHosts: "no" },
-  { feature: "Version pinning", creatorOps: "yes", selfHosting: "yes", otherHosts: "partial" },
-  { feature: "24/7 monitoring", creatorOps: "yes", selfHosting: "no", otherHosts: "partial" },
-  { feature: "Incident response", creatorOps: "Immediate", selfHosting: "You handle it", otherHosts: "Ticket system" },
-  { feature: "Staging environments", creatorOps: "yes", selfHosting: "Manual setup", otherHosts: "Extra cost" },
-  { feature: "Uptime SLA", creatorOps: "Tier-based", selfHosting: "no", otherHosts: "Varies" },
-  { feature: "DDoS protection", creatorOps: "yes", selfHosting: "Extra cost", otherHosts: "partial" },
+  { feature: "One-click rollback to any point", creatorOps: "yes", selfHosting: "no", otherHosts: "no" },
+  { feature: "Minecraft version pinning", creatorOps: "yes", selfHosting: "yes", otherHosts: "partial" },
+  { feature: "Live TPS / MSPT monitoring", creatorOps: "yes", selfHosting: "DIY (Spark)", otherHosts: "no" },
+  { feature: "Incident response", creatorOps: "Real engineer, immediate", selfHosting: "You handle it", otherHosts: "Ticket queue" },
+  { feature: "Dedicated staging environment", creatorOps: "yes", selfHosting: "Manual setup", otherHosts: "Extra cost" },
+  { feature: "Restore SLA (Pro tier)", creatorOps: "4 hours guaranteed", selfHosting: "no", otherHosts: "Varies / none" },
+  { feature: "DDoS + IP-hidden proxy", creatorOps: "yes", selfHosting: "Extra cost", otherHosts: "partial" },
   { feature: "Creator-focused support", creatorOps: "yes", selfHosting: "no", otherHosts: "no" },
-  { feature: "Time investment", creatorOps: "Zero ops", selfHosting: "Hours/week", otherHosts: "Some required" },
+  { feature: "Event Assurance (collabs, charity)", creatorOps: "Pro & Studio", selfHosting: "no", otherHosts: "no" },
+  { feature: "Your time investment", creatorOps: "Zero ops", selfHosting: "Hours per week", otherHosts: "Several hours" },
 ];
 
 const ValueCell = ({ value, highlight }: { value: FeatureValue; highlight?: boolean }) => {
@@ -94,9 +95,16 @@ export const ComparisonTable = () => {
                     <th className="text-center p-4 bg-primary/5">
                       <span className="text-xs text-primary font-medium">RECOMMENDED</span>
                       <p className="text-sm font-semibold text-foreground mt-1">Creator Ops</p>
+                      <p className="text-xs text-muted-foreground mt-1">Fully managed</p>
                     </th>
-                    <th className="text-center p-4 text-sm font-medium text-muted-foreground">Self-Hosting</th>
-                    <th className="text-center p-4 text-sm font-medium text-muted-foreground">Other Hosts</th>
+                    <th className="text-center p-4 text-sm font-medium text-muted-foreground">
+                      Self-Hosted
+                      <p className="text-xs text-muted-foreground/60 font-normal mt-1">Your machine</p>
+                    </th>
+                    <th className="text-center p-4 text-sm font-medium text-muted-foreground">
+                      Self-Managed Host
+                      <p className="text-xs text-muted-foreground/60 font-normal mt-1">Apex, Bisect, Shockbyte</p>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -126,7 +134,7 @@ export const ComparisonTable = () => {
           </div>
 
           <p className="text-sm text-muted-foreground mt-6">
-            * "Other Hosts" refers to typical Minecraft hosting providers without creator-specific features.
+            * "Self-Managed Host" refers to typical Minecraft hosting providers (Apex, BisectHosting, Shockbyte, Sparked Host, etc.) where you run the panel and handle ops yourself.
           </p>
         </motion.div>
       </div>

@@ -51,6 +51,7 @@ const AdminApplications = lazy(() => import("./pages/admin/AdminApplications"));
 const AdminTickets = lazy(() => import("./pages/admin/AdminTickets"));
 const AdminSpots = lazy(() => import("./pages/admin/AdminSpots"));
 const AdminStaff = lazy(() => import("./pages/admin/AdminStaff"));
+const AdminInfrastructure = lazy(() => import("./pages/admin/AdminInfrastructure"));
 
 const CONVEX_URL = import.meta.env.VITE_CONVEX_URL as string | undefined;
 if (!CONVEX_URL && import.meta.env.PROD) {
@@ -174,6 +175,16 @@ const AnimatedRoutes = () => {
                 <ProtectedRoute>
                   <AdminRoute>
                     <AdminStaff />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/infrastructure"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <AdminInfrastructure />
                   </AdminRoute>
                 </ProtectedRoute>
               }

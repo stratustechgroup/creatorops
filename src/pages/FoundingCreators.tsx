@@ -343,7 +343,7 @@ const FoundingCreators = () => {
                     From the founder
                   </div>
                   <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground">
-                    I'm Alec. Here's why I'm building this.
+                    I'm James. Here's why I'm building this.
                   </h2>
                   <div className="space-y-4 text-muted-foreground leading-relaxed">
                     <p>

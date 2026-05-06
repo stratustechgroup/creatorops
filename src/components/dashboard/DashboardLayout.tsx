@@ -194,6 +194,7 @@ function SidebarContent({
   );
 }
 
+
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
   const queryClient = useQueryClient();

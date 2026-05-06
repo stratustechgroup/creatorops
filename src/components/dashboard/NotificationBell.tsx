@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertCircle,
@@ -120,7 +120,39 @@ function NotificationRow({ notification, onOpen, onDelete }: NotificationRowProp
   );
 }
 
-export function NotificationBell() {
+/**
+ * Defense-in-depth: hide the bell entirely if anything inside throws — most
+ * commonly because Convex hasn't pushed the `notifications` schema yet, or
+ * the user's auth identity hasn't propagated. Better to render no bell than
+ * to crash the whole dashboard.
+ */
+class NotificationBellErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    if (typeof console !== "undefined") {
+      // Surface in dev so it's debuggable, but don't break the dashboard.
+      console.warn("[NotificationBell] hidden due to error:", error);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+function NotificationBellInner() {
   const [open, setOpen] = useState(false);
   const {
     notifications,
@@ -244,5 +276,13 @@ export function NotificationBell() {
         )}
       </PopoverContent>
     </Popover>
+  );
+}
+
+export function NotificationBell() {
+  return (
+    <NotificationBellErrorBoundary>
+      <NotificationBellInner />
+    </NotificationBellErrorBoundary>
   );
 }

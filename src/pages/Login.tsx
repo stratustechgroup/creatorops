@@ -112,14 +112,21 @@ export default function Login() {
             </span>
           </a>
 
-          {/* Stage content (no card chrome — borderless) */}
+          {/* Stage content */}
           <AnimatePresence mode="wait" initial={false}>
             {stage === "credentials" ? (
-              <motion.div key="credentials" {...stageMotion}>
-                <div className="mb-7">
-                  <h1 className="text-2xl font-semibold tracking-tight">
+              <motion.div
+                key="credentials"
+                {...stageMotion}
+                className="bg-card/50 border border-white/[0.06] rounded-xl p-8 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_8px_24px_-12px_rgba(0,0,0,0.6)]"
+              >
+                <div className="mb-7 text-center">
+                  <h1 className="text-xl font-semibold tracking-tight">
                     Sign in to Creator Ops
                   </h1>
+                  <p className="text-sm text-muted-foreground mt-1.5">
+                    Welcome back.
+                  </p>
                 </div>
 
                 <form
@@ -216,17 +223,21 @@ export default function Login() {
                 </form>
               </motion.div>
             ) : (
-              <motion.div key="second_factor" {...stageMotion}>
-                <div className="mb-6">
-                  <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary mb-3">
-                    <ShieldCheck className="w-4 h-4" />
+              <motion.div
+                key="second_factor"
+                {...stageMotion}
+                className="bg-card/50 border border-white/[0.06] rounded-xl p-8 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_8px_24px_-12px_rgba(0,0,0,0.6)]"
+              >
+                <div className="mb-6 text-center">
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary mb-4">
+                    <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <h1 className="text-2xl font-semibold tracking-tight">
+                  <h1 className="text-xl font-semibold tracking-tight">
                     {secondFactorMode === "totp"
                       ? "Two-factor verification"
                       : "Enter a backup code"}
                   </h1>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-muted-foreground mt-1.5">
                     {secondFactorMode === "totp"
                       ? "Enter the 6-digit code from your authenticator app."
                       : "Enter one of the backup codes you saved when setting up 2FA."}

@@ -41,13 +41,19 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { signIn, attemptSecondFactor } = useAuth();
+  const { signIn, attemptSecondFactor, user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname ||
     "/dashboard";
+
+  // Already authenticated — skip the login form entirely.
+  if (!loading && user) {
+    navigate(from, { replace: true });
+    return null;
+  }
 
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

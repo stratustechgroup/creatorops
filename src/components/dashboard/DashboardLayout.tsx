@@ -8,6 +8,7 @@ import {
   LifeBuoy,
   Menu,
   RefreshCw,
+  Server,
   Sparkles,
   Ticket,
   Users,
@@ -42,6 +43,7 @@ const ADMIN_NAV_ITEMS: NavItem[] = [
   { label: "Tickets", to: "/admin/tickets", icon: Ticket },
   { label: "Spots", to: "/admin/spots", icon: Sparkles },
   { label: "Staff", to: "/admin/staff", icon: Users },
+  { label: "Infrastructure", to: "/admin/infrastructure", icon: Server },
 ];
 
 const BREADCRUMB_LABELS: Record<string, string> = {
@@ -58,6 +60,7 @@ const BREADCRUMB_LABELS: Record<string, string> = {
   "/admin/tickets": "Admin · Tickets",
   "/admin/spots": "Admin · Spots",
   "/admin/staff": "Admin · Staff",
+  "/admin/infrastructure": "Admin · Infrastructure",
 };
 
 function formatRelativeTime(from: Date, to: Date): string {

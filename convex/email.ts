@@ -648,7 +648,37 @@ export const sendApplicationEmail = action({
     formData: v.any(),
   },
   handler: async (ctx, { formType, formData }) => {
-    await ctx.runMutation(internal.email.storeApplication, { formType, formData });
+    const applicationId = await ctx.runMutation(internal.email.storeApplication, { formType, formData });
+
+    // In-app notification: fan out to all staff with a known clerkUserId.
+    // Fires alongside (not instead of) the admin email below.
+    const adminTitleByType: Record<string, string> = {
+      founding: `New founding application — ${formData.firstName} ${formData.lastName}`,
+      standard: `New creator application — ${formData.firstName} ${formData.lastName}`,
+      studio: `New Studio inquiry — ${formData.firstName} ${formData.lastName}`,
+      events: `New events quote request — ${formData.firstName} ${formData.lastName}`,
+    };
+    const adminBodyByType: Record<string, string> = {
+      founding: (formData.contentDescription as string) ?? "",
+      standard: (formData.useCase as string) ?? "",
+      studio: (formData.currentPainPoint as string) ?? "",
+      events: `${formData.eventType ?? ""} · ${formData.concurrentPlayers ?? ""} players · ${formData.targetDate ?? ""}`,
+    };
+
+    await ctx.runMutation(internal.notifications.notifyStaff, {
+      type: `application.new.${formType}`,
+      severity: formType === "founding" ? "success" : "info",
+      title: adminTitleByType[formType] ?? `New ${formType} submission`,
+      body: adminBodyByType[formType]?.slice(0, 300),
+      link: `/admin/applications?id=${applicationId}&type=${formType}`,
+      metadata: {
+        applicationId,
+        formType,
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      },
+    });
 
     const recipientEmail = "hi@creatorops.io";
 

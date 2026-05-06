@@ -189,4 +189,25 @@ export default defineSchema({
     .index("by_actor", ["actorEmail"])
     .index("by_action", ["action"])
     .index("by_created_at", ["createdAt"]),
+
+  // In-app notifications. One row per (recipient, event). Admin events are
+  // fanned out at insert time so each admin gets their own row + read state.
+  notifications: defineTable({
+    recipientClerkUserId: v.string(),
+    type: v.string(),
+    severity: v.union(
+      v.literal("info"),
+      v.literal("success"),
+      v.literal("warning"),
+      v.literal("urgent"),
+    ),
+    title: v.string(),
+    body: v.optional(v.string()),
+    link: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+    readAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_recipient", ["recipientClerkUserId", "createdAt"])
+    .index("by_recipient_unread", ["recipientClerkUserId", "readAt"]),
 });

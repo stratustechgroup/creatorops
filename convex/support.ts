@@ -56,6 +56,34 @@ export const submitSupportTicket = action({
   handler: async (ctx, args) => {
     const ticketId = await ctx.runMutation(internal.support.storeSupportTicket, args);
 
+    // In-app notification: fan out to all staff.
+    await ctx.runMutation(internal.notifications.notifyStaff, {
+      type: "ticket.new",
+      severity: args.priority === "high" ? "urgent" : "info",
+      title: `New support ticket — ${args.subject}`,
+      body: args.description.slice(0, 300),
+      link: `/admin/tickets?id=${ticketId}`,
+      metadata: {
+        ticketId,
+        priority: args.priority,
+        category: args.category,
+        email: args.email,
+      },
+    });
+
+    // Confirm receipt to the user inside the dashboard if they're signed in.
+    if (args.clerkUserId) {
+      await ctx.runMutation(internal.notifications.notifyUser, {
+        recipientClerkUserId: args.clerkUserId,
+        type: "ticket.received",
+        severity: "success",
+        title: "Ticket received",
+        body: `We'll respond to "${args.subject}" within 24 hours.`,
+        link: "/support",
+        metadata: { ticketId, subject: args.subject },
+      });
+    }
+
     const fullName = [args.firstName, args.lastName].filter(Boolean).join(" ") || args.email;
 
     const internalHtml = `

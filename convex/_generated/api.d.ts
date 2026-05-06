@@ -10,6 +10,7 @@
 
 import type * as admin from "../admin.js";
 import type * as email from "../email.js";
+import type * as notifications from "../notifications.js";
 import type * as onboarding from "../onboarding.js";
 import type * as pterodactyl from "../pterodactyl.js";
 import type * as support from "../support.js";
@@ -23,6 +24,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   email: typeof email;
+  notifications: typeof notifications;
   onboarding: typeof onboarding;
   pterodactyl: typeof pterodactyl;
   support: typeof support;

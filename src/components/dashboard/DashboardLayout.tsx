@@ -19,6 +19,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/landing/Logo";
 import { UserMenu } from "@/components/dashboard/UserMenu";
+import { NotificationBell } from "@/components/dashboard/NotificationBell";
 import { useStaffRole } from "@/hooks/useStaffRole";
 import { cn } from "@/lib/utils";
 
@@ -346,6 +347,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               >
                 Updated {formatRelativeTime(lastUpdated, now)}
               </span>
+
+              <NotificationBell />
 
               <div className="lg:hidden">
                 <UserMenu compact />

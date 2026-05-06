@@ -560,9 +560,74 @@ export const updateApplicationStatus = mutation({
       metadata: { formType, oldStatus: (existing as { status: string }).status, newStatus: status },
     });
 
+    // Notify the applicant in-dashboard if we can find a clerkUserId for them.
+    // Many applicants apply before signing up — for those, this is a no-op
+    // and they get the email path only.
+    if (status === "approved" || status === "rejected" || status === "needs_info") {
+      const applicantEmail = (existing as { email: string }).email;
+      const applicantClerkUserId = await findClerkUserIdByEmail(ctx, applicantEmail);
+      if (applicantClerkUserId) {
+        const titleByStatus: Record<string, string> = {
+          approved: "Your application was approved",
+          rejected: "Update on your application",
+          needs_info: "We need a bit more info on your application",
+        };
+        const severityByStatus: Record<string, "success" | "info" | "warning"> = {
+          approved: "success",
+          rejected: "info",
+          needs_info: "warning",
+        };
+        await ctx.db.insert("notifications", {
+          recipientClerkUserId: applicantClerkUserId,
+          type: `application.status.${status}`,
+          severity: severityByStatus[status],
+          title: titleByStatus[status],
+          body:
+            status === "approved"
+              ? "Welcome aboard. Check your email for onboarding next steps."
+              : status === "needs_info"
+              ? "Reply to the email we sent so we can move forward."
+              : "Thanks for applying. We'll keep your info on file in case anything changes.",
+          link: "/dashboard",
+          metadata: { applicationId: id, formType, status },
+          createdAt: Date.now(),
+        });
+      }
+    }
+
     return await ctx.db.get(docId);
   },
 });
+
+/**
+ * Best-effort reverse lookup: given an email, find the user's clerkUserId
+ * via clientPterodactylUsers, supportTickets, or staffMembers. Returns null
+ * if no match — caller should handle that case (typically by skipping the
+ * in-app notification and relying on the email path).
+ */
+async function findClerkUserIdByEmail(
+  ctx: QueryCtx | MutationCtx,
+  email: string,
+): Promise<string | null> {
+  const normalized = email.toLowerCase();
+
+  // staffMembers (lowercased emails)
+  const staff = await ctx.db
+    .query("staffMembers")
+    .withIndex("by_email", (q) => q.eq("email", normalized))
+    .first();
+  if (staff?.clerkUserId) return staff.clerkUserId;
+
+  // supportTickets (case-preserved emails)
+  const ticket = await ctx.db
+    .query("supportTickets")
+    .withIndex("by_email", (q) => q.eq("email", email))
+    .filter((q) => q.neq(q.field("clerkUserId"), undefined))
+    .first();
+  if (ticket?.clerkUserId) return ticket.clerkUserId;
+
+  return null;
+}
 
 /**
  * Internal version of updateApplicationStatus — bypasses auth check.
@@ -617,6 +682,33 @@ export const updateTicketStatus = mutation({
       targetId: id,
       metadata: { oldStatus: existing.status, newStatus: status },
     });
+
+    // Notify the ticket owner of the status change, if they're a known user.
+    const ownerClerkUserId =
+      existing.clerkUserId ?? (await findClerkUserIdByEmail(ctx, existing.email));
+    if (ownerClerkUserId && existing.status !== status) {
+      const titleByStatus: Record<string, string> = {
+        open: `Ticket reopened — ${existing.subject}`,
+        in_progress: `We're working on your ticket — ${existing.subject}`,
+        resolved: `Ticket resolved — ${existing.subject}`,
+        closed: `Ticket closed — ${existing.subject}`,
+      };
+      const severityByStatus: Record<string, "info" | "success"> = {
+        open: "info",
+        in_progress: "info",
+        resolved: "success",
+        closed: "info",
+      };
+      await ctx.db.insert("notifications", {
+        recipientClerkUserId: ownerClerkUserId,
+        type: `ticket.status.${status}`,
+        severity: severityByStatus[status],
+        title: titleByStatus[status],
+        link: "/support",
+        metadata: { ticketId: id, status },
+        createdAt: Date.now(),
+      });
+    }
 
     return await ctx.db.get(id);
   },

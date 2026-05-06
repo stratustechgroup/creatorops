@@ -2,7 +2,16 @@ import { v, ConvexError } from "convex/values";
 import { action, internalQuery } from "./_generated/server";
 import { api } from "./_generated/api";
 
-async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
+type PterodactylInit = {
+  method?: "GET" | "POST";
+  body?: unknown;
+};
+
+async function callPterodactyl(
+  path: string,
+  apiKey: string,
+  init: PterodactylInit = {},
+): Promise<unknown> {
   const rawUrl = process.env.PTERODACTYL_URL;
   if (!rawUrl) throw new ConvexError("PTERODACTYL_URL not configured");
 
@@ -12,11 +21,13 @@ async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
   const fullUrl = `${url}${path}`;
 
   const response = await fetch(fullUrl, {
+    method: init.method ?? "GET",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: init.body ? JSON.stringify(init.body) : undefined,
   });
 
   if (!response.ok) {
@@ -27,7 +38,12 @@ async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
     );
   }
 
-  return response.json();
+  // Power signal endpoint returns 204 No Content with empty body.
+  if (response.status === 204) return null;
+  // Some endpoints (rare) return empty body with 200. Handle defensively.
+  const text = await response.text();
+  if (!text) return null;
+  return JSON.parse(text);
 }
 
 export const getPterodactylUserId = internalQuery({
@@ -47,11 +63,20 @@ export const proxy = action({
       v.literal("list_servers"),
       v.literal("server_details"),
       v.literal("server_resources"),
-      v.literal("server_backups")
+      v.literal("server_backups"),
+      v.literal("power_signal"),
     ),
     serverId: v.optional(v.string()),
+    signal: v.optional(
+      v.union(
+        v.literal("start"),
+        v.literal("stop"),
+        v.literal("restart"),
+        v.literal("kill"),
+      ),
+    ),
   },
-  handler: async (ctx, { action: pterodactylAction, serverId }) => {
+  handler: async (ctx, { action: pterodactylAction, serverId, signal }) => {
     // Single client-tier key (ptlc_*) covers everything we need:
     //   /api/client                          — list servers the key owner can see
     //   /api/client/servers/{id}             — server details
@@ -145,6 +170,17 @@ export const proxy = action({
           `/api/client/servers/${serverId}/backups`,
           clientKey,
         );
+      }
+
+      case "power_signal": {
+        if (!serverId) throw new ConvexError("Server ID required");
+        if (!signal) throw new ConvexError("Power signal required");
+        await callPterodactyl(
+          `/api/client/servers/${serverId}/power`,
+          clientKey,
+          { method: "POST", body: { signal } },
+        );
+        return { success: true, signal };
       }
 
       default:

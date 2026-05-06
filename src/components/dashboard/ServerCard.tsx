@@ -1,11 +1,26 @@
+import { useState } from "react";
 import {
   useServerResources,
   useServerBackups,
+  usePowerSignal,
   formatDate,
   ServerListItem,
+  type PowerSignal,
 } from "@/hooks/usePterodactyl";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Server } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2, Play, RotateCcw, Server, Square } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ServerCardProps {
   server: ServerListItem;
@@ -94,6 +109,11 @@ export function ServerCard({ server }: ServerCardProps) {
     isLoading: backupsLoading,
     isError: backupsError,
   } = useServerBackups(server.identifier);
+  const powerSignal = usePowerSignal(server.identifier);
+  const { toast } = useToast();
+  const [confirmAction, setConfirmAction] = useState<"stop" | "restart" | null>(
+    null,
+  );
 
   const rawState = resourcesData?.attributes?.current_state;
   const resources = resourcesData?.attributes?.resources;
@@ -145,6 +165,51 @@ export function ServerCard({ server }: ServerCardProps) {
     // TODO: route to server detail page
     console.debug("server detail not yet implemented", server.identifier);
   };
+
+  // Power state — derives which buttons are enabled. Transitional states
+  // (starting/stopping) and unknown/suspended disable everything to avoid
+  // double-actioning during a transition.
+  const isRunning = status === "running";
+  const isOffline = status === "offline";
+  const isTransitioning = status === "starting" || status === "stopping";
+  const isPending = powerSignal.isPending;
+  const allDisabled = isTransitioning || isPending || status === "suspended" || status === "unknown";
+
+  const executePowerSignal = async (signal: PowerSignal) => {
+    try {
+      await powerSignal.mutateAsync(signal);
+      const verb =
+        signal === "start"
+          ? "Starting"
+          : signal === "restart"
+          ? "Restarting"
+          : signal === "stop"
+          ? "Stopping"
+          : "Killing";
+      toast({
+        title: `${verb} ${server.name}…`,
+        description: "Status will refresh in a moment.",
+      });
+    } catch (error) {
+      toast({
+        title: "Power action failed",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handlePowerClick =
+    (signal: PowerSignal) =>
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      // Restart and stop disconnect players — confirm before firing.
+      if (signal === "restart" || signal === "stop") {
+        setConfirmAction(signal);
+        return;
+      }
+      void executePowerSignal(signal);
+    };
 
   return (
     <div
@@ -244,7 +309,115 @@ export function ServerCard({ server }: ServerCardProps) {
           <div className="font-mono text-sm text-foreground">—</div>
         </div>
       </div>
+
+      {/* Row 4: Power controls */}
+      <div className="border-t border-white/5 mt-4 pt-4 flex items-center justify-end gap-2">
+        <PowerButton
+          icon={isPending && powerSignal.variables === "start" ? Loader2 : Play}
+          label="Start"
+          onClick={handlePowerClick("start")}
+          disabled={allDisabled || !isOffline}
+          spinning={isPending && powerSignal.variables === "start"}
+          tone="default"
+        />
+        <PowerButton
+          icon={
+            isPending && powerSignal.variables === "restart" ? Loader2 : RotateCcw
+          }
+          label="Restart"
+          onClick={handlePowerClick("restart")}
+          disabled={allDisabled || !isRunning}
+          spinning={isPending && powerSignal.variables === "restart"}
+          tone="default"
+        />
+        <PowerButton
+          icon={isPending && powerSignal.variables === "stop" ? Loader2 : Square}
+          label="Stop"
+          onClick={handlePowerClick("stop")}
+          disabled={allDisabled || !isRunning}
+          spinning={isPending && powerSignal.variables === "stop"}
+          tone="danger"
+        />
+      </div>
+
+      {/* Confirmation for stop/restart — both kick players off. */}
+      <AlertDialog
+        open={confirmAction !== null}
+        onOpenChange={(open) => {
+          if (!open) setConfirmAction(null);
+        }}
+      >
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirmAction === "restart"
+                ? `Restart ${server.name}?`
+                : `Stop ${server.name}?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirmAction === "restart"
+                ? "All players currently online will be disconnected. They can rejoin once the world is back up — usually within 30 seconds."
+                : "All players currently online will be disconnected. The world will stay offline until you start it again."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.stopPropagation();
+                const action = confirmAction;
+                setConfirmAction(null);
+                if (action) void executePowerSignal(action);
+              }}
+              className={
+                confirmAction === "stop"
+                  ? "bg-red-500/90 hover:bg-red-500 text-white"
+                  : undefined
+              }
+            >
+              {confirmAction === "restart" ? "Restart" : "Stop"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+  );
+}
+
+function PowerButton({
+  icon: Icon,
+  label,
+  onClick,
+  disabled,
+  spinning,
+  tone,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled: boolean;
+  spinning: boolean;
+  tone: "default" | "danger";
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className={cn(
+        "inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md border transition-colors",
+        "disabled:opacity-40 disabled:cursor-not-allowed",
+        tone === "danger"
+          ? "border-red-500/20 text-red-400 hover:bg-red-500/10 hover:border-red-500/40"
+          : "border-white/10 text-foreground/80 hover:bg-white/[0.04] hover:border-white/20 hover:text-foreground",
+      )}
+    >
+      <Icon className={cn("w-3.5 h-3.5", spinning && "animate-spin")} />
+      {label}
+    </button>
   );
 }
 

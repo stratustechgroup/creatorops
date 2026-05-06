@@ -1,6 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
+
+export type PowerSignal = "start" | "stop" | "restart" | "kill";
 
 // Types based on Pterodactyl Client API (`GET /api/client` and
 // `GET /api/client/servers/{id}`). The proxy normalizes `is_suspended` to
@@ -114,6 +116,34 @@ export function useServerBackups(serverId: string | undefined) {
     staleTime: 5 * 60_000,
     enabled: !!serverId,
     retry: 1,
+  });
+}
+
+/**
+ * Send a power signal (start / stop / restart / kill) to a server.
+ * Optimistically invalidates the resources query so status reflects the
+ * change after a brief delay (Pterodactyl power is async — give the panel
+ * a moment to update `current_state`).
+ */
+export function usePowerSignal(serverId: string | undefined) {
+  const proxy = useAction(api.pterodactyl.proxy);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (signal: PowerSignal) => {
+      if (!serverId) throw new Error("Server ID required");
+      return proxy({ action: "power_signal", serverId, signal }) as Promise<{
+        success: true;
+        signal: PowerSignal;
+      }>;
+    },
+    onSuccess: () => {
+      // Re-fetch resources after a short delay — Pterodactyl power signals
+      // are async; the state transition isn't instant.
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["server-resources", serverId] });
+      }, 1500);
+    },
   });
 }
 

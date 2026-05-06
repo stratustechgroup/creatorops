@@ -26,6 +26,7 @@ const applicationStatusValidator = v.union(
   v.literal("pending"),
   v.literal("approved"),
   v.literal("rejected"),
+  v.literal("needs_info"),
 );
 
 const ticketStatusValidator = v.union(

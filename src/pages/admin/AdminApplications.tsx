@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery, useMutation, useAction } from "convex/react";
-import { Inbox, Search } from "lucide-react";
+import { Inbox, Search, ExternalLink, Check, X } from "lucide-react";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - admin module is added by parallel agent; contract documented in CLAUDE.md
 import { api } from "../../../convex/_generated/api";
@@ -8,13 +8,11 @@ import { api } from "../../../convex/_generated/api";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -48,6 +46,13 @@ const STATUS_PILL: Record<AppStatus, string> = {
   needs_info: "bg-blue-500/10 text-blue-300 border-blue-500/20",
 };
 
+const FORM_TYPE_LABEL: Record<FormType, string> = {
+  founding: "Founding Creator",
+  standard: "Standard",
+  studio: "Studio",
+  events: "Events & Collabs",
+};
+
 const TABS: { key: "all" | FormType; label: string }[] = [
   { key: "all", label: "All" },
   { key: "founding", label: "Founding" },
@@ -56,23 +61,197 @@ const TABS: { key: "all" | FormType; label: string }[] = [
   { key: "events", label: "Events" },
 ];
 
+// Field group definitions per form type
+type FieldDef = {
+  key: string;
+  label: string;
+  type?: "url" | "long-text" | "boolean";
+};
+type FieldGroup = {
+  title: string;
+  layout: "grid" | "full";
+  fields: FieldDef[];
+};
+
+const FORM_SCHEMAS: Record<FormType, FieldGroup[]> = {
+  standard: [
+    {
+      title: "Creator Profile",
+      layout: "grid",
+      fields: [
+        { key: "creatorType", label: "Creator type" },
+        { key: "subscriberCount", label: "Subscribers" },
+        { key: "channelUrl", label: "Channel URL", type: "url" },
+        { key: "budgetRange", label: "Budget range" },
+        { key: "timeline", label: "Timeline" },
+        { key: "onboardingPreference", label: "Onboarding preference" },
+      ],
+    },
+    {
+      title: "Contact preferences",
+      layout: "grid",
+      fields: [
+        { key: "discordUsername", label: "Discord" },
+        { key: "preferredContact", label: "Preferred contact" },
+      ],
+    },
+    {
+      title: "Current setup",
+      layout: "full",
+      fields: [{ key: "currentSetup", label: "Current setup", type: "long-text" }],
+    },
+    {
+      title: "Use case & content goals",
+      layout: "full",
+      fields: [{ key: "useCase", label: "Use case", type: "long-text" }],
+    },
+    {
+      title: "Other",
+      layout: "grid",
+      fields: [{ key: "referral", label: "How they found us" }],
+    },
+  ],
+  founding: [
+    {
+      title: "Creator Profile",
+      layout: "grid",
+      fields: [
+        { key: "audienceSize", label: "Audience size" },
+        { key: "uploadFrequency", label: "Upload frequency" },
+        { key: "channelUrl", label: "Channel URL", type: "url" },
+        { key: "timezone", label: "Timezone" },
+        { key: "collaborators", label: "Collaborators" },
+        { key: "discordUsername", label: "Discord" },
+      ],
+    },
+    {
+      title: "Content description",
+      layout: "full",
+      fields: [{ key: "contentDescription", label: "Content description", type: "long-text" }],
+    },
+    {
+      title: "World & server needs",
+      layout: "full",
+      fields: [
+        { key: "worldDescription", label: "World description", type: "long-text" },
+        { key: "currentPainPoints", label: "Current pain points", type: "long-text" },
+      ],
+    },
+    {
+      title: "Program fit",
+      layout: "grid",
+      fields: [
+        { key: "feedbackStyle", label: "Feedback style" },
+        { key: "availabilityCall", label: "Call availability" },
+      ],
+    },
+    {
+      title: "Why a founding creator",
+      layout: "full",
+      fields: [{ key: "whyFounder", label: "Why founding creator", type: "long-text" }],
+    },
+    {
+      title: "Agreements",
+      layout: "grid",
+      fields: [
+        { key: "agreeCommitment", label: "3-month commitment", type: "boolean" },
+        { key: "agreeFeedback", label: "Provide feedback", type: "boolean" },
+        { key: "agreeTestimonial", label: "Testimonial OK", type: "boolean" },
+      ],
+    },
+    {
+      title: "Other",
+      layout: "grid",
+      fields: [
+        { key: "referral", label: "How they found us" },
+        { key: "additionalNotes", label: "Additional notes" },
+      ],
+    },
+  ],
+  studio: [
+    {
+      title: "Operation details",
+      layout: "grid",
+      fields: [
+        { key: "operationType", label: "Operation type" },
+        { key: "peakPlayers", label: "Peak players" },
+        { key: "currentPainPoint", label: "Biggest challenge" },
+        { key: "timeline", label: "Timeline" },
+      ],
+    },
+    {
+      title: "Additional context",
+      layout: "full",
+      fields: [{ key: "tellUsMore", label: "Tell us more", type: "long-text" }],
+    },
+  ],
+  events: [
+    {
+      title: "Event details",
+      layout: "grid",
+      fields: [
+        { key: "eventType", label: "Event type" },
+        { key: "concurrentPlayers", label: "Concurrent players" },
+        { key: "duration", label: "Duration" },
+        { key: "worldSetup", label: "World setup" },
+        { key: "targetDate", label: "Target date" },
+      ],
+    },
+  ],
+};
+
 function formatDate(ts: number): string {
-  return new Date(ts).toLocaleString();
+  return new Date(ts).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
-function formatFieldLabel(key: string): string {
-  return key
-    .replace(/([A-Z])/g, " $1")
-    .replace(/_/g, " ")
-    .replace(/^./, (c) => c.toUpperCase());
-}
+function renderValue(value: unknown, type?: FieldDef["type"]): React.ReactNode {
+  if (value === null || value === undefined || value === "") {
+    return <span className="text-muted-foreground/50 italic text-xs">—</span>;
+  }
 
-function renderValue(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  if (typeof value === "string") return value;
-  if (typeof value === "number" || typeof value === "boolean") return String(value);
-  if (Array.isArray(value)) return value.join(", ");
-  return JSON.stringify(value);
+  if (type === "boolean") {
+    const checked = value === true || value === "true";
+    return checked ? (
+      <span className="inline-flex items-center gap-1 text-emerald-400 text-xs font-medium">
+        <Check className="w-3.5 h-3.5" /> Yes
+      </span>
+    ) : (
+      <span className="inline-flex items-center gap-1 text-muted-foreground text-xs">
+        <X className="w-3.5 h-3.5" /> No
+      </span>
+    );
+  }
+
+  if (type === "url" && typeof value === "string") {
+    return (
+      <a
+        href={value}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 text-primary hover:underline break-all text-sm"
+      >
+        {value}
+        <ExternalLink className="w-3 h-3 shrink-0" />
+      </a>
+    );
+  }
+
+  if (type === "long-text" && typeof value === "string") {
+    return (
+      <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
+        {value}
+      </p>
+    );
+  }
+
+  if (Array.isArray(value)) return <span className="text-sm">{value.join(", ")}</span>;
+  return <span className="text-sm">{String(value)}</span>;
 }
 
 export default function AdminApplications() {
@@ -102,8 +281,7 @@ export default function AdminApplications() {
       .filter((a) => statusFilter === "all" || a.status === statusFilter)
       .filter((a) => {
         if (!search) return true;
-        const haystack =
-          `${a.firstName} ${a.lastName} ${a.email}`.toLowerCase();
+        const haystack = `${a.firstName} ${a.lastName} ${a.email}`.toLowerCase();
         return haystack.includes(search.toLowerCase());
       })
       .sort((a, b) => b.submittedAt - a.submittedAt);
@@ -227,77 +405,128 @@ export default function AdminApplications() {
         ))}
       </Tabs>
 
-      {/* Detail drawer */}
-      <Sheet
-        open={!!selected}
-        onOpenChange={(open) => !open && setSelectedId(null)}
-      >
-        <SheetContent
-          side="right"
-          className="w-full sm:max-w-xl overflow-y-auto bg-background border-l border-white/10"
-        >
-          {selected ? (
+      {/* Detail modal */}
+      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelectedId(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col gap-0 p-0 overflow-hidden">
+          {selected && (
             <>
-              <SheetHeader>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <SheetTitle className="text-lg">
+              {/* Header */}
+              <DialogHeader className="px-6 pt-6 pb-4 border-b border-white/[0.06] shrink-0">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <DialogTitle className="text-xl font-semibold tracking-tight">
                       {selected.firstName} {selected.lastName}
-                    </SheetTitle>
-                    <SheetDescription className="font-mono text-xs">
+                    </DialogTitle>
+                    <a
+                      href={`mailto:${selected.email}`}
+                      className="text-sm text-primary hover:underline font-mono mt-0.5 block"
+                    >
                       {selected.email}
-                    </SheetDescription>
+                    </a>
                   </div>
-                  <span
-                    className={`text-[11px] px-2 py-0.5 rounded-full border capitalize ${STATUS_PILL[selected.status]}`}
-                  >
-                    {selected.status}
-                  </span>
+                  <div className="flex items-center gap-2 shrink-0 pt-0.5">
+                    <span className="text-[11px] px-2 py-0.5 rounded-full border border-white/10 text-muted-foreground bg-white/5 capitalize">
+                      {FORM_TYPE_LABEL[selected.formType]}
+                    </span>
+                    <span
+                      className={`text-[11px] px-2 py-0.5 rounded-full border capitalize ${STATUS_PILL[selected.status]}`}
+                    >
+                      {selected.status.replace("_", " ")}
+                    </span>
+                  </div>
                 </div>
-              </SheetHeader>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Submitted {formatDate(selected.submittedAt)}
+                </p>
+              </DialogHeader>
 
-              <div className="mt-6 space-y-6">
-                <DetailSection title="Submission">
-                  <DetailRow
-                    label="Form type"
-                    value={
-                      <span className="capitalize">{selected.formType}</span>
-                    }
-                  />
-                  <DetailRow
-                    label="Submitted"
-                    value={
-                      <span className="font-mono">
-                        {formatDate(selected.submittedAt)}
-                      </span>
-                    }
-                  />
-                  <DetailRow
-                    label="ID"
-                    value={
-                      <span className="font-mono text-xs">{selected._id}</span>
-                    }
-                  />
-                </DetailSection>
+              {/* Body */}
+              <div className="overflow-y-auto flex-1 px-6 py-5 space-y-6">
+                {(FORM_SCHEMAS[selected.formType] ?? []).map((group) => {
+                  const populated = group.fields.filter(
+                    (f) =>
+                      selected.fullData[f.key] !== undefined &&
+                      selected.fullData[f.key] !== null &&
+                      selected.fullData[f.key] !== "",
+                  );
+                  if (populated.length === 0) return null;
 
-                <DetailSection title="Application body">
-                  {Object.entries(selected.fullData ?? {}).map(([k, v]) => (
-                    <DetailRow
-                      key={k}
-                      label={formatFieldLabel(k)}
-                      value={
-                        <span className="text-sm whitespace-pre-wrap break-words">
-                          {renderValue(v)}
-                        </span>
-                      }
-                    />
-                  ))}
-                </DetailSection>
+                  return (
+                    <section key={group.title}>
+                      <h3 className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium mb-3">
+                        {group.title}
+                      </h3>
+
+                      {group.layout === "grid" ? (
+                        <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                          {populated.map((f) => (
+                            <div key={f.key} className="min-w-0">
+                              <dt className="text-xs text-muted-foreground mb-0.5">
+                                {f.label}
+                              </dt>
+                              <dd>{renderValue(selected.fullData[f.key], f.type)}</dd>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {populated.map((f) => (
+                            <div key={f.key} className="rounded-lg bg-white/[0.03] border border-white/[0.06] px-4 py-3">
+                              <dt className="text-xs text-muted-foreground mb-1.5">
+                                {f.label}
+                              </dt>
+                              <dd>{renderValue(selected.fullData[f.key], f.type)}</dd>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </section>
+                  );
+                })}
+
+                {/* Catch-all for any unrecognized fields not in the schema */}
+                {(() => {
+                  const knownKeys = new Set(
+                    (FORM_SCHEMAS[selected.formType] ?? []).flatMap((g) =>
+                      g.fields.map((f) => f.key),
+                    ),
+                  );
+                  const extra = Object.entries(selected.fullData ?? {}).filter(
+                    ([k]) =>
+                      !knownKeys.has(k) &&
+                      !["firstName", "lastName", "email"].includes(k) &&
+                      selected.fullData[k] !== undefined &&
+                      selected.fullData[k] !== null &&
+                      selected.fullData[k] !== "",
+                  );
+                  if (extra.length === 0) return null;
+                  return (
+                    <section>
+                      <h3 className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium mb-3">
+                        Additional fields
+                      </h3>
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                        {extra.map(([k, v]) => (
+                          <div key={k} className="min-w-0">
+                            <dt className="text-xs text-muted-foreground mb-0.5 capitalize">
+                              {k.replace(/([A-Z])/g, " $1").replace(/_/g, " ")}
+                            </dt>
+                            <dd>
+                              <span className="text-sm">{String(v)}</span>
+                            </dd>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  );
+                })()}
               </div>
 
-              <SheetFooter className="mt-8 flex-col sm:flex-row gap-2">
+              {/* Footer actions */}
+              <div className="px-6 py-4 border-t border-white/[0.06] shrink-0 flex flex-col sm:flex-row gap-2 justify-end">
                 <Button
                   variant="outline"
+                  size="sm"
                   onClick={() => handleSetStatus("needs_info")}
                   disabled={busy}
                 >
@@ -305,22 +534,24 @@ export default function AdminApplications() {
                 </Button>
                 <Button
                   variant="destructive"
+                  size="sm"
                   onClick={handleReject}
                   disabled={busy || selected.status === "rejected"}
                 >
                   Reject
                 </Button>
                 <Button
+                  size="sm"
                   onClick={handleApprove}
                   disabled={busy || selected.status === "approved"}
                 >
                   Approve
                 </Button>
-              </SheetFooter>
+              </div>
             </>
-          ) : null}
-        </SheetContent>
-      </Sheet>
+          )}
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
@@ -400,45 +631,13 @@ function ApplicationsTable({
                 <span
                   className={`text-[11px] px-2 py-0.5 rounded-full border capitalize ${STATUS_PILL[row.status]}`}
                 >
-                  {row.status}
+                  {row.status.replace("_", " ")}
                 </span>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-function DetailSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section>
-      <h3 className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
-        {title}
-      </h3>
-      <dl className="space-y-3">{children}</dl>
-    </section>
-  );
-}
-
-function DetailRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
-  return (
-    <div className="grid grid-cols-3 gap-3 items-start text-sm">
-      <dt className="text-muted-foreground col-span-1">{label}</dt>
-      <dd className="col-span-2">{value}</dd>
     </div>
   );
 }

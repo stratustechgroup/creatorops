@@ -117,7 +117,7 @@ function SidebarContent({
         )}
       </div>
 
-      {/* Nav */}
+      {/* Main nav */}
       <nav className="flex-1 px-3 py-2 overflow-y-auto">
         <ul className="space-y-1">
           {NAV_ITEMS.map((item) => {
@@ -146,47 +146,48 @@ function SidebarContent({
             );
           })}
         </ul>
-
-        {isStaff && (
-          <div className="mt-6">
-            <div className="px-4 mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Admin
-            </div>
-            <ul className="space-y-1">
-              {ADMIN_NAV_ITEMS.map((item) => {
-                const Icon = item.icon;
-                const isActive =
-                  pathname === item.to ||
-                  (item.to !== "/admin" &&
-                    pathname.startsWith(`${item.to}/`)) ||
-                  (item.to === "/admin" && pathname === "/admin");
-
-                return (
-                  <li key={item.to}>
-                    <Link
-                      to={item.to}
-                      onClick={onNavigate}
-                      className={cn(
-                        "flex items-center gap-3 rounded-md px-4 py-2.5 text-sm transition-colors border-l-2",
-                        isActive
-                          ? "text-primary bg-primary/10 border-primary font-medium"
-                          : "text-muted-foreground border-transparent hover:text-foreground hover:bg-white/5",
-                      )}
-                      aria-current={isActive ? "page" : undefined}
-                    >
-                      <Icon className="w-4 h-4 shrink-0" />
-                      <span className="truncate">{item.label}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
       </nav>
 
+      {/* Admin section — pinned just above the user menu when staff */}
+      {isStaff && (
+        <div className="px-3 pt-3 pb-2 border-t border-white/5">
+          <div className="px-4 mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Admin
+          </div>
+          <ul className="space-y-1">
+            {ADMIN_NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                pathname === item.to ||
+                (item.to !== "/admin" &&
+                  pathname.startsWith(`${item.to}/`)) ||
+                (item.to === "/admin" && pathname === "/admin");
+
+              return (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    onClick={onNavigate}
+                    className={cn(
+                      "flex items-center gap-3 rounded-md px-4 py-2.5 text-sm transition-colors border-l-2",
+                      isActive
+                        ? "text-primary bg-primary/10 border-primary font-medium"
+                        : "text-muted-foreground border-transparent hover:text-foreground hover:bg-white/5",
+                    )}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       {/* User menu pinned bottom */}
-      <div className="mt-auto border-t border-white/5 p-2">
+      <div className="border-t border-white/5 p-2">
         <UserMenu />
       </div>
     </div>

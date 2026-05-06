@@ -47,7 +47,14 @@ export const proxy = action({
     const appApiKey = process.env.PTERODACTYL_API_KEY;
     const clientApiKey = process.env.PTERODACTYL_CLIENT_API_KEY;
 
+    // Pterodactyl not configured (pre-launch state). For list_servers, return
+    // empty so the dashboard renders the welcome / empty state rather than
+    // an error toast. Server-specific actions still throw — those imply the
+    // caller already has a server and config really should be present.
     if (!process.env.PTERODACTYL_URL || !appApiKey) {
+      if (pterodactylAction === "list_servers") {
+        return { data: [] };
+      }
       throw new ConvexError("Pterodactyl configuration missing");
     }
 
@@ -59,7 +66,15 @@ export const proxy = action({
       { clerkUserId: identity.subject }
     );
 
+    // No Pterodactyl mapping yet — this is the normal state for admins,
+    // pending applicants, and users whose worlds aren't provisioned yet.
+    // Return empty results instead of throwing so the dashboard renders
+    // the welcome / empty state cleanly. Server-specific actions still
+    // throw because there's no valid server to operate on.
     if (pterodactylUserId === null) {
+      if (pterodactylAction === "list_servers") {
+        return { data: [] };
+      }
       throw new ConvexError("User not linked to Pterodactyl account");
     }
 

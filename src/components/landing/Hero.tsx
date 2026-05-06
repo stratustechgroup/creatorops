@@ -174,7 +174,11 @@ export const Hero = () => {
               {/* Glow behind the card */}
               <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-3xl blur-2xl opacity-40" />
 
-              {/* Main dashboard card */}
+              {/*
+                Main dashboard card — locked to dark theme regardless of site theme.
+                It's a product screenshot of the actual (always-dark) dashboard,
+                so colors inside use explicit Zinc/Slate values, not theme tokens.
+              */}
               <div className="relative bg-[#0d1117] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                 {/* Window header */}
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
@@ -183,7 +187,7 @@ export const Hero = () => {
                     <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                     <div className="w-3 h-3 rounded-full bg-green-500/80" />
                   </div>
-                  <span className="ml-3 text-xs text-muted-foreground font-mono">dashboard.creatorops.io</span>
+                  <span className="ml-3 text-xs text-zinc-500 font-mono">dashboard.creatorops.io</span>
                 </div>
 
                 {/* Dashboard content */}
@@ -191,14 +195,14 @@ export const Hero = () => {
                   {/* Status header */}
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <p className="text-xs text-muted-foreground mb-1">WORLD STATUS</p>
+                      <p className="text-xs text-zinc-500 mb-1">WORLD STATUS</p>
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-lg font-semibold text-foreground">Production Online</span>
+                        <span className="text-lg font-semibold text-zinc-100">Production Online</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-muted-foreground mb-1">UPTIME</p>
+                      <p className="text-xs text-zinc-500 mb-1">UPTIME</p>
                       <p className="text-lg font-mono text-emerald-400">Live</p>
                     </div>
                   </div>
@@ -206,20 +210,20 @@ export const Hero = () => {
                   {/* Stats grid */}
                   <div className="grid grid-cols-3 gap-4 mb-6">
                     {[
-                      { label: "Last Backup", value: "4 min ago", color: "text-foreground" },
-                      { label: "Restore Point", value: "30 days", color: "text-foreground" },
-                      { label: "Players Ready", value: "Unlimited", color: "text-foreground" },
+                      { label: "Last Backup", value: "4 min ago" },
+                      { label: "Restore Point", value: "30 days" },
+                      { label: "Players Ready", value: "Unlimited" },
                     ].map((stat) => (
                       <div key={stat.label} className="bg-white/[0.03] rounded-lg p-3">
-                        <p className="text-xs text-muted-foreground mb-1">{stat.label}</p>
-                        <p className={`text-sm font-medium ${stat.color}`}>{stat.value}</p>
+                        <p className="text-xs text-zinc-500 mb-1">{stat.label}</p>
+                        <p className="text-sm font-medium text-zinc-100">{stat.value}</p>
                       </div>
                     ))}
                   </div>
 
                   {/* Recent activity */}
                   <div>
-                    <p className="text-xs text-muted-foreground mb-3">RECENT ACTIVITY</p>
+                    <p className="text-xs text-zinc-500 mb-3">RECENT ACTIVITY</p>
                     <div className="space-y-2">
                       {[
                         { action: "Backup completed", time: "4 min ago", status: "success" },
@@ -231,9 +235,9 @@ export const Hero = () => {
                             <span className={`w-1.5 h-1.5 rounded-full ${
                               activity.status === "success" ? "bg-emerald-400" : "bg-blue-400"
                             }`} />
-                            <span className="text-sm text-foreground/80">{activity.action}</span>
+                            <span className="text-sm text-zinc-300">{activity.action}</span>
                           </div>
-                          <span className="text-xs text-muted-foreground">{activity.time}</span>
+                          <span className="text-xs text-zinc-500">{activity.time}</span>
                         </div>
                       ))}
                     </div>

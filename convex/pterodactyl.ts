@@ -1,6 +1,6 @@
 import { v, ConvexError } from "convex/values";
 import { action, internalQuery } from "./_generated/server";
-import { internal } from "./_generated/api";
+import { internal, api } from "./_generated/api";
 
 async function callPterodactyl(path: string, apiKey: string): Promise<unknown> {
   const url = process.env.PTERODACTYL_URL;
@@ -61,25 +61,37 @@ export const proxy = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new ConvexError("Unauthorized");
 
-    const pterodactylUserId = await ctx.runQuery(
-      internal.pterodactyl.getPterodactylUserId,
-      { clerkUserId: identity.subject }
-    );
+    // Staff (admin/support/viewer) bypass per-user ownership filtering and
+    // see every server on the panel — they're operating the platform, not
+    // consuming it. Non-staff users see only servers they own per their
+    // clientPterodactylUsers mapping.
+    const staffStatus = await ctx.runQuery(api.admin.getStaffRole, {});
+    const isStaff = staffStatus?.isStaff === true;
 
-    // No Pterodactyl mapping yet — this is the normal state for admins,
-    // pending applicants, and users whose worlds aren't provisioned yet.
-    // Return empty results instead of throwing so the dashboard renders
-    // the welcome / empty state cleanly. Server-specific actions still
-    // throw because there's no valid server to operate on.
-    if (pterodactylUserId === null) {
-      if (pterodactylAction === "list_servers") {
-        return { data: [] };
+    let pterodactylUserId: number | null = null;
+    if (!isStaff) {
+      pterodactylUserId = await ctx.runQuery(
+        internal.pterodactyl.getPterodactylUserId,
+        { clerkUserId: identity.subject }
+      );
+
+      // No Pterodactyl mapping yet — normal for pending applicants and
+      // users whose worlds aren't provisioned yet. Return empty results
+      // instead of throwing so the dashboard renders the welcome / empty
+      // state cleanly. Server-specific actions still throw because there's
+      // no valid server to operate on.
+      if (pterodactylUserId === null) {
+        if (pterodactylAction === "list_servers") {
+          return { data: [] };
+        }
+        throw new ConvexError("User not linked to Pterodactyl account");
       }
-      throw new ConvexError("User not linked to Pterodactyl account");
     }
 
-    // For server-specific actions, verify the user owns this server
+    // For non-staff server-specific actions, verify the user owns this
+    // server. Staff skip this check — they can hit any server on the panel.
     if (
+      !isStaff &&
       serverId &&
       ["server_details", "server_resources", "server_backups"].includes(pterodactylAction)
     ) {
@@ -101,6 +113,8 @@ export const proxy = action({
         const data = (await callPterodactyl("/api/application/servers", appApiKey)) as {
           data: { attributes: { user: number } }[];
         };
+        // Staff see everything; non-staff filtered to their own servers.
+        if (isStaff) return data;
         return {
           ...data,
           data: (data.data ?? []).filter((s) => s.attributes.user === pterodactylUserId),
@@ -112,8 +126,11 @@ export const proxy = action({
         const data = (await callPterodactyl("/api/application/servers", appApiKey)) as {
           data: { attributes: { identifier: string; user: number } }[];
         };
-        const server = (data.data ?? []).find(
-          (s) => s.attributes.identifier === serverId && s.attributes.user === pterodactylUserId
+        const server = (data.data ?? []).find((s) =>
+          isStaff
+            ? s.attributes.identifier === serverId
+            : s.attributes.identifier === serverId &&
+              s.attributes.user === pterodactylUserId,
         );
         if (!server) throw new ConvexError("Server not found");
         return server;

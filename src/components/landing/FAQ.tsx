@@ -11,7 +11,7 @@ const faqs = [
   {
     question: "How do backups work?",
     answer:
-      "We run automated backups multiple times per day, stored off-server for maximum safety. You can request a restore at any time, and we'll roll your world back to a previous state within hours. Your content is treated like production data—because it is.",
+      "We run automated backups multiple times daily, stored off-server for maximum safety. You can request a restore at any time, and we'll roll your world back to a previous state within hours. Your content is treated like production data—because it is.",
   },
   {
     question: "Can I transfer my existing world?",
@@ -29,9 +29,9 @@ const faqs = [
       "We pin your Minecraft version until you explicitly approve an upgrade. When you're ready, we test the upgrade in a staging environment first. If anything breaks, we roll back instantly. No surprise updates breaking your series mid-recording.",
   },
   {
-    question: "What's the difference between Solo and Pro plans?",
+    question: "What's the difference between the plans?",
     answer:
-      "Solo is perfect for individual creators with one production world. Pro adds multiple worlds (production + staging/collab), priority restore times, and higher performance limits—ideal for creators running SMPs or collaborating frequently.",
+      "Creator Solo ($99/mo or $79/mo annual) is for individual creators with one production world. Creator Plus ($129/mo or $103/mo annual) adds a dedicated staging environment so you can test changes before they go live. Creator Pro ($199/mo or $159/mo annual) supports unlimited worlds with a guaranteed 4-hour restore SLA and priority support. Creator Studio ($399/mo or $319/mo annual) is built for established creators and networks — dedicated managed server, custom SLA, and a dedicated account manager.",
   },
   {
     question: "Do you support mods and plugins?",
@@ -46,7 +46,7 @@ const faqs = [
   {
     question: "Can collaborators access my world?",
     answer:
-      "Yes—you control who has access. Add or remove collaborators anytime. Pro plan users can spin up separate staging worlds for experiments, keeping your production world pristine.",
+      "Yes—you control who has access. Add or remove collaborators anytime. Plus and Pro users can spin up separate staging worlds for experiments, keeping your production world pristine.",
   },
 ];
 
@@ -87,7 +87,7 @@ export const FAQ = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="max-w-3xl"
+          className="w-full"
         >
           <div className="border border-white/5 rounded-xl overflow-hidden">
             <Accordion

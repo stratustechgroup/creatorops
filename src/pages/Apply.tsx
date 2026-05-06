@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save, Check } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { useAction } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -73,6 +74,7 @@ const Apply = () => {
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
   const { toast } = useToast();
+  const sendEmail = useAction(api.email.sendApplicationEmail);
 
   // Memoize default values to prevent infinite loop in useFormAutosave
   const memoizedDefaults = useMemo(() => defaultFormValues, []);
@@ -152,16 +154,7 @@ const Apply = () => {
     });
 
     try {
-      const { data: response, error } = await supabase.functions.invoke("send-application-email", {
-        body: {
-          formType: "standard",
-          formData: data,
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
+      await sendEmail({ formType: "standard", formData: data });
 
       // Clear saved draft on successful submission
       clearSavedData();

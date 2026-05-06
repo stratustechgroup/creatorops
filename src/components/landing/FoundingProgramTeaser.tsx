@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Lock, Star, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSpotsConfig } from "@/hooks/useSpotsConfig";
 
 const benefits = [
   {
@@ -21,6 +22,7 @@ const benefits = [
 ];
 
 export const FoundingProgramTeaser = () => {
+  const { spotsRemaining } = useSpotsConfig();
   return (
     <section className="py-24 lg:py-32">
       <div className="container-default">
@@ -37,7 +39,7 @@ export const FoundingProgramTeaser = () => {
             <div className="mb-8">
               <span className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-accent bg-accent/10 rounded-full border border-accent/20">
                 <span className="w-2 h-2 rounded-full bg-accent" />
-                Only 7 Spots Remaining
+                Only {spotsRemaining} Spots Remaining
               </span>
             </div>
 

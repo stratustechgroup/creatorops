@@ -28,11 +28,11 @@ const FairUsagePolicy = () => {
 
         <main className="container px-4 py-16 max-w-3xl">
           <h1 className="text-4xl font-bold text-foreground mb-2">Fair Usage Policy</h1>
-          <p className="text-muted-foreground mb-8">Effective Date: January 2026</p>
+          <p className="text-muted-foreground mb-8">Effective Date: May 2026</p>
 
           <div className="p-4 rounded-lg bg-secondary/30 border border-border mb-8">
             <p className="text-sm text-muted-foreground">
-              This Fair Usage Policy ensures all CreatorOps customers receive consistent, high-quality service. Our infrastructure is optimized for content creator workflows, not unlimited general-purpose computing.
+              This Fair Usage Policy ensures all Creator Ops customers receive consistent, high-quality service. Our infrastructure is optimized for content creator workflows, not unlimited general-purpose computing.
             </p>
           </div>
 
@@ -40,7 +40,7 @@ const FairUsagePolicy = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Intended Use</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                CreatorOps is designed for:
+                Creator Ops is designed for:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>Content creation and recording sessions</li>
@@ -58,8 +58,9 @@ const FairUsagePolicy = () => {
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li><strong className="text-foreground">Creator Solo:</strong> Up to 5 concurrent players</li>
-                <li><strong className="text-foreground">Creator Pro:</strong> Up to 15 concurrent players</li>
-                <li><strong className="text-foreground">Events & Collabs:</strong> Custom limits based on agreement</li>
+                <li><strong className="text-foreground">Creator Plus:</strong> Up to 10 concurrent players</li>
+                <li><strong className="text-foreground">Creator Pro:</strong> Up to 20 concurrent players</li>
+                <li><strong className="text-foreground">Creator Studio:</strong> Custom limits based on agreement</li>
               </ul>
               <div className="mt-4 p-3 rounded-lg bg-secondary/50 border border-border">
                 <p className="text-sm text-muted-foreground">
@@ -75,8 +76,9 @@ const FairUsagePolicy = () => {
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li><strong className="text-foreground">Creator Solo:</strong> Up to 50GB world data</li>
+                <li><strong className="text-foreground">Creator Plus:</strong> Up to 100GB world data</li>
                 <li><strong className="text-foreground">Creator Pro:</strong> Up to 200GB total across all worlds</li>
-                <li><strong className="text-foreground">Events & Collabs:</strong> Custom allocation</li>
+                <li><strong className="text-foreground">Creator Studio:</strong> Custom allocation</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 If you're approaching limits, we'll reach out to discuss options—not cut you off.
@@ -115,8 +117,8 @@ const FairUsagePolicy = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">7. Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
                 If you're unsure whether your intended use falls within this policy, contact us at{" "}
-                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
-                  legal@creatorops.io
+                <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">
+                  hi@creatorops.io
                 </a>{" "}
                 before signing up. We're happy to clarify.
               </p>

@@ -28,11 +28,11 @@ const SLAAgreement = () => {
 
         <main className="container px-4 py-16 max-w-3xl">
           <h1 className="text-4xl font-bold text-foreground mb-2">Service Level Agreement</h1>
-          <p className="text-muted-foreground mb-8">Effective Date: January 2026</p>
+          <p className="text-muted-foreground mb-8">Effective Date: May 2026</p>
 
           <div className="p-4 rounded-lg bg-secondary/30 border border-border mb-8">
             <p className="text-sm text-muted-foreground">
-              This SLA defines CreatorOps' operational commitments to our customers. Service levels vary by tier and are subject to the exclusions outlined below.
+              This SLA defines Creator Ops' operational commitments to our customers. Service levels vary by tier and are subject to the exclusions outlined below.
             </p>
           </div>
 
@@ -40,7 +40,7 @@ const SLAAgreement = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Availability</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                CreatorOps targets high availability for all managed infrastructure. Availability calculations exclude:
+                Creator Ops targets high availability for all managed infrastructure. Availability calculations exclude:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>Scheduled maintenance (communicated 48 hours in advance)</li>
@@ -77,14 +77,19 @@ const SLAAgreement = () => {
                       <td className="py-3 px-4">1 restore</td>
                     </tr>
                     <tr className="border-b border-border/50">
+                      <td className="py-3 px-4 font-medium text-foreground">Creator Plus</td>
+                      <td className="py-3 px-4">Within 6 hours</td>
+                      <td className="py-3 px-4">2 restores</td>
+                    </tr>
+                    <tr className="border-b border-border/50">
                       <td className="py-3 px-4 font-medium text-foreground">Creator Pro</td>
                       <td className="py-3 px-4">Within 4 hours</td>
                       <td className="py-3 px-4">3 restores</td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-4 font-medium text-foreground">Events & Collabs</td>
+                      <td className="py-3 px-4 font-medium text-foreground">Creator Studio</td>
                       <td className="py-3 px-4">Within 2 hours</td>
-                      <td className="py-3 px-4">Custom</td>
+                      <td className="py-3 px-4">5 restores</td>
                     </tr>
                   </tbody>
                 </table>
@@ -117,14 +122,19 @@ const SLAAgreement = () => {
                       <td className="py-3 px-4">Business hours</td>
                     </tr>
                     <tr className="border-b border-border/50">
+                      <td className="py-3 px-4 font-medium text-foreground">Creator Plus</td>
+                      <td className="py-3 px-4">Within 24 hours</td>
+                      <td className="py-3 px-4">Business hours</td>
+                    </tr>
+                    <tr className="border-b border-border/50">
                       <td className="py-3 px-4 font-medium text-foreground">Creator Pro</td>
                       <td className="py-3 px-4">Priority queue</td>
                       <td className="py-3 px-4">Extended hours</td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-4 font-medium text-foreground">Events & Collabs</td>
+                      <td className="py-3 px-4 font-medium text-foreground">Creator Studio</td>
                       <td className="py-3 px-4">Dedicated support</td>
-                      <td className="py-3 px-4">Event window</td>
+                      <td className="py-3 px-4">Extended hours</td>
                     </tr>
                   </tbody>
                 </table>
@@ -146,7 +156,7 @@ const SLAAgreement = () => {
                 <li>Rollback window of 72 hours for version changes</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                CreatorOps is not responsible for third-party mod or plugin incompatibilities following upgrades.
+                Creator Ops is not responsible for third-party mod or plugin incompatibilities following upgrades.
               </p>
             </section>
 
@@ -162,7 +172,7 @@ const SLAAgreement = () => {
               </ul>
               <div className="mt-4 p-3 rounded-lg bg-primary/10 border border-primary/20">
                 <p className="text-sm text-muted-foreground">
-                  If your server crashes during a scheduled live event due to CreatorOps infrastructure failure, you may be eligible for service credits. Contact support within 7 days of the incident.
+                  If your server crashes during a scheduled live event due to Creator Ops infrastructure failure, you may be eligible for service credits. Contact support within 7 days of the incident.
                 </p>
               </div>
             </section>
@@ -199,7 +209,7 @@ const SLAAgreement = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">7. Service Credits</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                If CreatorOps fails to meet committed service levels due to our infrastructure:
+                If Creator Ops fails to meet committed service levels due to our infrastructure:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                 <li>Credits are applied to future billing cycles</li>
@@ -208,8 +218,8 @@ const SLAAgreement = () => {
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 To claim credits, contact{" "}
-                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
-                  legal@creatorops.io
+                <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">
+                  hi@creatorops.io
                 </a>{" "}
                 with incident details including dates, times, and impact description.
               </p>

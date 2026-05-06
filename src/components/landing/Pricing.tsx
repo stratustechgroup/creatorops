@@ -1,51 +1,73 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 const plans = [
   {
     name: "Creator Solo",
-    monthlyPrice: "$79",
-    annualPrice: "$63",
-    description: "Perfect for individual creators with one production world.",
+    monthlyPrice: "$99",
+    annualPrice: "$79",
+    description: "For individual creators who can't afford downtime on their main world.",
     features: [
-      "One production world",
-      "Automated backups & rollback",
-      "Version pinning",
-      "Managed updates",
-      "Standard support",
+      "One production world, always ready to record",
+      "Roll back to any point — never lose world progress",
+      "Locked to your exact version until you decide to change",
+      "We handle updates. You just hit record.",
+      "Standard support when you need us",
     ],
     highlighted: false,
+    cta: "Apply Now",
+    href: "/apply",
+  },
+  {
+    name: "Creator Plus",
+    monthlyPrice: "$129",
+    annualPrice: "$103",
+    description: "For creators ready to test changes before their audience ever sees them.",
+    features: [
+      "Production world + dedicated staging environment",
+      "Push updates to staging first — go live when ready",
+      "Roll back to any point — never lose world progress",
+      "Managed updates and version control",
+      "Standard support when you need us",
+    ],
+    highlighted: false,
+    cta: "Apply Now",
+    href: "/apply",
   },
   {
     name: "Creator Pro",
     monthlyPrice: "$199",
     annualPrice: "$159",
-    description: "For creators running multiple worlds or collaborations.",
+    description: "For creators running a real operation — multiple worlds, real SLAs, real support.",
     features: [
-      "Multiple worlds (prod + staging)",
-      "Priority restores (4-hour SLA)",
-      "Assisted upgrades",
-      "Higher performance",
-      "Priority support",
+      "Unlimited worlds — production, staging, and more",
+      "4-hour guaranteed restore, even at 2am before a big upload",
+      "We upgrade your server alongside you, step by step",
+      "Performance tuned for larger audiences and heavier modpacks",
+      "Priority support with real response times",
     ],
     highlighted: true,
+    cta: "Apply Now",
+    href: "/apply",
   },
   {
-    name: "Events & Collabs",
-    monthlyPrice: "Custom",
-    annualPrice: "Custom",
-    description: "Temporary scaling for special events and collaborations.",
+    name: "Creator Studio",
+    monthlyPrice: "$399",
+    annualPrice: "$319",
+    description: "For established creators and networks who need dedicated infrastructure and a real point of contact.",
     features: [
-      "Pre-event stress testing",
-      "Dedicated monitoring",
-      "Instant rollback capability",
-      "Post-event reports",
-      "Event Assurance",
+      "Dedicated managed server built for your workflow",
+      "Custom SLA — you define the uptime requirements",
+      "Dedicated account manager who knows your setup",
+      "White-glove onboarding and world migration included",
+      "Event Assurance + pre-event stress testing included",
     ],
     highlighted: false,
+    cta: "Talk to Us",
+    href: "/studio",
   },
 ];
 
@@ -101,15 +123,23 @@ export const Pricing = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          role="group"
+          aria-label="Billing period"
           className="flex items-center gap-4 mb-12"
         >
           <button
+            type="button"
             onClick={() => setIsAnnual(false)}
+            aria-pressed={!isAnnual}
             className={`text-sm font-medium transition-colors ${!isAnnual ? "text-foreground" : "text-muted-foreground"}`}
           >
             Monthly
           </button>
           <button
+            type="button"
+            role="switch"
+            aria-checked={isAnnual}
+            aria-label="Toggle annual billing"
             onClick={() => setIsAnnual(!isAnnual)}
             className={`relative w-12 h-6 rounded-full transition-colors ${isAnnual ? "bg-primary" : "bg-white/10"}`}
           >
@@ -120,7 +150,9 @@ export const Pricing = () => {
             />
           </button>
           <button
+            type="button"
             onClick={() => setIsAnnual(true)}
+            aria-pressed={isAnnual}
             className={`text-sm font-medium transition-colors ${isAnnual ? "text-foreground" : "text-muted-foreground"}`}
           >
             Annual
@@ -129,15 +161,15 @@ export const Pricing = () => {
         </motion.div>
 
         {/* Cards */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 * index }}
-              className={`relative p-6 rounded-2xl border ${
+              transition={{ delay: 0.08 * index }}
+              className={`relative p-6 rounded-2xl border flex flex-col ${
                 plan.highlighted
                   ? "border-primary/30 bg-primary/[0.03]"
                   : "border-white/10 bg-card/50"
@@ -145,7 +177,7 @@ export const Pricing = () => {
             >
               {plan.highlighted && (
                 <span className="absolute -top-3 left-6 text-xs font-semibold text-primary-foreground bg-primary px-3 py-1 rounded-full">
-                  Recommended
+                  Most Popular
                 </span>
               )}
 
@@ -156,22 +188,20 @@ export const Pricing = () => {
                 <span className="text-4xl font-bold text-foreground">
                   {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                 </span>
-                {plan.monthlyPrice !== "Custom" && (
-                  <span className="text-muted-foreground">/ month</span>
-                )}
+                <span className="text-muted-foreground">/ month</span>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-foreground/80">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                  <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
+                    <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                     {feature}
                   </li>
                 ))}
               </ul>
 
               <Link
-                to="/founding-apply"
+                to={plan.href}
                 onClick={() => handlePlanClick(plan.name)}
                 className={`flex items-center justify-center gap-2 w-full py-3 rounded-lg text-sm font-medium transition-colors ${
                   plan.highlighted
@@ -179,12 +209,39 @@ export const Pricing = () => {
                     : "bg-white/5 text-foreground hover:bg-white/10 border border-white/10"
                 }`}
               >
-                Get Started
+                {plan.cta}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
           ))}
         </div>
+
+        {/* Events & Collabs Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mb-12 p-6 rounded-2xl border border-white/10 bg-card/50 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <Zap className="w-5 h-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-foreground mb-1">Events & Collabs</h3>
+            <p className="text-sm text-muted-foreground">
+              Temporary scaling for special events, charity streams, and creator collaborations — including pre-event stress testing, dedicated monitoring, instant rollback, and post-event reports. Priced per engagement.
+            </p>
+          </div>
+          <Link
+            to="/events-quote"
+            onClick={() => handlePlanClick("Events & Collabs")}
+            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium bg-white/5 text-foreground hover:bg-white/10 border border-white/10 transition-colors"
+          >
+            Get a Quote
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </motion.div>
 
         {/* Trust */}
         <motion.div
@@ -193,7 +250,7 @@ export const Pricing = () => {
           viewport={{ once: true }}
           className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground"
         >
-          {["30-day money-back guarantee", "Cancel anytime", "You always own your world", "Event Assurance included"].map((item) => (
+          {["30-day money-back guarantee", "Cancel anytime", "You always own your world", "Event Assurance included on Studio"].map((item) => (
             <span key={item} className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               {item}

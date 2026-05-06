@@ -10,7 +10,7 @@ const comparisonData = [
   { feature: "24/7 monitoring", creatorOps: "yes", selfHosting: "no", otherHosts: "partial" },
   { feature: "Incident response", creatorOps: "Immediate", selfHosting: "You handle it", otherHosts: "Ticket system" },
   { feature: "Staging environments", creatorOps: "yes", selfHosting: "Manual setup", otherHosts: "Extra cost" },
-  { feature: "Uptime SLA", creatorOps: "99.5%", selfHosting: "no", otherHosts: "Varies" },
+  { feature: "Uptime SLA", creatorOps: "Tier-based", selfHosting: "no", otherHosts: "Varies" },
   { feature: "DDoS protection", creatorOps: "yes", selfHosting: "Extra cost", otherHosts: "partial" },
   { feature: "Creator-focused support", creatorOps: "yes", selfHosting: "no", otherHosts: "no" },
   { feature: "Time investment", creatorOps: "Zero ops", selfHosting: "Hours/week", otherHosts: "Some required" },
@@ -18,13 +18,25 @@ const comparisonData = [
 
 const ValueCell = ({ value, highlight }: { value: FeatureValue; highlight?: boolean }) => {
   if (value === "yes") {
-    return <Check className={`w-5 h-5 ${highlight ? "text-primary" : "text-emerald-400"}`} />;
+    return (
+      <span role="img" aria-label="Yes">
+        <Check className={`w-5 h-5 ${highlight ? "text-primary" : "text-emerald-400"}`} aria-hidden="true" />
+      </span>
+    );
   }
   if (value === "no") {
-    return <X className="w-5 h-5 text-red-400/60" />;
+    return (
+      <span role="img" aria-label="No">
+        <X className="w-5 h-5 text-red-400/60" aria-hidden="true" />
+      </span>
+    );
   }
   if (value === "partial") {
-    return <Minus className="w-5 h-5 text-yellow-400/60" />;
+    return (
+      <span role="img" aria-label="Partial">
+        <Minus className="w-5 h-5 text-yellow-400/60" aria-hidden="true" />
+      </span>
+    );
   }
   return <span className={`text-sm ${highlight ? "text-foreground font-medium" : "text-muted-foreground"}`}>{value}</span>;
 };
@@ -71,7 +83,7 @@ export const ComparisonTable = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="max-w-4xl"
+          className="w-full"
         >
           <div className="border border-white/10 rounded-xl overflow-hidden">
             <div className="overflow-x-auto">

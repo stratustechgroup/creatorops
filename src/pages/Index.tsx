@@ -25,7 +25,6 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
  * COMMENTED OUT SECTIONS (ready to enable):
  * - SocialProof: src/components/landing/SocialProof.tsx
  * - CreatorLogos: src/components/landing/CreatorLogos.tsx
- * - Testimonials: src/components/landing/Testimonials.tsx
  */
 
 const Index = () => {

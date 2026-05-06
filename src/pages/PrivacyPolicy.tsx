@@ -28,11 +28,11 @@ const PrivacyPolicy = () => {
 
         <main className="container px-4 py-16 max-w-3xl">
           <h1 className="text-4xl font-bold text-foreground mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Effective Date: January 2026</p>
+          <p className="text-muted-foreground mb-8">Effective Date: May 2026</p>
 
           <div className="p-4 rounded-lg bg-secondary/30 border border-border mb-8">
             <p className="text-sm text-muted-foreground">
-              CreatorOps ("CreatorOps", "we", "us") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information when you use our managed Minecraft infrastructure services.
+              Creator Ops ("Creator Ops", "we", "us") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information when you use our managed Minecraft infrastructure services.
             </p>
           </div>
 
@@ -145,8 +145,8 @@ const PrivacyPolicy = () => {
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 To exercise any of these rights, contact us at{" "}
-                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
-                  legal@creatorops.io
+                <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">
+                  hi@creatorops.io
                 </a>
               </p>
             </section>
@@ -162,8 +162,8 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">9. Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
                 For questions about this Privacy Policy, contact us at{" "}
-                <a href="mailto:legal@creatorops.io" className="text-primary hover:underline">
-                  legal@creatorops.io
+                <a href="mailto:hi@creatorops.io" className="text-primary hover:underline">
+                  hi@creatorops.io
                 </a>
               </p>
             </section>

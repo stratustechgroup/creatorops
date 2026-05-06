@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useAction } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 // Types based on Pterodactyl Application API responses
 export interface ServerListItem {
@@ -53,84 +54,56 @@ export interface Backup {
   is_locked: boolean;
 }
 
-type PterodactylAction =
-  | "list_servers"
-  | "server_details"
-  | "server_resources"
-  | "server_backups";
-
-async function callPterodactylProxy<T>(
-  action: PterodactylAction,
-  serverId?: string
-): Promise<T> {
-  const { data, error } = await supabase.functions.invoke("pterodactyl-proxy", {
-    body: { action, serverId },
-  });
-
-  if (error) {
-    throw new Error(error.message || "Failed to fetch from Pterodactyl");
-  }
-
-  if (data?.error) {
-    throw new Error(data.error);
-  }
-
-  return data;
-}
-
-// List all servers for current user (Application API)
 export function useServers() {
+  const proxy = useAction(api.pterodactyl.proxy);
   return useQuery({
     queryKey: ["servers"],
     queryFn: () =>
-      callPterodactylProxy<{ data: { attributes: ServerListItem }[] }>(
-        "list_servers"
-      ),
-    staleTime: 60_000, // 1 minute
+      proxy({ action: "list_servers" }) as Promise<{
+        data: { attributes: ServerListItem }[];
+      }>,
+    staleTime: 60_000,
     retry: 2,
   });
 }
 
-// Get server details by identifier (Application API)
 export function useServerDetails(serverId: string | undefined) {
+  const proxy = useAction(api.pterodactyl.proxy);
   return useQuery({
     queryKey: ["server-details", serverId],
     queryFn: () =>
-      callPterodactylProxy<{ attributes: ServerListItem }>(
-        "server_details",
-        serverId
-      ),
+      proxy({ action: "server_details", serverId }) as Promise<{
+        attributes: ServerListItem;
+      }>,
     staleTime: 60_000,
     enabled: !!serverId,
     retry: 1,
   });
 }
 
-// Get real-time resources for a specific server (Client API - requires service account)
 export function useServerResources(serverId: string | undefined) {
+  const proxy = useAction(api.pterodactyl.proxy);
   return useQuery({
     queryKey: ["server-resources", serverId],
     queryFn: () =>
-      callPterodactylProxy<{ attributes: ServerResources }>(
-        "server_resources",
-        serverId
-      ),
-    refetchInterval: 30_000, // Auto-refresh every 30 seconds
+      proxy({ action: "server_resources", serverId }) as Promise<{
+        attributes: ServerResources;
+      }>,
+    refetchInterval: 30_000,
     enabled: !!serverId,
     retry: 1,
   });
 }
 
-// Get backups for a specific server (Client API - requires service account)
 export function useServerBackups(serverId: string | undefined) {
+  const proxy = useAction(api.pterodactyl.proxy);
   return useQuery({
     queryKey: ["server-backups", serverId],
     queryFn: () =>
-      callPterodactylProxy<{ data: { attributes: Backup }[] }>(
-        "server_backups",
-        serverId
-      ),
-    staleTime: 5 * 60_000, // 5 minutes
+      proxy({ action: "server_backups", serverId }) as Promise<{
+        data: { attributes: Backup }[];
+      }>,
+    staleTime: 5 * 60_000,
     enabled: !!serverId,
     retry: 1,
   });

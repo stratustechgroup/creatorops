@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useSpotsConfig } from "@/hooks/useSpotsConfig";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -9,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, Loader2, CheckCircle, Shield, Clock, Users, RotateCcw, Save, Check, Sparkles, Star, MessageSquare, Heart } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { useAction } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -114,6 +116,8 @@ const FoundingApply = () => {
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
   const { toast } = useToast();
+  const sendEmail = useAction(api.email.sendApplicationEmail);
+  const { spotsRemaining } = useSpotsConfig();
 
   const memoizedDefaults = useMemo(() => defaultFormValues, []);
 
@@ -191,16 +195,7 @@ const FoundingApply = () => {
     });
 
     try {
-      const { data: response, error } = await supabase.functions.invoke("send-application-email", {
-        body: {
-          formType: "founding",
-          formData: data,
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
+      await sendEmail({ formType: "founding", formData: data });
 
       clearSavedData();
       setIsSubmitted(true);
@@ -253,7 +248,7 @@ const FoundingApply = () => {
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary">
                   <Sparkles className="w-4 h-4" />
-                  Only 7 Spots Remaining
+                  Only {spotsRemaining} Spots Remaining
                 </div>
                 <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
                   Apply for Founding Creator Access

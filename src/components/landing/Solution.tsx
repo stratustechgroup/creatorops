@@ -30,10 +30,10 @@ const features = [
 ];
 
 const steps = [
-  { number: "01", title: "Apply", description: "We review your needs" },
-  { number: "02", title: "Onboard", description: "We set up your world" },
-  { number: "03", title: "Create", description: "You focus on content" },
-  { number: "04", title: "Relax", description: "We handle the rest" },
+  { number: "01", title: "Apply", description: "5-minute form. Reviewed personally within 48 hours." },
+  { number: "02", title: "Onboard", description: "30-min call + we provision and migrate your world in 24–48 hours." },
+  { number: "03", title: "Create", description: "Connect to your dedicated address and start recording." },
+  { number: "04", title: "Relax", description: "We monitor, back up, and handle every incident in the background." },
 ];
 
 const phases = [

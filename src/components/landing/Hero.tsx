@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Play, CheckCircle } from "lucide-react";
+import { ArrowRight, Play, CheckCircle, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useSpotsConfig } from "@/hooks/useSpotsConfig";
@@ -36,16 +36,17 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col pt-24 lg:pt-32 overflow-hidden">
       {/* Subtle gradient background - no mesh, cleaner */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
 
       {/* Single subtle glow - not multiple orbs */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px]" />
 
-      <div className="container-default relative">
+      {/* Content fills remaining height and centers vertically */}
+      <div className="container-default relative flex-1 flex items-center py-16 lg:py-24">
         {/* Asymmetric two-column layout */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
           {/* Left column - Content */}
           <div className="order-2 lg:order-1">
@@ -78,8 +79,9 @@ export const Hero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed"
             >
-              We handle the infrastructure so you can focus on creating.
-              Backups, monitoring, rollbacks, and support—all managed for you.
+              Managed Minecraft server hosting for content creators —
+              automated backups, one-click rollback, version pinning, and
+              dedicated staging. You create, we handle the rest.
             </motion.p>
 
             {/* Feature list - simple, no fancy cards */}
@@ -248,6 +250,24 @@ export const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll indicator — anchors to bottom on tall screens */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1 }}
+        className="relative pb-8 flex justify-center"
+      >
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-1 text-muted-foreground/40 cursor-pointer"
+          onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <ChevronDown className="w-4 h-4" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

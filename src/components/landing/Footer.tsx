@@ -95,10 +95,26 @@ export const Footer = () => {
 
               <a
                 href="mailto:hi@creatorops.io"
-                className="text-sm text-primary hover:text-primary/80 transition-colors"
+                className="text-sm text-primary hover:text-primary/80 transition-colors block mb-3"
               >
                 hi@creatorops.io
               </a>
+
+              {/*
+                Community link — uncomment and update href once a public Discord
+                / community space exists. Lower-commitment hook for visitors
+                who aren't ready to apply but want to follow along.
+              */}
+              {/*
+              <a
+                href="https://discord.gg/creatorops"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Join the Discord →
+              </a>
+              */}
             </div>
 
             {/* Product */}

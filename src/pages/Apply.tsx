@@ -461,13 +461,14 @@ const Apply = () => {
                               <SelectValue placeholder="Select budget range" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="under-50">Under $50/month</SelectItem>
-                              <SelectItem value="50-100">$50 - $100/month</SelectItem>
-                              <SelectItem value="100-200">$100 - $200/month</SelectItem>
-                              <SelectItem value="200-plus">$200+/month</SelectItem>
-                              <SelectItem value="not-sure">Not sure yet</SelectItem>
+                              <SelectItem value="79-130">$79 - $130/month (Solo / Plus)</SelectItem>
+                              <SelectItem value="130-200">$130 - $200/month (Plus / Pro)</SelectItem>
+                              <SelectItem value="200-400">$200 - $400/month (Pro / Studio)</SelectItem>
+                              <SelectItem value="400-plus">$400+/month (Studio + custom)</SelectItem>
+                              <SelectItem value="not-sure">Not sure yet — open to discussion</SelectItem>
                             </SelectContent>
                           </Select>
+                          <p className="text-xs text-muted-foreground">Plans start at $79/month (annual). Tell us your range and we'll match you to the right tier.</p>
                         </div>
 
                         <div className="space-y-2">

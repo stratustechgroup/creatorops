@@ -17,7 +17,7 @@ export const Hero = () => {
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "hero",
-      button_text: "Apply for Access",
+      button_text: "Request access",
     });
   };
 
@@ -95,7 +95,7 @@ export const Hero = () => {
                 onClick={handleApplyClick}
                 className="btn-primary"
               >
-                Apply for Access
+                Request access
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a

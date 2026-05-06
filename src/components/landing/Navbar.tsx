@@ -60,7 +60,7 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
   const handleApplyClick = () => {
     trackEvent("cta_click", {
       location: "navbar",
-      button_text: "Get Started",
+      button_text: "Request access",
     });
   };
 
@@ -139,7 +139,7 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
               onClick={handleApplyClick}
               className="btn-primary text-sm py-2"
             >
-              Get Started
+              Request access
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -238,7 +238,7 @@ export const Navbar = ({ hideNavLinks = false }: NavbarProps) => {
                   }}
                   className="btn-primary w-full justify-center"
                 >
-                  Get Started
+                  Request access
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </motion.div>

@@ -61,10 +61,17 @@ export default function Login() {
         return;
       }
       if (result.status === "needs_second_factor") {
-        const hasTotp = result.supportedSecondFactors.some(
-          (f) => f.strategy === "totp",
-        );
-        setSecondFactorMode(hasTotp ? "totp" : "backup_code");
+        // Clerk's supportedSecondFactors typically lists strategies that need
+        // server-side preparation (phone_code, email_code). TOTP and backup
+        // codes don't need prep, so they often DON'T appear here. Default to
+        // TOTP (the common case) — user can switch to backup code via the
+        // toggle. Only flip to backup_code if it's explicitly the only option.
+        const onlyBackupCode =
+          result.supportedSecondFactors.length > 0 &&
+          result.supportedSecondFactors.every(
+            (f) => f.strategy === "backup_code",
+          );
+        setSecondFactorMode(onlyBackupCode ? "backup_code" : "totp");
         setCode("");
         setStage("second_factor");
       }

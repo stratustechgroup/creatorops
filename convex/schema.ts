@@ -190,6 +190,33 @@ export default defineSchema({
     .index("by_action", ["action"])
     .index("by_created_at", ["createdAt"]),
 
+  // Maps a customer (clerkUserId / email) to specific Pterodactyl servers
+  // they're allowed to see in the Creator Ops dashboard. Admin's client API
+  // key fetches all servers; the proxy filters the response down to a
+  // customer's mapped serverIdentifiers before returning it.
+  //
+  // Both clerkUserId and email are matched at proxy time so an admin can
+  // pre-create a mapping by email before the customer ever signs in.
+  clientServers: defineTable({
+    clerkUserId: v.optional(v.string()),
+    email: v.string(),
+    serverIdentifier: v.string(),
+    serverName: v.string(),
+    permissions: v.array(
+      v.union(
+        v.literal("view"),
+        v.literal("power"),
+        v.literal("backups"),
+      ),
+    ),
+    addedByEmail: v.string(),
+    addedAt: v.number(),
+    notes: v.optional(v.string()),
+  })
+    .index("by_clerk_user", ["clerkUserId"])
+    .index("by_email", ["email"])
+    .index("by_server", ["serverIdentifier"]),
+
   // In-app notifications. One row per (recipient, event). Admin events are
   // fanned out at insert time so each admin gets their own row + read state.
   notifications: defineTable({

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Gauge,
   Inbox,
+  KeyRound,
   LayoutDashboard,
   LifeBuoy,
   Menu,
@@ -42,6 +43,7 @@ const ADMIN_NAV_ITEMS: NavItem[] = [
   { label: "Overview", to: "/admin", icon: Gauge },
   { label: "Applications", to: "/admin/applications", icon: Inbox },
   { label: "Tickets", to: "/admin/tickets", icon: Ticket },
+  { label: "Clients", to: "/admin/clients", icon: KeyRound },
   { label: "Spots", to: "/admin/spots", icon: Sparkles },
   { label: "Staff", to: "/admin/staff", icon: Users },
   { label: "Infrastructure", to: "/admin/infrastructure", icon: Server },
@@ -59,6 +61,7 @@ const BREADCRUMB_LABELS: Record<string, string> = {
   "/admin": "Admin · Overview",
   "/admin/applications": "Admin · Applications",
   "/admin/tickets": "Admin · Tickets",
+  "/admin/clients": "Admin · Clients",
   "/admin/spots": "Admin · Spots",
   "/admin/staff": "Admin · Staff",
   "/admin/infrastructure": "Admin · Infrastructure",

@@ -1,6 +1,6 @@
 import { v, ConvexError } from "convex/values";
 import { action, internalQuery } from "./_generated/server";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 
 type PterodactylInit = {
   method?: "GET" | "POST";
@@ -116,11 +116,48 @@ export const proxy = action({
     const staffStatus = await ctx.runQuery(api.admin.getStaffRole, {});
     const isStaff = staffStatus?.isStaff === true;
 
+    // Non-staff users are restricted to servers explicitly mapped to them
+    // in the clientServers table. Each mapping carries per-server permissions
+    // (view, power, backups) — we enforce those for sensitive actions.
+    type ClientMapping = {
+      serverIdentifier: string;
+      permissions: ("view" | "power" | "backups")[];
+    };
+    let myMappings: ClientMapping[] = [];
+
     if (!isStaff) {
-      if (pterodactylAction === "list_servers") {
-        return { data: [] };
+      myMappings = (await ctx.runQuery(
+        internal.clientServers.getMyClientServers,
+        {},
+      )) as ClientMapping[];
+
+      const allowedIds = new Set(myMappings.map((m) => m.serverIdentifier));
+
+      // Per-server actions: gate access to mapped servers + check permissions.
+      if (
+        serverId &&
+        ["server_details", "server_resources", "server_backups", "power_signal"].includes(
+          pterodactylAction,
+        )
+      ) {
+        if (!allowedIds.has(serverId)) {
+          throw new ConvexError("Access denied to this server");
+        }
+        // Power requires the `power` permission specifically.
+        if (pterodactylAction === "power_signal") {
+          const mapping = myMappings.find((m) => m.serverIdentifier === serverId);
+          if (!mapping?.permissions.includes("power")) {
+            throw new ConvexError("You don't have power permission on this server");
+          }
+        }
+        // Backups list requires the `backups` permission.
+        if (pterodactylAction === "server_backups") {
+          const mapping = myMappings.find((m) => m.serverIdentifier === serverId);
+          if (!mapping?.permissions.includes("backups")) {
+            throw new ConvexError("You don't have backup permission on this server");
+          }
+        }
       }
-      throw new ConvexError("Per-user Pterodactyl mapping not yet provisioned");
     }
 
     switch (pterodactylAction) {
@@ -128,16 +165,27 @@ export const proxy = action({
         const data = (await callPterodactyl("/api/client", clientKey)) as {
           data: { attributes: Record<string, unknown> }[];
         };
-        // Map is_suspended -> suspended so existing UI consumers keep working.
+        // Normalize is_suspended -> suspended for UI consumers. Cast preserves
+        // the index signature so downstream `.attributes.identifier` reads
+        // typecheck without widening to `unknown`.
+        type NormalizedServer = {
+          attributes: Record<string, unknown> & { suspended: boolean };
+        };
+        const normalized: NormalizedServer[] = (data.data ?? []).map((s) => ({
+          ...s,
+          attributes: {
+            ...s.attributes,
+            suspended: Boolean(s.attributes.is_suspended),
+          },
+        }));
+        // Staff see everything; non-staff see only mapped servers.
+        if (isStaff) return { ...data, data: normalized };
+        const allowedIds = new Set(myMappings.map((m) => m.serverIdentifier));
         return {
           ...data,
-          data: (data.data ?? []).map((s) => ({
-            ...s,
-            attributes: {
-              ...s.attributes,
-              suspended: Boolean(s.attributes.is_suspended),
-            },
-          })),
+          data: normalized.filter((s) =>
+            allowedIds.has(String(s.attributes.identifier ?? "")),
+          ),
         };
       }
 
